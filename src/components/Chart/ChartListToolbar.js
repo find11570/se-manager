@@ -1,6 +1,7 @@
 import {
 	Box,
 	Card,
+	Button,
 	CardContent,
 	TextField,
 	InputAdornment,
@@ -39,7 +40,7 @@ const ChartListToolbar = (props) => {
 					flexDirection: 'row'
 				}}
 			/>
-			<Box sx={{ mt: 3 }}>
+			<Box>
 				<Card>
 					<CardContent>
 						<Box>
@@ -47,7 +48,7 @@ const ChartListToolbar = (props) => {
 								fullWidth
 								sx={{
 									flex: '1',
-									flexDirection: 'row'
+									flexDirection: 'row',
 								}}
 								InputProps={{
 									startAdornment: (
@@ -64,26 +65,29 @@ const ChartListToolbar = (props) => {
 								placeholder="농장 검색"
 								variant="outlined"
 							/>
-							센서 1
-							<Checkbox
-								sx={{
-									flex: '1',
-									flexDirection: 'row'
-								}}
-								checked={selectedFarmIds.indexOf(1) !== -1}
-								onChange={(event) => handleSelectOne(event, 1)}
-								value="true"
-							/>
-							센서 2
-							<Checkbox
-								sx={{
-									flex: '1',
-									flexDirection: 'row'
-								}}
-								checked={selectedFarmIds.indexOf(2) !== -1}
-								onChange={(event) => handleSelectOne(event, 2)}
-								value="true"
-							/>
+							<Box>
+								&nbsp;&nbsp;센서 1
+								<Checkbox
+									sx={{
+										flex: '1',
+										flexDirection: 'row'
+									}}
+									checked={selectedFarmIds.indexOf(1) !== -1}
+									onChange={(event) => handleSelectOne(event, 1)}
+									value="true"
+								/>
+								&nbsp;&nbsp;센서 2
+								<Checkbox
+									sx={{
+										flex: '1',
+										flexDirection: 'row'
+									}}
+									checked={selectedFarmIds.indexOf(2) !== -1}
+									onChange={(event) => handleSelectOne(event, 2)}
+									value="true"
+								/>
+								<Button onClick={() => alert('Click!')}>조회</Button>
+							</Box>
 						</Box>
 					</CardContent>
 				</Card>

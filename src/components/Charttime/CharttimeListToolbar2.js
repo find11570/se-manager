@@ -1,7 +1,8 @@
 import {
 	Box,
 	Card,
-	CardContent
+	CardContent,
+	Button
 } from '@material-ui/core';
 import { useState } from 'react';
 import DatePicker from 'react-datepicker';
@@ -24,13 +25,7 @@ const CharttimeListToolbar2 = (props) => {
 						<Box>
 							특정 일자, 특정 시간의 1분간의 센서 데이터 :&nbsp;
 							<DatePicker selected={startDate} onChange={(date) => setStartDate(date)} showTimeSelect dateFormat="Pp" />
-							<Box
-								sx={{
-									pt: 2,
-									display: 'flex',
-									alignItems: 'center'
-								}}
-							/>
+							<Button onClick={() => alert('Click!')}>조회</Button>
 						</Box>
 					</CardContent>
 				</Card>

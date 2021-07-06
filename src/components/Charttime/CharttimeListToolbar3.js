@@ -49,13 +49,6 @@ const CharttimeListToolbar3 = (props) => {
 								onChange={(event) => handleSelectOne(event, 1)}
 								value="true"
 							/>
-							<Box
-								sx={{
-									pt: 2,
-									display: 'flex',
-									alignItems: 'center'
-								}}
-							/>
 						</Box>
 					</CardContent>
 				</Card>
