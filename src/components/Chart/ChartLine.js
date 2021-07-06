@@ -3,14 +3,35 @@ import {
 	Box,
 	Card,
 	CardContent,
+	Checkbox,
 	CardHeader,
 	Divider,
 	useTheme,
 	colors
 } from '@material-ui/core';
+import { useState } from 'react';
 
 const ChartLine = (props) => {
 	const theme = useTheme();
+	const [selectedFarmIds, setSelectedFarmIds] = useState([]);
+
+	const handleSelectOne = (event, pkey) => {
+		const selectedIndex = selectedFarmIds.indexOf(pkey);
+		let newSelectedFarmIds = [];
+		if (selectedIndex === -1) {
+			newSelectedFarmIds = newSelectedFarmIds.concat(selectedFarmIds, pkey);
+		} else if (selectedIndex === 0) {
+			newSelectedFarmIds = newSelectedFarmIds.concat(selectedFarmIds.slice(1));
+		} else if (selectedIndex === selectedFarmIds.length - 1) {
+			newSelectedFarmIds = newSelectedFarmIds.concat(selectedFarmIds.slice(0, -1));
+		} else if (selectedIndex > 0) {
+			newSelectedFarmIds = newSelectedFarmIds.concat(
+				selectedFarmIds.slice(0, selectedIndex),
+				selectedFarmIds.slice(selectedIndex + 1)
+			);
+		}
+		setSelectedFarmIds(newSelectedFarmIds);
+	};
 
 	const data = {
 		datasets: [
@@ -140,12 +161,15 @@ const ChartLine = (props) => {
 				</Box>
 			</CardContent>
 			<Divider />
-			<Box
+			&nbsp;&nbsp;&nbsp;농장 정보
+			<Checkbox
 				sx={{
-					display: 'flex',
-					justifyContent: 'flex-end',
-					p: 2
+					flex: '1',
+					flexDirection: 'row',
 				}}
+				checked={selectedFarmIds.indexOf(3) !== -1}
+				onChange={(event) => handleSelectOne(event, 3)}
+				value="true"
 			/>
 		</Card>
 	);

@@ -3,13 +3,12 @@ import {
 	Box,
 	Card,
 	CardContent,
-	CardHeader,
 	Divider,
 	useTheme,
 	colors
 } from '@material-ui/core';
 
-const ChartLine = (props) => {
+const CharttimeLine = (props) => {
 	const theme = useTheme();
 
 	const data = {
@@ -122,9 +121,6 @@ const ChartLine = (props) => {
 
 	return (
 		<Card {...props}>
-			<CardHeader
-				title="센서 차트"
-			/>
 			<Divider />
 			<CardContent>
 				<Box
@@ -151,4 +147,4 @@ const ChartLine = (props) => {
 	);
 };
 
-export default ChartLine;
+export default CharttimeLine;

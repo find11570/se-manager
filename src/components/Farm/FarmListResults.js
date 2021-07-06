@@ -4,7 +4,6 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import {
 	Box,
 	Card,
-	Checkbox,
 	Table,
 	TableBody,
 	TableCell,
@@ -14,41 +13,9 @@ import {
 } from '@material-ui/core';
 
 const FarmListResults = ({ Farms, ...rest }) => {
-	const [selectedFarmIds, setSelectedFarmIds] = useState([]);
+	const [selectedFarmIds] = useState([]);
 	const [limit, setLimit] = useState(10);
 	const [page, setPage] = useState(0);
-
-	const handleSelectAll = (event) => {
-		let newSelectedFarmIds;
-
-		if (event.target.checked) {
-			newSelectedFarmIds = Farms.map((Farm) => Farm.pkey);
-		} else {
-			newSelectedFarmIds = [];
-		}
-
-		setSelectedFarmIds(newSelectedFarmIds);
-	};
-
-	const handleSelectOne = (event, pkey) => {
-		const selectedIndex = selectedFarmIds.indexOf(pkey);
-		let newSelectedFarmIds = [];
-
-		if (selectedIndex === -1) {
-			newSelectedFarmIds = newSelectedFarmIds.concat(selectedFarmIds, pkey);
-		} else if (selectedIndex === 0) {
-			newSelectedFarmIds = newSelectedFarmIds.concat(selectedFarmIds.slice(1));
-		} else if (selectedIndex === selectedFarmIds.length - 1) {
-			newSelectedFarmIds = newSelectedFarmIds.concat(selectedFarmIds.slice(0, -1));
-		} else if (selectedIndex > 0) {
-			newSelectedFarmIds = newSelectedFarmIds.concat(
-				selectedFarmIds.slice(0, selectedIndex),
-				selectedFarmIds.slice(selectedIndex + 1)
-			);
-		}
-
-		setSelectedFarmIds(newSelectedFarmIds);
-	};
 
 	const handleLimitChange = (event) => {
 		setLimit(event.target.value);
@@ -65,17 +32,6 @@ const FarmListResults = ({ Farms, ...rest }) => {
 					<Table>
 						<TableHead>
 							<TableRow>
-								<TableCell padding="checkbox">
-									<Checkbox
-										checked={selectedFarmIds.length === Farms.length}
-										color="primary"
-										indeterminate={
-											selectedFarmIds.length > 0
-											&& selectedFarmIds.length < Farms.length
-										}
-										onChange={handleSelectAll}
-									/>
-								</TableCell>
 								<TableCell>
 									지역명
 								</TableCell>
@@ -94,13 +50,6 @@ const FarmListResults = ({ Farms, ...rest }) => {
 									key={Farm.pkey}
 									selected={selectedFarmIds.indexOf(Farm.pkey) !== -1}
 								>
-									<TableCell padding="checkbox">
-										<Checkbox
-											checked={selectedFarmIds.indexOf(Farm.pkey) !== -1}
-											onChange={(event) => handleSelectOne(event, Farm.pkey)}
-											value="true"
-										/>
-									</TableCell>
 									<TableCell>
 										{Farm.region}
 									</TableCell>

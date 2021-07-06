@@ -14,7 +14,7 @@ const routes = [
 			{ path: 'dashboard', element: <Dashboard /> },
 			{ path: 'Farm', element: <FarmList /> },
 			{ path: 'chart', element: <ChartList /> },
-			{ path: 'charttime', element: <CharttimeList /> },
+			{ path: 'time', element: <CharttimeList /> }
 		]
 	},
 	{

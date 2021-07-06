@@ -1,12 +1,15 @@
 import { Helmet } from 'react-helmet';
 import { Box, Container, Grid } from '@material-ui/core';
 import CharttimeLine from 'src/components/Charttime//CharttimeLine';
-import CharttimeListToolbar from 'src/components/Charttime//CharttimeListToolbar';
+import CharttimeListToolbar1 from 'src/components/Charttime//CharttimeListToolbar1';
+import CharttimeListToolbar2 from 'src/components/Charttime//CharttimeListToolbar2';
+import CharttimeListToolbar3 from 'src/components/Charttime//CharttimeListToolbar3';
+import CharttimeListToolbar4 from 'src/components/Charttime//CharttimeListToolbar4';
 
 const CharttimeList = () => (
 	<>
 		<Helmet>
-			<title>Chart</title>
+			<title>time</title>
 		</Helmet>
 		<Box
 			sx={{
@@ -16,12 +19,50 @@ const CharttimeList = () => (
 			}}
 		>
 			<Container maxWidth={false}>
-				<CharttimeListToolbar />
 				<Grid
-					item
-					pt={3}
+					container
+					spacing={3}
 				>
-					<CharttimeLine />
+					<Grid
+						item
+						lg={12}
+						md={12}
+						xl={9}
+						xs={12}
+					>
+						<CharttimeListToolbar1 />
+						<CharttimeLine />
+					</Grid>
+					<Grid
+						item
+						lg={12}
+						md={12}
+						xl={9}
+						xs={12}
+					>
+						<CharttimeListToolbar2 />
+						<CharttimeLine />
+					</Grid>
+					<Grid
+						item
+						lg={12}
+						md={12}
+						xl={9}
+						xs={12}
+					>
+						<CharttimeListToolbar3 />
+						<CharttimeLine />
+					</Grid>
+					<Grid
+						item
+						lg={12}
+						md={12}
+						xl={9}
+						xs={12}
+					>
+						<CharttimeListToolbar4 />
+						<CharttimeLine />
+					</Grid>
 				</Grid>
 			</Container>
 		</Box>

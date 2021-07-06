@@ -84,23 +84,6 @@ const ChartListToolbar = (props) => {
 								onChange={(event) => handleSelectOne(event, 2)}
 								value="true"
 							/>
-							<Box
-								sx={{
-									pt: 2,
-									display: 'flex',
-									alignItems: 'center'
-								}}
-							/>
-							농장 정보
-							<Checkbox
-								sx={{
-									flex: '1',
-									flexDirection: 'row',
-								}}
-								checked={selectedFarmIds.indexOf(3) !== -1}
-								onChange={(event) => handleSelectOne(event, 3)}
-								value="true"
-							/>
 						</Box>
 					</CardContent>
 				</Card>

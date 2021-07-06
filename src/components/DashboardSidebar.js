@@ -37,7 +37,7 @@ const items = [
 		title: '센서 별 차트'
 	},
 	{
-		href: '/app/charttime',
+		href: '/app/time',
 		icon: BarChartIcon,
 		title: '시간,일자 별 차트'
 	}

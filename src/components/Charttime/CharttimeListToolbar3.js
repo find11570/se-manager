@@ -2,15 +2,11 @@ import {
 	Box,
 	Card,
 	CardContent,
-	TextField,
-	InputAdornment,
-	SvgIcon,
 	Checkbox
 } from '@material-ui/core';
-import { Search as SearchIcon } from 'react-feather';
 import { useState } from 'react';
 
-const ChartListToolbar = (props) => {
+const CharttimeListToolbar3 = (props) => {
 	const [selectedFarmIds, setSelectedFarmIds] = useState([]);
 
 	const handleSelectOne = (event, pkey) => {
@@ -43,28 +39,7 @@ const ChartListToolbar = (props) => {
 				<Card>
 					<CardContent>
 						<Box>
-							<TextField
-								fullWidth
-								sx={{
-									flex: '1',
-									flexDirection: 'row'
-								}}
-								InputProps={{
-									startAdornment: (
-										<InputAdornment position="start">
-											<SvgIcon
-												fontSize="small"
-												color="action"
-											>
-												<SearchIcon />
-											</SvgIcon>
-										</InputAdornment>
-									)
-								}}
-								placeholder="농장 검색"
-								variant="outlined"
-							/>
-							센서 1
+							최근 10일간, 하루 한건의 데이터 :
 							<Checkbox
 								sx={{
 									flex: '1',
@@ -74,32 +49,12 @@ const ChartListToolbar = (props) => {
 								onChange={(event) => handleSelectOne(event, 1)}
 								value="true"
 							/>
-							센서 2
-							<Checkbox
-								sx={{
-									flex: '1',
-									flexDirection: 'row'
-								}}
-								checked={selectedFarmIds.indexOf(2) !== -1}
-								onChange={(event) => handleSelectOne(event, 2)}
-								value="true"
-							/>
 							<Box
 								sx={{
 									pt: 2,
 									display: 'flex',
 									alignItems: 'center'
 								}}
-							/>
-							농장 정보
-							<Checkbox
-								sx={{
-									flex: '1',
-									flexDirection: 'row',
-								}}
-								checked={selectedFarmIds.indexOf(3) !== -1}
-								onChange={(event) => handleSelectOne(event, 3)}
-								value="true"
 							/>
 						</Box>
 					</CardContent>
@@ -109,4 +64,4 @@ const ChartListToolbar = (props) => {
 	);
 };
 
-export default ChartListToolbar;
+export default CharttimeListToolbar3;
