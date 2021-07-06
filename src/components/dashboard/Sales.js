@@ -123,7 +123,7 @@ const Sales = (props) => {
 	return (
 		<Card {...props}>
 			<CardHeader
-				title="센서 차트"
+				title="최근 업로드 된 농장 센서 차트"
 			/>
 			<Divider />
 			<CardContent>
