@@ -2,7 +2,6 @@ import { Helmet } from 'react-helmet';
 import { Box, Container } from '@material-ui/core';
 import FarmListResults from 'src/components/Farm//FarmListResults';
 import FarmListToolbar from 'src/components/Farm//FarmListToolbar';
-import Farms from 'src/__mocks__/Farms';
 
 const FarmList = () => (
 	<>
@@ -19,7 +18,7 @@ const FarmList = () => (
 			<Container maxWidth={false}>
 				<FarmListToolbar />
 				<Box sx={{ pt: 3 }}>
-					<FarmListResults Farms={Farms} />
+					<FarmListResults />
 				</Box>
 			</Container>
 		</Box>
