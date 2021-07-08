@@ -29,7 +29,7 @@ const LatestOrders = (props) => (
 							</InputAdornment>
 						)
 					}}
-					placeholder="농장 검색"
+					placeholder="찾아볼 농장 입력"
 					variant="outlined"
 				/>
 			</CardContent>

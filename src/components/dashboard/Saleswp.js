@@ -6,11 +6,50 @@ import {
 	CardHeader,
 	Divider,
 	useTheme,
-	colors
+	colors,
+	Button,
+	ClickAwayListener,
+	Grow,
+	Paper,
+	Popper,
+	MenuItem,
+	MenuList
 } from '@material-ui/core';
+import React from 'react';
 
 const Saleswp = (props) => {
 	const theme = useTheme();
+	const [open, setOpen] = React.useState(false);
+	const anchorRef = React.useRef(null);
+
+	const handleToggle = () => {
+		setOpen((prevOpen) => !prevOpen);
+	};
+
+	const handleClose = (event) => {
+		if (anchorRef.current && anchorRef.current.contains(event.target)) {
+			return;
+		}
+
+		setOpen(false);
+	};
+
+	function handleListKeyDown(event) {
+		if (event.key === 'Tab') {
+			event.preventDefault();
+			setOpen(false);
+		}
+	}
+
+	// return focus to the button when we transitioned from !open -> open
+	const prevOpen = React.useRef(open);
+	React.useEffect(() => {
+		if (prevOpen.current === true && open === false) {
+			anchorRef.current.focus();
+		}
+
+		prevOpen.current = open;
+	}, [open]);
 
 	const data = {
 		datasets: [
@@ -87,6 +126,39 @@ const Saleswp = (props) => {
 			<CardHeader
 				title="농장 wp 차트(약 최근 1일, 15일, 30일)"
 			/>
+			<Box
+				sx={{
+					display: 'flex',
+					justifyContent: 'flex-end',
+				}}
+			>
+				<Button
+					ref={anchorRef}
+					aria-controls={open ? 'menu-list-grow' : undefined}
+					aria-haspopup="true"
+					onClick={handleToggle}
+				>
+					기간
+				</Button>
+				<Popper open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
+					{({ TransitionProps, placement }) => (
+						<Grow
+							{...TransitionProps}
+							style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
+						>
+							<Paper>
+								<ClickAwayListener onClickAway={handleClose}>
+									<MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
+										<MenuItem onClick={handleClose}>1일</MenuItem>
+										<MenuItem onClick={handleClose}>15일</MenuItem>
+										<MenuItem onClick={handleClose}>30일</MenuItem>
+									</MenuList>
+								</ClickAwayListener>
+							</Paper>
+						</Grow>
+					)}
+				</Popper>
+			</Box>
 			<Divider />
 			<CardContent>
 				<Box
