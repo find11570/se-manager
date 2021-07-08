@@ -1,4 +1,4 @@
-import { Line } from 'react-chartjs-2';
+import { Bar } from 'react-chartjs-2';
 import {
 	Box,
 	Card,
@@ -6,31 +6,22 @@ import {
 	CardHeader,
 	Divider,
 	useTheme,
-	colors,
-	Button
+	colors
 } from '@material-ui/core';
 
-const ChartLine = (props) => {
+const Salestp = (props) => {
 	const theme = useTheme();
 
 	const data = {
 		datasets: [
 			{
 				fill: false,
-				borderColor: colors.indigo[500],
-				data: [-53625.8, -46786, -100000, -45922.1, -48311.9, -52690.2],
-				label: 'wp',
-				yAxisID: 'wp'
-			},
-			{
-				fill: false,
-				borderColor: colors.red[500],
-				data: [24.8, 25.1, 24.8, 25.1, 24.8, 25.1],
+				backgroundColor: colors.red[500],
+				data: [24.8, 25.1, 24.8],
 				label: 'tp',
-				yAxisID: 'tp'
 			}
 		],
-		labels: ['2021-05-14 12:25:22', '2021-05-14 12:24:43', '2021-05-14 12:24:04 ', '2021-05-14 12:23:06', '2021-05-14 12:22:27', '2021-05-14 12:21:29']
+		labels: ['2021-05-14 12:25:22', '2021-05-14 12:24:43', '2021-05-14 12:24:04 ']
 	};
 
 	const options = {
@@ -63,8 +54,6 @@ const ChartLine = (props) => {
 				}
 			],
 			yAxes: [{
-				id: 'wp',
-				position: 'right',
 				ticks: {
 					fontColor: theme.palette.text.secondary,
 					beginAtZero: true,
@@ -77,34 +66,6 @@ const ChartLine = (props) => {
 					zeroLineBorderDash: [2],
 					zeroLineBorderDashOffset: [2],
 					zeroLineColor: theme.palette.divider
-				},
-				scaleLabel: {
-					display: true,
-					labelString: 'wp',
-					fontSize: 18,
-					fontColor: colors.indigo[500]
-				}
-			}, {
-				id: 'tp',
-				position: 'left',
-				ticks: {
-					fontColor: theme.palette.text.secondary,
-					beginAtZero: true,
-				},
-				gridLines: {
-					borderDash: [2],
-					borderDashOffset: [2],
-					color: theme.palette.divider,
-					drawBorder: false,
-					zeroLineBorderDash: [2],
-					zeroLineBorderDashOffset: [2],
-					zeroLineColor: theme.palette.divider
-				},
-				scaleLabel: {
-					display: true,
-					labelString: 'tp',
-					fontSize: 18,
-					fontColor: colors.red[500]
 				}
 			}]
 		},
@@ -124,7 +85,7 @@ const ChartLine = (props) => {
 	return (
 		<Card {...props}>
 			<CardHeader
-				title="농장 별 센서 차트"
+				title="농장 tp 차트(약 최근 1일, 15일, 30일)"
 			/>
 			<Divider />
 			<CardContent>
@@ -134,17 +95,22 @@ const ChartLine = (props) => {
 						position: 'relative'
 					}}
 				>
-					<Line
+					<Bar
 						data={data}
 						options={options}
 					/>
 				</Box>
 			</CardContent>
 			<Divider />
-			&nbsp;&nbsp;&nbsp;농장 정보
-			<Button onClick={() => alert('Click!')}>조회</Button>
+			<Box
+				sx={{
+					display: 'flex',
+					justifyContent: 'flex-end',
+					p: 2
+				}}
+			/>
 		</Card>
 	);
 };
 
-export default ChartLine;
+export default Salestp;

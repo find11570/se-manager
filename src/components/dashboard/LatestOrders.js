@@ -1,7 +1,6 @@
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import {
 	Box,
-	Button,
 	Card,
 	CardHeader,
 	Divider,
@@ -11,7 +10,6 @@ import {
 	TableHead,
 	TableRow
 } from '@material-ui/core';
-import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 
 const Farms = [
 	{
@@ -51,6 +49,22 @@ const Farms = [
 		did: 'M0005',
 		region: '안동',
 		sname: '녹내농장',
+		fname: '',
+		phone: ''
+	},
+	{
+		pkey: '6',
+		did: 'M0006',
+		region: '안동',
+		sname: '구송농장',
+		fname: '',
+		phone: ''
+	},
+	{
+		pkey: '7',
+		did: 'M0007',
+		region: '구미',
+		sname: '시험농장',
 		fname: '',
 		phone: ''
 	}
@@ -97,23 +111,6 @@ const LatestOrders = (props) => (
 				</Table>
 			</Box>
 		</PerfectScrollbar>
-		<Box
-			sx={{
-				display: 'flex',
-				justifyContent: 'flex-end',
-				p: 2
-			}}
-		>
-			<Button
-				color="primary"
-				endIcon={<ArrowRightIcon />}
-				size="small"
-				variant="text"
-				href="/app/Farm"
-			>
-				전체 목록
-			</Button>
-		</Box>
 	</Card>
 );
 

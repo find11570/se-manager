@@ -4,10 +4,10 @@ import {
 	Container,
 	Grid
 } from '@material-ui/core';
-import Budget from 'src/components/dashboard//Budget';
 import LatestOrders from 'src/components/dashboard//LatestOrders';
-import Sales from 'src/components/dashboard//Sales';
-import TotalCustomers from 'src/components/dashboard//TotalCustomers';
+import Saleswp from 'src/components/dashboard//Saleswp';
+import Salestp from 'src/components/dashboard//Salestp';
+import ChooseFarms from 'src/components/dashboard//ChooseFarms';
 
 const Dashboard = () => (
 	<>
@@ -28,24 +28,6 @@ const Dashboard = () => (
 				>
 					<Grid
 						item
-						lg={6}
-						md={12}
-						xl={4.5}
-						xs={12}
-					>
-						<Budget />
-					</Grid>
-					<Grid
-						item
-						lg={6}
-						md={12}
-						xl={4.5}
-						xs={12}
-					>
-						<TotalCustomers />
-					</Grid>
-					<Grid
-						item
 						lg={12}
 						md={12}
 						xl={9}
@@ -60,7 +42,25 @@ const Dashboard = () => (
 						xl={9}
 						xs={12}
 					>
-						<Sales />
+						<ChooseFarms />
+					</Grid>
+					<Grid
+						item
+						lg={6}
+						md={12}
+						xl={4.5}
+						xs={12}
+					>
+						<Saleswp />
+					</Grid>
+					<Grid
+						item
+						lg={6}
+						md={12}
+						xl={4.5}
+						xs={12}
+					>
+						<Salestp />
 					</Grid>
 				</Grid>
 			</Container>

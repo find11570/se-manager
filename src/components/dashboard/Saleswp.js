@@ -1,4 +1,4 @@
-import { Line } from 'react-chartjs-2';
+import { Bar } from 'react-chartjs-2';
 import {
 	Box,
 	Card,
@@ -9,27 +9,19 @@ import {
 	colors
 } from '@material-ui/core';
 
-const Sales = (props) => {
+const Saleswp = (props) => {
 	const theme = useTheme();
 
 	const data = {
 		datasets: [
 			{
 				fill: false,
-				borderColor: colors.indigo[500],
-				data: [-53625.8, -46786, -100000, -45922.1, -48311.9, -52690.2],
+				backgroundColor: colors.indigo[500],
+				data: [-53625.8, -46786, -100000],
 				label: 'wp',
-				yAxisID: 'wp'
-			},
-			{
-				fill: false,
-				borderColor: colors.red[500],
-				data: [24.8, 25.1, 24.8, 25.1, 24.8, 25.1],
-				label: 'tp',
-				yAxisID: 'tp'
 			}
 		],
-		labels: ['2021-05-14 12:25:22', '2021-05-14 12:24:43', '2021-05-14 12:24:04 ', '2021-05-14 12:23:06', '2021-05-14 12:22:27', '2021-05-14 12:21:29']
+		labels: ['2021-05-14 12:25:22', '2021-05-14 12:24:43', '2021-05-14 12:24:04 ']
 	};
 
 	const options = {
@@ -62,8 +54,6 @@ const Sales = (props) => {
 				}
 			],
 			yAxes: [{
-				id: 'wp',
-				position: 'right',
 				ticks: {
 					fontColor: theme.palette.text.secondary,
 					beginAtZero: true,
@@ -76,34 +66,6 @@ const Sales = (props) => {
 					zeroLineBorderDash: [2],
 					zeroLineBorderDashOffset: [2],
 					zeroLineColor: theme.palette.divider
-				},
-				scaleLabel: {
-					display: true,
-					labelString: 'wp',
-					fontSize: 18,
-					fontColor: colors.indigo[500]
-				}
-			}, {
-				id: 'tp',
-				position: 'left',
-				ticks: {
-					fontColor: theme.palette.text.secondary,
-					beginAtZero: true,
-				},
-				gridLines: {
-					borderDash: [2],
-					borderDashOffset: [2],
-					color: theme.palette.divider,
-					drawBorder: false,
-					zeroLineBorderDash: [2],
-					zeroLineBorderDashOffset: [2],
-					zeroLineColor: theme.palette.divider
-				},
-				scaleLabel: {
-					display: true,
-					labelString: 'tp',
-					fontSize: 18,
-					fontColor: colors.red[500]
 				}
 			}]
 		},
@@ -123,7 +85,7 @@ const Sales = (props) => {
 	return (
 		<Card {...props}>
 			<CardHeader
-				title="최근 업로드 된 농장 센서 차트"
+				title="농장 wp 차트(약 최근 1일, 15일, 30일)"
 			/>
 			<Divider />
 			<CardContent>
@@ -133,7 +95,7 @@ const Sales = (props) => {
 						position: 'relative'
 					}}
 				>
-					<Line
+					<Bar
 						data={data}
 						options={options}
 					/>
@@ -151,4 +113,4 @@ const Sales = (props) => {
 	);
 };
 
-export default Sales;
+export default Saleswp;

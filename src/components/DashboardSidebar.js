@@ -27,11 +27,6 @@ const items = [
 		title: '메인'
 	},
 	{
-		href: '/app/Farm',
-		icon: BarChartIcon,
-		title: '농장 목록'
-	},
-	{
 		href: '/app/chart',
 		icon: BarChartIcon,
 		title: '센서 별 차트'
