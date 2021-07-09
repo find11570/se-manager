@@ -9,10 +9,27 @@ import {
 	Checkbox
 } from '@material-ui/core';
 import { Search as SearchIcon } from 'react-feather';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const ChartListToolbar = (props) => {
 	const [selectedFarmIds, setSelectedFarmIds] = useState([]);
+	const [values] = useState({
+		name: '',
+		sensor1: '',
+		sensor2: '',
+	});
+
+	const api = () => axios.post('http://farm.developerpsy.com:3000/SelectFarmSensor.php', values);
+
+	const f1 = () => {
+		useEffect(() => {
+			const getCharts = async () => {
+				await api();
+			};
+			getCharts();
+		}, []);
+	};
 
 	const handleSelectOne = (event, pkey) => {
 		const selectedIndex = selectedFarmIds.indexOf(pkey);
@@ -74,7 +91,6 @@ const ChartListToolbar = (props) => {
 									}}
 									checked={selectedFarmIds.indexOf(1) !== -1}
 									onChange={(event) => handleSelectOne(event, 1)}
-									value="true"
 								/>
 								&nbsp;&nbsp;센서 2
 								<Checkbox
@@ -84,9 +100,8 @@ const ChartListToolbar = (props) => {
 									}}
 									checked={selectedFarmIds.indexOf(2) !== -1}
 									onChange={(event) => handleSelectOne(event, 2)}
-									value="true"
 								/>
-								<Button onClick={() => alert('Click!')}>조회</Button>
+								<Button onClick={() => f1}>조회</Button>
 							</Box>
 						</Box>
 					</CardContent>

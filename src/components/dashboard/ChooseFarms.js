@@ -7,6 +7,12 @@ import {
 } from '@material-ui/core';
 import { Search as SearchIcon } from 'react-feather';
 
+const handleKeyPress = (event) => {
+	if (event.key === 'Enter') {
+		alert('enter press here! ');
+	}
+};
+
 const LatestOrders = (props) => (
 	<Card {...props}>
 		<Card>
@@ -29,6 +35,7 @@ const LatestOrders = (props) => (
 							</InputAdornment>
 						)
 					}}
+					onKeyPress={handleKeyPress}
 					placeholder="찾아볼 농장 입력"
 					variant="outlined"
 				/>
