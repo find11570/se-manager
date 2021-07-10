@@ -12,8 +12,10 @@ import {
 
 const ChartLine = (props) => {
 	const theme = useTheme();
+	const { data } = props;
+	console.log(data);
 
-	const data = {
+	const data2 = {
 		datasets: [
 			{
 				fill: false,
@@ -135,7 +137,7 @@ const ChartLine = (props) => {
 					}}
 				>
 					<Line
-						data={data}
+						data={data2}
 						options={options}
 					/>
 				</Box>

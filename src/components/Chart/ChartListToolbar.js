@@ -13,26 +13,15 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const ChartListToolbar = (props) => {
-	const [data, setdata] = useState(
-		{
-			tp: '',
-			wp: '',
-			sname: '',
-			mdate: '',
-			mtime: ''
-		}
-	);
+	const { data, setdata } = props;
 	const [senddata, setsenddata] = useState(
 		{
-			sname: '',
+			farm: '',
 			sid: [],
 		}
 	);
 	const [value, setvalue] = useState('');
 	const [selectedFarmIds, setSelectedFarmIds] = useState([]);
-	const {
-		tp, wp, sname, mdate, mtime
-	} = data;
 
 	const handleChange = (event) => {
 		setvalue(event.target.value);
@@ -44,22 +33,9 @@ const ChartListToolbar = (props) => {
 
 	const api = () => axios.post('http://farm.developerpsy.com:3000/SelectFarmSensor.php', JSON.stringify([senddata]));
 
-	const f1 = () => {
-		useEffect(() => {
-			const getCharts = async () => {
-				const newCharts = await api();
-				setdata({
-					...data,
-					[tp]: newCharts.tp,
-					[wp]: newCharts.wp,
-					[sname]: newCharts.sname,
-					[mdate]: newCharts.mdate,
-					[mtime]: newCharts.mtime,
-				});
-			};
-			getCharts();
-		}, []);
-		console.log(data);
+	const getCharts = async () => {
+		const newCharts = await api();
+		setdata(newCharts.data);
 	};
 
 	const handleSelectOne = (event, pkey) => {
@@ -78,6 +54,10 @@ const ChartListToolbar = (props) => {
 			[event.target.name]: newSelectedFarmIds
 		});
 	};
+
+	useEffect(() => {
+		console.log(data);
+	}, [data]);
 
 	return (
 		<Box {...props}>
@@ -113,7 +93,7 @@ const ChartListToolbar = (props) => {
 								variant="outlined"
 								placeholder="농장 검색(ex: 덕교농장)"
 								onChange={handleChange}
-								name="sname"
+								name="farm"
 							/>
 							<Box>
 								&nbsp;&nbsp;센서 1
@@ -136,7 +116,7 @@ const ChartListToolbar = (props) => {
 									checked={selectedFarmIds.indexOf(2) !== -1}
 									onChange={(event) => handleSelectOne(event, 2)}
 								/>
-								<Button onClick={f1}>조회</Button>
+								<Button onClick={getCharts}>조회</Button>
 							</Box>
 						</Box>
 					</CardContent>
