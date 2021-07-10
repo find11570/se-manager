@@ -14,22 +14,23 @@ import axios from 'axios';
 
 const ChartListToolbar = (props) => {
 	const [selectedFarmIds, setSelectedFarmIds] = useState([]);
-	const [values] = useState({
-		name: '',
-		sensor1: '',
-		sensor2: '',
-	});
+	const [value, setValue] = useState('');
 
-	const api = () => axios.post('http://farm.developerpsy.com:3000/SelectFarmSensor.php', values);
+	const handleChange = (event) => {
+		setValue(event.target.value);
+		console.log(event.target.value);
+	};
 
-	const f1 = () => {
+	const api = () => axios.post('http://farm.developerpsy.com:3000/SelectFarmSensor.php');
+
+	function f1() {
 		useEffect(() => {
 			const getCharts = async () => {
 				await api();
 			};
 			getCharts();
 		}, []);
-	};
+	}
 
 	const handleSelectOne = (event, pkey) => {
 		const selectedIndex = selectedFarmIds.indexOf(pkey);
@@ -37,16 +38,12 @@ const ChartListToolbar = (props) => {
 		if (selectedIndex === -1) {
 			newSelectedFarmIds = newSelectedFarmIds.concat(selectedFarmIds, pkey);
 		} else if (selectedIndex === 0) {
-			newSelectedFarmIds = newSelectedFarmIds.concat(selectedFarmIds.slice(1));
+			newSelectedFarmIds = newSelectedFarmIds.concat(selectedFarmIds.slice(2));
 		} else if (selectedIndex === selectedFarmIds.length - 1) {
-			newSelectedFarmIds = newSelectedFarmIds.concat(selectedFarmIds.slice(0, -1));
-		} else if (selectedIndex > 0) {
-			newSelectedFarmIds = newSelectedFarmIds.concat(
-				selectedFarmIds.slice(0, selectedIndex),
-				selectedFarmIds.slice(selectedIndex + 1)
-			);
+			newSelectedFarmIds = newSelectedFarmIds.concat(selectedFarmIds.slice(1, -1));
 		}
 		setSelectedFarmIds(newSelectedFarmIds);
+		console.log(newSelectedFarmIds);
 	};
 
 	return (
@@ -79,8 +76,10 @@ const ChartListToolbar = (props) => {
 										</InputAdornment>
 									)
 								}}
-								placeholder="농장 검색"
+								value={value || ''}
 								variant="outlined"
+								placeholder="농장 검색(ex: 덕교 농장)"
+								onChange={handleChange}
 							/>
 							<Box>
 								&nbsp;&nbsp;센서 1
@@ -101,7 +100,7 @@ const ChartListToolbar = (props) => {
 									checked={selectedFarmIds.indexOf(2) !== -1}
 									onChange={(event) => handleSelectOne(event, 2)}
 								/>
-								<Button onClick={() => f1}>조회</Button>
+								<Button onClick={f1}>조회</Button>
 							</Box>
 						</Box>
 					</CardContent>
