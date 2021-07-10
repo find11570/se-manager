@@ -13,24 +13,54 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const ChartListToolbar = (props) => {
+	const [data, setdata] = useState(
+		{
+			tp: '',
+			wp: '',
+			sname: '',
+			mdate: '',
+			mtime: ''
+		}
+	);
+	const [senddata, setsenddata] = useState(
+		{
+			sname: '',
+			sid: [],
+		}
+	);
+	const [value, setvalue] = useState('');
 	const [selectedFarmIds, setSelectedFarmIds] = useState([]);
-	const [value, setValue] = useState('');
+	const {
+		tp, wp, sname, mdate, mtime
+	} = data;
 
 	const handleChange = (event) => {
-		setValue(event.target.value);
-		console.log(event.target.value);
+		setvalue(event.target.value);
+		setsenddata({
+			...senddata,
+			[event.target.name]: event.target.value
+		});
 	};
 
-	const api = () => axios.post('http://farm.developerpsy.com:3000/SelectFarmSensor.php');
+	const api = () => axios.post('http://farm.developerpsy.com:3000/SelectFarmSensor.php', JSON.stringify([senddata]));
 
-	function f1() {
+	const f1 = () => {
 		useEffect(() => {
 			const getCharts = async () => {
-				await api();
+				const newCharts = await api();
+				setdata({
+					...data,
+					[tp]: newCharts.tp,
+					[wp]: newCharts.wp,
+					[sname]: newCharts.sname,
+					[mdate]: newCharts.mdate,
+					[mtime]: newCharts.mtime,
+				});
 			};
 			getCharts();
 		}, []);
-	}
+		console.log(data);
+	};
 
 	const handleSelectOne = (event, pkey) => {
 		const selectedIndex = selectedFarmIds.indexOf(pkey);
@@ -43,7 +73,10 @@ const ChartListToolbar = (props) => {
 			newSelectedFarmIds = newSelectedFarmIds.concat(selectedFarmIds.slice(1, -1));
 		}
 		setSelectedFarmIds(newSelectedFarmIds);
-		console.log(newSelectedFarmIds);
+		setsenddata({
+			...senddata,
+			[event.target.name]: newSelectedFarmIds
+		});
 	};
 
 	return (
@@ -78,8 +111,9 @@ const ChartListToolbar = (props) => {
 								}}
 								value={value || ''}
 								variant="outlined"
-								placeholder="농장 검색(ex: 덕교 농장)"
+								placeholder="농장 검색(ex: 덕교농장)"
 								onChange={handleChange}
+								name="sname"
 							/>
 							<Box>
 								&nbsp;&nbsp;센서 1
@@ -88,6 +122,7 @@ const ChartListToolbar = (props) => {
 										flex: '1',
 										flexDirection: 'row'
 									}}
+									name="sid"
 									checked={selectedFarmIds.indexOf(1) !== -1}
 									onChange={(event) => handleSelectOne(event, 1)}
 								/>
@@ -97,6 +132,7 @@ const ChartListToolbar = (props) => {
 										flex: '1',
 										flexDirection: 'row'
 									}}
+									name="sid"
 									checked={selectedFarmIds.indexOf(2) !== -1}
 									onChange={(event) => handleSelectOne(event, 2)}
 								/>
