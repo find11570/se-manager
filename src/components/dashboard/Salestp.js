@@ -15,12 +15,25 @@ import {
 	MenuItem,
 	MenuList
 } from '@material-ui/core';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const Salestp = (props) => {
 	const theme = useTheme();
 	const [open, setOpen] = React.useState(false);
 	const anchorRef = React.useRef(null);
+	const { value } = props;
+	const [senddata, setsenddata] = useState(
+		{
+			farm: '',
+			day: '',
+		}
+	);
+	const [result, setresult] = useState();
+	const [sname, setsname] = useState();
+	const tp = [];
+	const date = [];
+	const [data2, setdata2] = useState();
 
 	const handleToggle = () => {
 		setOpen((prevOpen) => !prevOpen);
@@ -30,7 +43,11 @@ const Salestp = (props) => {
 		if (anchorRef.current && anchorRef.current.contains(event.target)) {
 			return;
 		}
-
+		setsenddata({
+			...senddata,
+			day: event.target.value,
+			farm: value
+		});
 		setOpen(false);
 	};
 
@@ -40,6 +57,14 @@ const Salestp = (props) => {
 			setOpen(false);
 		}
 	}
+
+	const api = () => axios.post('http://farm.developerpsy.com:443/SelectTPduringDate.php', JSON.stringify([senddata]));
+
+	const getCharts = async () => {
+		console.log(senddata);
+		const newCharts = await api();
+		setresult(newCharts.data);
+	};
 
 	// return focus to the button when we transitioned from !open -> open
 	const prevOpen = React.useRef(open);
@@ -51,17 +76,33 @@ const Salestp = (props) => {
 		prevOpen.current = open;
 	}, [open]);
 
-	const data = {
-		datasets: [
-			{
-				fill: false,
-				backgroundColor: colors.red[500],
-				data: [24.8, 25.1, 24.8],
-				label: 'tp',
+	useEffect(() => {
+		if (!result) {
+			setsname('');
+		} else {
+			for (let i = 0; i < result.length; i++) {
+				tp.push(result[i].tp);
 			}
-		],
-		labels: ['2021-05-14 12:25:22', '2021-05-14 12:24:43', '2021-05-14 12:24:04 ']
-	};
+			setsname(result[0].sname);
+			for (let i = 0; i < result.length; i++) {
+				date.push(result[i].mdate + result[i].mtime);
+			}
+		}
+		setdata2(
+			{
+				datasets: [
+					{
+						fill: false,
+						borderColor: colors.red[500],
+						data: tp,
+						label: 'tp',
+						yAxisID: 'tp'
+					}
+				],
+				labels: date
+			}
+		);
+	}, result);
 
 	const options = {
 		animation: false,
@@ -86,13 +127,15 @@ const Salestp = (props) => {
 					},
 					scaleLabel: {
 						display: true,
-						labelString: '덕교 농장',
+						labelString: sname,
 						fontSize: 19,
 						fontColor: colors.grey[900]
 					}
 				}
 			],
 			yAxes: [{
+				id: 'tp',
+				position: 'left',
 				ticks: {
 					fontColor: theme.palette.text.secondary,
 					beginAtZero: true,
@@ -105,6 +148,12 @@ const Salestp = (props) => {
 					zeroLineBorderDash: [2],
 					zeroLineBorderDashOffset: [2],
 					zeroLineColor: theme.palette.divider
+				},
+				scaleLabel: {
+					display: true,
+					labelString: 'tp',
+					fontSize: 18,
+					fontColor: colors.red[500]
 				}
 			}]
 		},
@@ -124,7 +173,30 @@ const Salestp = (props) => {
 	return (
 		<Card {...props}>
 			<CardHeader
-				title="농장 tp 차트(약 최근 1일, 15일, 30일)"
+				title="농장 tp 차트(최근 10일, 30일, 60일)"
+			/>
+			<Button onClick={getCharts}>조회</Button>
+			<Divider />
+			<CardContent>
+				<Box
+					sx={{
+						height: 400,
+						position: 'relative'
+					}}
+				>
+					<Bar
+						data={data2}
+						options={options}
+					/>
+				</Box>
+			</CardContent>
+			<Divider />
+			<Box
+				sx={{
+					display: 'flex',
+					justifyContent: 'flex-end',
+					p: 2
+				}}
 			/>
 			<Box
 				sx={{
@@ -149,9 +221,9 @@ const Salestp = (props) => {
 							<Paper>
 								<ClickAwayListener onClickAway={handleClose}>
 									<MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-										<MenuItem onClick={handleClose}>1일</MenuItem>
-										<MenuItem onClick={handleClose}>15일</MenuItem>
-										<MenuItem onClick={handleClose}>30일</MenuItem>
+										<MenuItem onClick={(event) => handleClose(event)} value="10">10일</MenuItem>
+										<MenuItem onClick={(event) => handleClose(event)} value="30">30일</MenuItem>
+										<MenuItem onClick={(event) => handleClose(event)} value="60">60일</MenuItem>
 									</MenuList>
 								</ClickAwayListener>
 							</Paper>
@@ -159,28 +231,6 @@ const Salestp = (props) => {
 					)}
 				</Popper>
 			</Box>
-			<Divider />
-			<CardContent>
-				<Box
-					sx={{
-						height: 400,
-						position: 'relative'
-					}}
-				>
-					<Bar
-						data={data}
-						options={options}
-					/>
-				</Box>
-			</CardContent>
-			<Divider />
-			<Box
-				sx={{
-					display: 'flex',
-					justifyContent: 'flex-end',
-					p: 2
-				}}
-			/>
 		</Card>
 	);
 };

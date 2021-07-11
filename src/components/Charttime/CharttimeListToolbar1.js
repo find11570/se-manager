@@ -25,12 +25,6 @@ const CharttimeListToolbar1 = (props) => {
 	});
 
 	const getDateFormat = (date) => {
-		// const res = date.getFullYear() +
-		//    '-' +
-		//    (date.getMonth() + 1).toString().padStart(2, '0') +
-		//    '-' +
-		//    date.getDate().toString().padStart(2, '0');
-
 		const res = `${date.getFullYear()}-${(date.getMonth() + 1)
 			.toString()
 			.padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
@@ -46,7 +40,7 @@ const CharttimeListToolbar1 = (props) => {
 		JSON.stringify([postBody]));
 
 	const getFormatedChart = (data) => {
-		const newFarmName = data.length === 0 ? '' : data[0].sname;
+		const newFarmName = farmInput;
 		const newWp = [];
 		const newTp = [];
 		const newDates = [];
@@ -67,11 +61,16 @@ const CharttimeListToolbar1 = (props) => {
 
 	const getChart = async () => {
 		const newCharts = await api();
+		console.log(newCharts);
 		setChartData(getFormatedChart(newCharts.data));
 	};
 
 	const handleTextChange = (event) => {
 		setFarmInput(event.currentTarget.value);
+		setPostBody({
+			farm: event.currentTarget.value,
+			date: getDateFormat(startDate)
+		});
 	};
 
 	return (
