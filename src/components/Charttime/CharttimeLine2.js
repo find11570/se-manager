@@ -9,7 +9,7 @@ import {
 } from '@material-ui/core';
 import { useState, useEffect } from 'react';
 
-const CharttimeLine = (props) => {
+const CharttimeLine2 = (props) => {
 	const theme = useTheme();
 	const { data } = props;
 	const [sname, setsname] = useState();
@@ -172,4 +172,4 @@ const CharttimeLine = (props) => {
 	);
 };
 
-export default CharttimeLine;
+export default CharttimeLine2;

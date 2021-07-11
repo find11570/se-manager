@@ -25,7 +25,7 @@ const CharttimeListToolbar4 = (props) => {
 		}
 	);
 
-	const api = () => axios.post('http://farm.developerpsy.com:443/SelectSensorDuringTenDays.php', JSON.stringify([senddata]));
+	const api = () => axios.post('http://farm.developerpsy.com:443/SelectSensorWithFarmAndDate.php', JSON.stringify([senddata]));
 
 	const getCharts = async () => {
 		console.log(senddata);

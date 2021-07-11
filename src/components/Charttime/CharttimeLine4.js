@@ -7,29 +7,54 @@ import {
 	useTheme,
 	colors
 } from '@material-ui/core';
+import { useState, useEffect } from 'react';
 
-const CharttimeLine = (props) => {
+const CharttimeLine4 = (props) => {
 	const theme = useTheme();
+	const { data4 } = props;
+	const [sname, setsname] = useState();
+	const tp = [];
+	const wp = [];
+	const date = [];
+	const [data2, setdata2] = useState();
 
-	const data = {
-		datasets: [
-			{
-				fill: false,
-				borderColor: colors.indigo[500],
-				data: [-53625.8, -46786, -100000, -45922.1, -48311.9, -52690.2],
-				label: 'wp',
-				yAxisID: 'wp'
-			},
-			{
-				fill: false,
-				borderColor: colors.red[500],
-				data: [24.8, 25.1, 24.8, 25.1, 24.8, 25.1],
-				label: 'tp',
-				yAxisID: 'tp'
+	useEffect(() => {
+		if (!data4) {
+			setsname('');
+		} else {
+			for (let i = 0; i < data4.length; i++) {
+				tp.push(data4[i].tp);
 			}
-		],
-		labels: ['2021-05-14 12:25:22', '2021-05-14 12:24:43', '2021-05-14 12:24:04 ', '2021-05-14 12:23:06', '2021-05-14 12:22:27', '2021-05-14 12:21:29']
-	};
+			for (let i = 0; i < data4.length; i++) {
+				wp.push(data4[i].wp);
+			}
+			setsname(data4[0].sname);
+			for (let i = 0; i < data4.length; i++) {
+				date.push(data4[i].mdate + data4[i].mtime);
+			}
+		}
+		setdata2(
+			{
+				datasets: [
+					{
+						fill: false,
+						borderColor: colors.indigo[500],
+						data: wp,
+						label: 'wp',
+						yAxisID: 'wp'
+					},
+					{
+						fill: false,
+						borderColor: colors.red[500],
+						data: tp,
+						label: 'tp',
+						yAxisID: 'tp'
+					}
+				],
+				labels: date
+			}
+		);
+	}, data4);
 
 	const options = {
 		animation: false,
@@ -54,7 +79,7 @@ const CharttimeLine = (props) => {
 					},
 					scaleLabel: {
 						display: true,
-						labelString: '덕교 농장',
+						labelString: sname,
 						fontSize: 19,
 						fontColor: colors.grey[900]
 					}
@@ -130,7 +155,7 @@ const CharttimeLine = (props) => {
 					}}
 				>
 					<Line
-						data={data}
+						data={data2}
 						options={options}
 					/>
 				</Box>
@@ -147,4 +172,4 @@ const CharttimeLine = (props) => {
 	);
 };
 
-export default CharttimeLine;
+export default CharttimeLine4;

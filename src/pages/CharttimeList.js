@@ -12,6 +12,7 @@ import { useState } from 'react';
 const CharttimeList = () => {
 	const [data, setdata] = useState();
 	const [dat, setdat] = useState();
+	const [data4, setdata4] = useState();
 
 	return (
 		<>
@@ -66,8 +67,8 @@ const CharttimeList = () => {
 							xl={9}
 							xs={12}
 						>
-							<CharttimeListToolbar4 />
-							<CharttimeLine4 />
+							<CharttimeListToolbar4 data4={data4} setdata4={setdata4} />
+							<CharttimeLine4 data4={data4} />
 						</Grid>
 					</Grid>
 				</Container>

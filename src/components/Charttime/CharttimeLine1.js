@@ -1,6 +1,3 @@
-/* eslint-disable */
-// eslint 적용을 위해서 나주엥 이부분 제거 하고 적용
-
 import { Line } from 'react-chartjs-2';
 import {
 	Box,
@@ -13,7 +10,9 @@ import {
 
 const CharttimeLine1 = (props) => {
 	const theme = useTheme();
-	const { wp, tp, dates, farm_name } = props;
+	const {
+		wp, tp, dates, farmname
+	} = props;
 
 	const data = {
 		datasets: [
@@ -60,7 +59,7 @@ const CharttimeLine1 = (props) => {
 					},
 					scaleLabel: {
 						display: true,
-						labelString: farm_name,
+						labelString: farmname,
 						fontSize: 19,
 						fontColor: colors.grey[900]
 					}
