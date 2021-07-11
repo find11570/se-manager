@@ -9,30 +9,48 @@ import {
 	colors,
 	Button
 } from '@material-ui/core';
+import { useState, useEffect } from 'react';
 
 const ChartLine = (props) => {
 	const theme = useTheme();
 	const { data } = props;
-	console.log(data);
+	const [tp, settp] = useState();
+	const [wp, setwp] = useState();
+	const [sname, setsname] = useState();
+	const [date, setdate] = useState();
+
+	useEffect(() => {
+		if (!data) {
+			settp([0]);
+			setwp([0]);
+			setsname('');
+			setdate([]);
+		} else {
+			settp([data[0].tp, data[1].tp, data[2].tp, data[3].tp, data[4].tp, data[5].tp]);
+			setwp([data[0].wp, data[1].wp, data[2].wp, data[3].wp, data[4].wp, data[5].wp]);
+			setsname(data[0].sname);
+			setdate([data[0].mdate + data[0].mtime, data[1].mdate + data[1].mtime, data[2].mdate + data[2].mtime, data[3].mdate + data[3].mtime, data[4].mdate + data[4].mtime, data[5].mdate + data[5].mtime]);
+		}
+	}, data);
 
 	const data2 = {
 		datasets: [
 			{
 				fill: false,
 				borderColor: colors.indigo[500],
-				data: [-53625.8, -46786, -100000, -45922.1, -48311.9, -52690.2],
+				data: wp,
 				label: 'wp',
 				yAxisID: 'wp'
 			},
 			{
 				fill: false,
 				borderColor: colors.red[500],
-				data: [24.8, 25.1, 24.8, 25.1, 24.8, 25.1],
+				data: tp,
 				label: 'tp',
 				yAxisID: 'tp'
 			}
 		],
-		labels: ['2021-05-14 12:25:22', '2021-05-14 12:24:43', '2021-05-14 12:24:04 ', '2021-05-14 12:23:06', '2021-05-14 12:22:27', '2021-05-14 12:21:29']
+		labels: date
 	};
 
 	const options = {
@@ -58,7 +76,7 @@ const ChartLine = (props) => {
 					},
 					scaleLabel: {
 						display: true,
-						labelString: '덕교 농장',
+						labelString: sname,
 						fontSize: 19,
 						fontColor: colors.grey[900]
 					}

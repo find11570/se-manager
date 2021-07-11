@@ -13,7 +13,7 @@ import {
 } from '@material-ui/core';
 import axios from 'axios';
 
-const api = () => axios.get('http://farm.developerpsy.com:3000/SelectFarmList.php');
+const api = () => axios.get('http://farm.developerpsy.com:443/SelectFarmList.php');
 
 const LatestOrders = (props) => {
 	const [farms, setFarms] = useState();

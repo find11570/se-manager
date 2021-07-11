@@ -31,7 +31,7 @@ const ChartListToolbar = (props) => {
 		});
 	};
 
-	const api = () => axios.post('http://farm.developerpsy.com:3000/SelectFarmSensor.php', JSON.stringify([senddata]));
+	const api = () => axios.post('http://farm.developerpsy.com:443/SelectFarmSensor.php', JSON.stringify([senddata]));
 
 	const getCharts = async () => {
 		const newCharts = await api();
@@ -44,19 +44,30 @@ const ChartListToolbar = (props) => {
 		if (selectedIndex === -1) {
 			newSelectedFarmIds = newSelectedFarmIds.concat(selectedFarmIds, pkey);
 		} else if (selectedIndex === 0) {
-			newSelectedFarmIds = newSelectedFarmIds.concat(selectedFarmIds.slice(2));
+			newSelectedFarmIds = newSelectedFarmIds.concat(selectedFarmIds.slice(1));
 		} else if (selectedIndex === selectedFarmIds.length - 1) {
-			newSelectedFarmIds = newSelectedFarmIds.concat(selectedFarmIds.slice(1, -1));
+			newSelectedFarmIds = newSelectedFarmIds.concat(selectedFarmIds.slice(0, -1));
+		} else if (selectedIndex > 0) {
+			newSelectedFarmIds = newSelectedFarmIds.concat(
+				selectedFarmIds.slice(0, selectedIndex),
+				selectedFarmIds.slice(selectedIndex + 1)
+			);
 		}
 		setSelectedFarmIds(newSelectedFarmIds);
-		setsenddata({
-			...senddata,
-			[event.target.name]: newSelectedFarmIds
-		});
+		if (newSelectedFarmIds.length === 2) {
+			setsenddata({
+				...senddata,
+				[event.target.name]: 3
+			});
+		} else {
+			setsenddata({
+				...senddata,
+				[event.target.name]: newSelectedFarmIds[0]
+			});
+		}
 	};
 
 	useEffect(() => {
-		console.log(data);
 	}, [data]);
 
 	return (
