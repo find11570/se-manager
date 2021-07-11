@@ -3,62 +3,58 @@ import {
 	Box,
 	Card,
 	CardContent,
-	CardHeader,
 	Divider,
 	useTheme,
-	colors,
-	Button
+	colors
 } from '@material-ui/core';
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 
-const ChartLine = (props) => {
+const CharttimeLine = (props) => {
 	const theme = useTheme();
 	const { data } = props;
-	const [tp, settp] = useState();
-	const [wp, setwp] = useState();
-	const [sname, setsname] = useState('');
-	const [date, setdate] = useState();
-	const [senddata, setsenddata] = useState();
-	const api = () => axios.post('http://farm.developerpsy.com:443/SelectFarmInfo.php', JSON.stringify([senddata]));
-	const getFarmName = async () => {
-		const newName = await api();
-		setsname(`${newName.data[0].region} ${newName.data[0].sname} ${newName.data[0].did}`);
-	};
+	const [sname, setsname] = useState();
+	const tp = [];
+	const wp = [];
+	const date = [];
+	const [data2, setdata2] = useState();
+
 	useEffect(() => {
 		if (!data) {
-			settp([0]);
-			setwp([0]);
-			setdate([]);
+			setsname('');
 		} else {
-			settp([data[0].tp, data[1].tp, data[2].tp, data[3].tp, data[4].tp, data[5].tp]);
-			setwp([data[0].wp, data[1].wp, data[2].wp, data[3].wp, data[4].wp, data[5].wp]);
-			setsname(data[0].sname);
-			setsenddata({
-				farm: data[0].sname
-			});
-			setdate([data[0].mdate + data[0].mtime, data[1].mdate + data[1].mtime, data[2].mdate + data[2].mtime, data[3].mdate + data[3].mtime, data[4].mdate + data[4].mtime, data[5].mdate + data[5].mtime]);
-		}
-	}, data);
-	const data2 = {
-		datasets: [
-			{
-				fill: false,
-				borderColor: colors.indigo[500],
-				data: wp,
-				label: 'wp',
-				yAxisID: 'wp'
-			},
-			{
-				fill: false,
-				borderColor: colors.red[500],
-				data: tp,
-				label: 'tp',
-				yAxisID: 'tp'
+			for (let i = 0; i < data.length; i++) {
+				tp.push(data[i].tp);
 			}
-		],
-		labels: date
-	};
+			for (let i = 0; i < data.length; i++) {
+				wp.push(data[i].wp);
+			}
+			setsname(data[0].sname);
+			for (let i = 0; i < data.length; i++) {
+				date.push(data[i].mdate + data[i].mtime);
+			}
+		}
+		setdata2(
+			{
+				datasets: [
+					{
+						fill: false,
+						borderColor: colors.indigo[500],
+						data: wp,
+						label: 'wp',
+						yAxisID: 'wp'
+					},
+					{
+						fill: false,
+						borderColor: colors.red[500],
+						data: tp,
+						label: 'tp',
+						yAxisID: 'tp'
+					}
+				],
+				labels: date
+			}
+		);
+	}, data);
 
 	const options = {
 		animation: false,
@@ -150,9 +146,6 @@ const ChartLine = (props) => {
 
 	return (
 		<Card {...props}>
-			<CardHeader
-				title="농장 별 센서 차트"
-			/>
 			<Divider />
 			<CardContent>
 				<Box
@@ -168,10 +161,15 @@ const ChartLine = (props) => {
 				</Box>
 			</CardContent>
 			<Divider />
-			&nbsp;&nbsp;&nbsp;농장 정보
-			<Button onClick={getFarmName}>조회</Button>
+			<Box
+				sx={{
+					display: 'flex',
+					justifyContent: 'flex-end',
+					p: 2
+				}}
+			/>
 		</Card>
 	);
 };
 
-export default ChartLine;
+export default CharttimeLine;
