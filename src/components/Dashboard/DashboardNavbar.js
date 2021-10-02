@@ -6,10 +6,10 @@ import {
 	Box,
 	Hidden,
 	IconButton,
-	Toolbar
+	Toolbar,
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
-import Logo from './Logo';
+import Logo from 'src/components/Logo';
 
 const DashboardNavbar = ({ onMobileNavOpen, ...rest }) => {
 	const [notifications] = useState([]);

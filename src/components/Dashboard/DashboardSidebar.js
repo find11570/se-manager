@@ -7,7 +7,7 @@ import {
 	Hidden,
 	List
 } from '@material-ui/core';
-import NavItem from './NavItem';
+import NavItem from 'src/components/NavItem';
 
 const items = [
 	{
