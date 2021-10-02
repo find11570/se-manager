@@ -2,17 +2,15 @@ import { Navigate } from 'react-router-dom';
 import DashboardLayout from 'src/components/DashboardLayout';
 import MainLayout from 'src/components/MainLayout';
 import Dashboard from 'src/pages/Dashboard';
-import ChartList from 'src/pages/ChartList';
-import CharttimeList from 'src/pages/CharttimeList';
+import Team from 'src/pages/Team';
 
 const routes = [
 	{
 		path: 'app',
 		element: <DashboardLayout />,
 		children: [
+			{ path: 'team', element: <Team /> },
 			{ path: 'dashboard', element: <Dashboard /> },
-			{ path: 'chart', element: <ChartList /> },
-			{ path: 'time', element: <CharttimeList /> }
 		]
 	},
 	{

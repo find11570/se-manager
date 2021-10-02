@@ -8,7 +8,6 @@ import { Button, ListItem } from '@material-ui/core';
 
 const NavItem = ({
 	href,
-	icon: Icon,
 	title,
 	...rest
 }) => {
@@ -39,7 +38,7 @@ const NavItem = ({
 					textTransform: 'none',
 					width: '100%',
 					...(active && {
-						color: 'primary.main'
+						color: 'primary.contrastText'
 					}),
 					'& svg': {
 						mr: 1
@@ -47,9 +46,6 @@ const NavItem = ({
 				}}
 				to={href}
 			>
-				{Icon && (
-					<Icon size="20" />
-				)}
 				<span>
 					{title}
 				</span>
@@ -60,7 +56,6 @@ const NavItem = ({
 
 NavItem.propTypes = {
 	href: PropTypes.string,
-	icon: PropTypes.elementType,
 	title: PropTypes.string
 };
 

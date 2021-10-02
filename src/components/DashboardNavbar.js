@@ -9,6 +9,7 @@ import {
 	Toolbar
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
+import Logo from './Logo';
 
 const DashboardNavbar = ({ onMobileNavOpen, ...rest }) => {
 	const [notifications] = useState([]);
@@ -19,13 +20,18 @@ const DashboardNavbar = ({ onMobileNavOpen, ...rest }) => {
 			{...rest}
 		>
 			<Toolbar>
-				농가 센서 데이터
+				<Logo height="50px" width="150px" />
+				<Hidden lgDown>
+					<h3>&nbsp;&gt;&nbsp; 팀원 모집</h3>
+				</Hidden>
 				<Box sx={{ flexGrow: 1 }} />
 				<Hidden lgDown>
+					<button type="button">Login</button>
 					<IconButton color="inherit">
 						<Badge
 							badgeContent={notifications.length}
 							color="primary"
+							border-bottom="1px solid #d1d8e4"
 							variant="dot"
 						/>
 					</IconButton>
@@ -39,6 +45,13 @@ const DashboardNavbar = ({ onMobileNavOpen, ...rest }) => {
 					</IconButton>
 				</Hidden>
 			</Toolbar>
+			<Box
+				sx={{
+					backgroundColor: '#D3D3D3',
+					height: 2,
+					boxShadow: 5
+				}}
+			/>
 		</AppBar>
 	);
 };

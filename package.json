@@ -1,5 +1,5 @@
 {
-  "name": "farm-react",
+  "name": "se-manager",
   "author": "DeviasIO",
   "licence": "MIT",
   "version": "1.0.0",
@@ -64,6 +64,5 @@
     "@iconify/icons-mdi": "^1.1.15",
     "eslint-config-airbnb": "^18.2.1"
   },
-  "homepage": "./",
-  "proxy": "http://farm.developerpsy.com:3000"
+  "homepage": "./"
 }
