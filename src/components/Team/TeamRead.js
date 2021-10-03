@@ -20,18 +20,21 @@ const TeamRead = () => {
 	});
 
 	const List = chartData.tag.map((t) => (
-		<Box sx={{
-			backgroundColor: 'primary.smoothgreen',
-			display: 'inline-block',
-			textAlign: 'center',
-			marginRight: 2,
-			borderBottomRightRadius: 5,
-			borderBottomLeftRadius: 5,
-			borderTopRightRadius: 5,
-			borderTopLeftRadius: 5,
-			borderColor: 'primary.main',
-			boxShadow: 1
-		}}
+		<Box
+			key={t}
+			value={t}
+			sx={{
+				backgroundColor: 'primary.smoothgreen',
+				display: 'inline-block',
+				textAlign: 'center',
+				marginRight: 2,
+				borderBottomRightRadius: 5,
+				borderBottomLeftRadius: 5,
+				borderTopRightRadius: 5,
+				borderTopLeftRadius: 5,
+				borderColor: 'primary.main',
+				boxShadow: 1
+			}}
 		>
 			{t}
 		</Box>

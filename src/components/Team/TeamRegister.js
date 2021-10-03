@@ -94,7 +94,7 @@ const TeamRegister = () => {
 									}}
 								/>
 								<TextField
-									halfWidth
+									halfwidth="true"
 									sx={{
 										flex: '1',
 										flexDirection: 'row',
@@ -172,7 +172,7 @@ const TeamRegister = () => {
 									}}
 								/>
 								<TextField
-									halfWidth
+									halfwidth="true"
 									sx={{
 										flex: '1',
 										flexDirection: 'row',
