@@ -4,6 +4,7 @@ import MainLayout from 'src/components/Main/MainLayout';
 import Dashboard from 'src/pages/Dashboard';
 import Team from 'src/pages/Team';
 import TeamRegister from 'src/components/Team/TeamRegister';
+import TeamSpecific from 'src/components/Team/TeamSpecific';
 
 const routes = [
 	{
@@ -13,6 +14,7 @@ const routes = [
 			{ path: 'team', element: <Team /> },
 			{ path: 'dashboard', element: <Dashboard /> },
 			{ path: 'teamRegister', element: <TeamRegister /> },
+			{ path: 'teamSpecific', element: <TeamSpecific /> },
 		]
 	},
 	{
