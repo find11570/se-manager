@@ -6,7 +6,6 @@ import {
 	Avatar
 } from '@material-ui/core';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 
 const TeamRead = () => {
 	const [chartData] = useState({
@@ -41,109 +40,107 @@ const TeamRead = () => {
 	));
 
 	return (
-		<Link to="/app/teamRegister">
-			<Card
-				sx={{
-					borderBottomRightRadius: 10,
-					borderBottomLeftRadius: 10,
-					borderTopRightRadius: 10,
-					borderTopLeftRadius: 10,
-					boxShadow: 5
-				}}
-			>
-				<CardContent>
+		<Card
+			sx={{
+				borderBottomRightRadius: 10,
+				borderBottomLeftRadius: 10,
+				borderTopRightRadius: 10,
+				borderTopLeftRadius: 10,
+				boxShadow: 5
+			}}
+		>
+			<CardContent>
+				<Hidden lgDown>
+					<Avatar
+						sx={{
+							cursor: 'pointer',
+							width: 60,
+							height: 60,
+							float: 'left',
+							marginTop: 4,
+							marginRight: 2,
+						}}
+					/>
+				</Hidden>
+				<Box
+					sx={{
+						height: 145,
+						position: 'relative',
+					}}
+				>
 					<Hidden lgDown>
-						<Avatar
-							sx={{
-								cursor: 'pointer',
-								width: 60,
-								height: 60,
-								float: 'left',
-								marginTop: 4,
-								marginRight: 2,
-							}}
-						/>
+						<h3 style={{ color: 'red' }}>
+							D-
+							{chartData.date}
+						</h3>
 					</Hidden>
 					<Box
 						sx={{
-							height: 145,
-							position: 'relative',
+							marginTop: 2,
+							marginBottom: 4
 						}}
 					>
-						<Hidden lgDown>
-							<h3 style={{ color: 'red' }}>
-								D-
-								{chartData.date}
-							</h3>
-						</Hidden>
+						<h3 style={{ color: '#006400' }}>
+							{chartData.title}
+						</h3>
+					</Box>
+					<Hidden lgDown>
 						<Box
 							sx={{
-								marginTop: 2,
-								marginBottom: 4
+								marginTop: 1
 							}}
 						>
-							<h3 style={{ color: '#006400' }}>
-								{chartData.title}
-							</h3>
-						</Box>
-						<Hidden lgDown>
-							<Box
-								sx={{
-									marginTop: 1
-								}}
-							>
 
-								<h4 style={{ color: '#006400' }}>
-									&nbsp;
-									{chartData.name}
-								</h4>
-
-							</Box>
-						</Hidden>
-						<Hidden lgUp>
 							<h4 style={{ color: '#006400' }}>
+								&nbsp;
+								{chartData.name}
+							</h4>
+
+						</Box>
+					</Hidden>
+					<Hidden lgUp>
+						<h4 style={{ color: '#006400' }}>
+							#&nbsp;
+							{List}
+						</h4>
+					</Hidden>
+					<Hidden lgDown>
+						<Box
+							sx={{
+								marginLeft: 10
+							}}
+						>
+							<h4>
 								#&nbsp;
 								{List}
 							</h4>
-						</Hidden>
-						<Hidden lgDown>
-							<Box
-								sx={{
-									marginLeft: 10
-								}}
-							>
-								<h4>
-									#&nbsp;
-									{List}
-								</h4>
-							</Box>
-						</Hidden>
-						<Box
-							sx={{
-								py: 0.5,
-							}}
-						/>
-						<Box>
-							<h3 style={{
-								color: 'red',
-								display: 'inline-block',
-								float: 'right'
-							}}
-							>
-								{chartData.currentpeople}
-								/
-								{chartData.Maxpeople}
-							</h3>
 						</Box>
-						<Box
-							sx={{
-								py: 0.5,
-							}}
-						/>
+					</Hidden>
+					<Box
+						sx={{
+							py: 0.5,
+						}}
+					/>
+					<Box>
+						<h3 style={{
+							color: 'red',
+							display: 'inline-block',
+							float: 'right'
+						}}
+						>
+							{chartData.currentpeople}
+							/
+							{chartData.Maxpeople}
+						</h3>
 					</Box>
-				</CardContent>
-			</Card>
-		</Link>
+					<Box
+						sx={{
+							py: 0.5,
+						}}
+					/>
+				</Box>
+			</CardContent>
+		</Card>
 	);
 };
 

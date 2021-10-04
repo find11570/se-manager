@@ -149,7 +149,6 @@ const Team = () => {
 					<Select
 						labelId="과목명"
 						id="과목명"
-						multiple
 						value={subject}
 						onChange={handlesubjectChange}
 						input={<OutlinedInput label="과목명" />}

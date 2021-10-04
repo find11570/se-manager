@@ -9,6 +9,7 @@ import {
 	Toolbar,
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
+import { Link } from 'react-router-dom';
 import Logo from 'src/components/Logo';
 
 const DashboardNavbar = ({ onMobileNavOpen, ...rest }) => {
@@ -26,7 +27,9 @@ const DashboardNavbar = ({ onMobileNavOpen, ...rest }) => {
 				</Hidden>
 				<Box sx={{ flexGrow: 1 }} />
 				<Hidden lgDown>
-					<button type="button">Login</button>
+					<Link to="/app/teamRegister">
+						<button type="button">팀원 모집글 등록</button>
+					</Link>
 					<IconButton color="inherit">
 						<Badge
 							badgeContent={notifications.length}
