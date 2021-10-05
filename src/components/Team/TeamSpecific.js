@@ -18,7 +18,8 @@ const TeamSpecific = () => {
 		title: '창의 융합 종합 설계 1 프로젝트 인원 모집',
 		tag: ['hi', 'my', 'name', 'is', 'door'],
 		Maxpeople: '4',
-		currentpeople: '2'
+		currentpeople: '2',
+		content: '으아아아아아ㅏㅇ 나는 프로젝트하는 중이다..... 으아아아아아아아 배고파아아아아앙 키키키키키키키키 졸려어ㅓㅌ어어어어어라너미런아ㅣㅓㄹ민ㅇㄹ'
 	});
 
 	const List = chartData.tag.map((t) => (
@@ -101,26 +102,24 @@ const TeamSpecific = () => {
 										{chartData.title}
 									</h3>
 								</Hidden>
-								<h3 style={{ marginTop: 20 }}>
-									<Hidden lgUp>
-										<h4 style={{ color: '#006400' }}>
+								<Hidden lgUp>
+									<h3 style={{ color: '#006400' }}>
+										#&nbsp;
+										{List}
+									</h3>
+								</Hidden>
+								<Hidden lgDown>
+									<Box
+										sx={{
+											marginLeft: 2,
+										}}
+									>
+										<h3 style={{ color: '#006400' }}>
 											#&nbsp;
 											{List}
-										</h4>
-									</Hidden>
-									<Hidden lgDown>
-										<Box
-											sx={{
-												marginLeft: 2,
-											}}
-										>
-											<h4 style={{ color: '#006400' }}>
-												#&nbsp;
-												{List}
-											</h4>
-										</Box>
-									</Hidden>
-								</h3>
+										</h3>
+									</Box>
+								</Hidden>
 								<Box>
 									<Button
 										variant="contained"
@@ -158,6 +157,46 @@ const TeamSpecific = () => {
 									/>
 								</Box>
 							</Box>
+						</CardContent>
+						<CardContent
+							sx={{
+								backgroundColor: '#ffffff',
+							}}
+						>
+							<Box
+								sx={{
+									minHeight: '100%',
+									py: 7,
+								}}
+							>
+								<h3>
+									{chartData.content}
+								</h3>
+							</Box>
+							<Button
+								variant="contained"
+								size="medium"
+								color="success"
+								sx={{
+									float: 'right',
+									marginRight: 2,
+									marginTop: 0.5,
+									marginLeft: 2
+								}}
+							>
+								<h3 style={{
+									color: '#ffffff',
+								}}
+								>
+									신청하기
+								</h3>
+							</Button>
+							<Box
+								sx={{
+									minHeight: '100%',
+									py: 3,
+								}}
+							/>
 						</CardContent>
 					</Card>
 				</Grid>
