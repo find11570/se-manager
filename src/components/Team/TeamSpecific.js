@@ -83,15 +83,17 @@ const TeamSpecific = () => {
 									py: 7,
 								}}
 							>
-								<h2 style={{
-									color: 'red',
-									float: 'right',
-									marginRight: 2
-								}}
-								>
-									마감까지 D-
-									{chartData.date}
-								</h2>
+								<Hidden lgDown>
+									<h2 style={{
+										color: 'red',
+										float: 'right',
+										marginRight: 2
+									}}
+									>
+										마감까지 D-
+										{chartData.date}
+									</h2>
+								</Hidden>
 								<Hidden lgDown>
 									<h1 style={{ color: '#ffffff', marginLeft: 25 }}>
 										{chartData.title}
@@ -100,12 +102,6 @@ const TeamSpecific = () => {
 								<Hidden lgUp>
 									<h3 style={{ color: '#ffffff', marginLeft: 20 }}>
 										{chartData.title}
-									</h3>
-								</Hidden>
-								<Hidden lgUp>
-									<h3 style={{ color: '#006400' }}>
-										#&nbsp;
-										{List}
 									</h3>
 								</Hidden>
 								<Hidden lgDown>

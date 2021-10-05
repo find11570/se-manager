@@ -313,7 +313,7 @@ const TeamRegister = () => {
 								/>
 								<FormControl
 									sx={{
-										width: 300,
+										width: 200,
 										backgroundColor: 'primary.smoothgreen'
 									}}
 								>
@@ -358,7 +358,7 @@ const TeamRegister = () => {
 								/>
 								<FormControl
 									sx={{
-										width: 300
+										width: 200
 									}}
 								>
 									<InputLabel id="기술스택">&nbsp;기술스택</InputLabel>

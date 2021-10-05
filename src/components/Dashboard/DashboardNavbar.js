@@ -32,6 +32,9 @@ const DashboardNavbar = ({ onMobileNavOpen, ...rest }) => {
 					<Link to="/app/teamRegister">
 						<button type="button">팀원 모집글 등록</button>
 					</Link>
+					<Link to="/app/teamupdate">
+						<button type="button">팀원 모집글 수정</button>
+					</Link>
 					<IconButton color="inherit">
 						<Badge
 							badgeContent={notifications.length}
