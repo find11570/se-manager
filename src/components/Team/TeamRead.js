@@ -33,6 +33,8 @@ const TeamRead = () => {
 				borderTopRightRadius: 5,
 				borderTopLeftRadius: 5,
 				borderColor: 'primary.main',
+				paddingLeft: 1,
+				paddingRight: 1,
 				boxShadow: 1
 			}}
 		>

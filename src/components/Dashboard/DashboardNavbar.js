@@ -21,7 +21,9 @@ const DashboardNavbar = ({ onMobileNavOpen, ...rest }) => {
 			{...rest}
 		>
 			<Toolbar>
-				<Logo height="50px" width="150px" />
+				<Link to="/app/dashboard">
+					<Logo height="50px" width="150px" />
+				</Link>
 				<Hidden lgDown>
 					<h3>&nbsp;&gt;&nbsp; 팀원 모집</h3>
 				</Hidden>
