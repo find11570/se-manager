@@ -7,8 +7,9 @@ import {
 	Grid,
 	Hidden,
 	Avatar,
-	Button
+	Button,
 } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 
 const TeamSpecific = () => {
 	const [chartData] = useState({
@@ -104,6 +105,12 @@ const TeamSpecific = () => {
 										{chartData.title}
 									</h3>
 								</Hidden>
+								<Box
+									sx={{
+										minHeight: '100%',
+										py: 1,
+									}}
+								/>
 								<Hidden lgDown>
 									<Box
 										sx={{
@@ -169,24 +176,26 @@ const TeamSpecific = () => {
 									{chartData.content}
 								</h3>
 							</Box>
-							<Button
-								variant="contained"
-								size="medium"
-								color="success"
-								sx={{
-									float: 'right',
-									marginRight: 2,
-									marginTop: 0.5,
-									marginLeft: 2
-								}}
-							>
-								<h3 style={{
-									color: '#ffffff',
-								}}
+							<Link to="/app/teamSpecificQuestion">
+								<Button
+									variant="contained"
+									size="medium"
+									color="success"
+									sx={{
+										float: 'right',
+										marginRight: 2,
+										marginTop: 0.5,
+										marginLeft: 2
+									}}
 								>
-									신청하기
-								</h3>
-							</Button>
+									<h3 style={{
+										color: '#ffffff',
+									}}
+									>
+										신청하기
+									</h3>
+								</Button>
+							</Link>
 							<Box
 								sx={{
 									minHeight: '100%',

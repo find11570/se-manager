@@ -6,6 +6,7 @@ import Team from 'src/pages/Team';
 import TeamRegister from 'src/components/Team/TeamRegister';
 import TeamSpecific from 'src/components/Team/TeamSpecific';
 import TeamUpdate from 'src/components/Team/TeamUpdate';
+import TeamSpecificQuestion from 'src/components/Team/TeamSpecificQuestion';
 
 const routes = [
 	{
@@ -17,6 +18,7 @@ const routes = [
 			{ path: 'teamRegister', element: <TeamRegister /> },
 			{ path: 'teamSpecific', element: <TeamSpecific /> },
 			{ path: 'teamupdate', element: <TeamUpdate /> },
+			{ path: 'teamSpecificQuestion', element: <TeamSpecificQuestion /> },
 		]
 	},
 	{

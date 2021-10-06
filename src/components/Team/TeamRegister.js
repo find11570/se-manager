@@ -215,7 +215,6 @@ const TeamRegister = () => {
 										borderBottomLeftRadius: 5,
 										borderTopRightRadius: 5,
 										borderTopLeftRadius: 5,
-										height: 300
 									}}
 									InputProps={{
 										startAdornment: (
@@ -227,6 +226,8 @@ const TeamRegister = () => {
 											</InputAdornment>
 										)
 									}}
+									multiline
+									rows={4}
 									variant="outlined"
 									onChange={handlecontentChange}
 								/>
@@ -425,7 +426,6 @@ const TeamRegister = () => {
 										borderTopRightRadius: 5,
 										borderTopLeftRadius: 5,
 										backgroundColor: 'primary.smoothgreen',
-										height: 300,
 									}}
 									InputProps={{
 										startAdornment: (
@@ -437,6 +437,8 @@ const TeamRegister = () => {
 											</InputAdornment>
 										)
 									}}
+									multiline
+									rows={4}
 									placeholder="추가 질문을 입력해주세요"
 									variant="outlined"
 									onChange={handlequestionChange}
@@ -447,7 +449,7 @@ const TeamRegister = () => {
 										py: 3,
 									}}
 								/>
-								<Link to="/app/Team">
+								<Link to="/app/team">
 									<Button
 										variant="contained"
 										color="success"
