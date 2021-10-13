@@ -7,14 +7,25 @@ import TeamRegister from 'src/components/Team/TeamRegister';
 import TeamSpecific from 'src/components/Team/TeamSpecific';
 import TeamUpdate from 'src/components/Team/TeamUpdate';
 import TeamSpecificQuestion from 'src/components/Team/TeamSpecificQuestion';
+import Project from 'src/pages/Project';
+import Chat from 'src/pages/Chat';
+import ChatLayout from 'src/components/modal/ChatboardLayout';
+import TeamboardLayout from './components/Team/TeamboardLayout';
 
 const routes = [
 	{
 		path: 'app',
 		element: <DashboardLayout />,
 		children: [
-			{ path: 'team', element: <Team /> },
 			{ path: 'dashboard', element: <Dashboard /> },
+			{ path: 'project', element: <Project /> },
+		]
+	},
+	{
+		path: 'se',
+		element: <TeamboardLayout />,
+		children: [
+			{ path: 'team', element: <Team /> },
 			{ path: 'teamRegister', element: <TeamRegister /> },
 			{ path: 'teamSpecific', element: <TeamSpecific /> },
 			{ path: 'teamupdate', element: <TeamUpdate /> },
@@ -26,6 +37,13 @@ const routes = [
 		element: <MainLayout />,
 		children: [
 			{ path: '/', element: <Navigate to="/app/dashboard" /> },
+		]
+	},
+	{
+		path: 'chat',
+		element: <ChatLayout />,
+		children: [
+			{ path: 'chat', element: <Chat /> }
 		]
 	}
 ];

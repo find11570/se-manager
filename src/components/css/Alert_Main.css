@@ -1,0 +1,33 @@
+#alert_title {
+  font-size: large;
+  text-align: left;
+  margin-left: 3%;
+}
+#alert_info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  overflow: hidden;
+}
+#alert_desc {
+  text-align: left;
+  overflow: hidden;
+  margin-left: 3%;
+}
+#alert_time {
+  text-align: right;
+  margin-right: 3%;
+}
+.alert_content {
+  margin: 1% 3%;
+}
+.alert_content > button {
+  width: 100%;
+  cursor: pointer;
+  background-color: white;
+  border: none;
+  border-radius: 30px;
+  margin: 3% auto;
+  overflow: hidden;
+}

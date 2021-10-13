@@ -13,16 +13,14 @@ import {
 import { Link } from 'react-router-dom';
 
 const TeamSpecificQuestion = () => {
-	const [chartData, setchartData] = useState({
+	const [chartData] = useState({
 		id: '1',
 		question: '너무졸린심경을 표현하시오',
-		answer: '',
 	});
+	const [answer, setanswer] = useState([]);
 
 	const handleanswerChange = (event) => {
-		setchartData({
-			answer: event.currentTarget.value,
-		});
+		setanswer(event.currentTarget.value);
 	};
 
 	return (
@@ -84,6 +82,7 @@ const TeamSpecificQuestion = () => {
 									py: 2,
 								}}
 							/>
+							{answer}
 							<TextField
 								fullWidth
 								sx={{
@@ -118,7 +117,7 @@ const TeamSpecificQuestion = () => {
 									py: 2,
 								}}
 							/>
-							<Link to="/app/team">
+							<Link to="/se/team">
 								<Button
 									variant="contained"
 									size="medium"

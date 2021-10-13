@@ -43,7 +43,7 @@ const TeamRead = () => {
 	));
 
 	return (
-		<Link to="/app/teamSpecific">
+		<Link to="/se/teamSpecific">
 			<Card
 				sx={{
 					borderBottomRightRadius: 10,

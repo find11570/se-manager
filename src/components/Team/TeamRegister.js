@@ -449,7 +449,7 @@ const TeamRegister = () => {
 										py: 3,
 									}}
 								/>
-								<Link to="/app/team">
+								<Link to="/se/team">
 									<Button
 										variant="contained"
 										color="success"

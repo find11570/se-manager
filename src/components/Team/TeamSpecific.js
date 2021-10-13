@@ -10,6 +10,7 @@ import {
 	Button,
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
+import Modal2 from 'src/components/modal/Modal2';
 
 const TeamSpecific = () => {
 	const [chartData] = useState({
@@ -22,6 +23,10 @@ const TeamSpecific = () => {
 		currentpeople: '2',
 		content: '으아아아아아ㅏㅇ 나는 프로젝트하는 중이다..... 으아아아아아아아 배고파아아아아앙 키키키키키키키키 졸려어ㅓㅌ어어어어어라너미런아ㅣㅓㄹ민ㅇㄹ'
 	});
+
+	// const click() => {
+	// 	<Chats />
+	// };
 
 	const List = chartData.tag.map((t) => (
 		<Box
@@ -124,27 +129,35 @@ const TeamSpecific = () => {
 									</Box>
 								</Hidden>
 								<Box>
-									<Button
-										variant="contained"
-										size="small"
-										sx={{
-											float: 'right',
-											marginRight: 2,
-											marginTop: 0.5,
-											marginLeft: 2
-										}}
-									>
-										<h3 style={{
-											color: '#006400',
-										}}
-										>
-											채팅하기
-										</h3>
-									</Button>
+									<Hidden lgUp>
+										<Link to="/chat/chat">
+											<Button
+												variant="contained"
+												size="small"
+												sx={{
+													float: 'right',
+													marginRight: 2,
+													marginTop: 0.5,
+													marginLeft: 2
+												}}
+											>
+												<h3 style={{
+													color: '#006400',
+												}}
+												>
+													채팅하기
+												</h3>
+											</Button>
+										</Link>
+									</Hidden>
+									<Hidden lgDown>
+										<Modal2 />
+									</Hidden>
 									<h2 style={{
 										color: '#ffffff',
 										float: 'right',
-										marginTop: 3
+										marginTop: 15,
+										marginRight: 20,
 									}}
 									>
 										{chartData.name}
@@ -155,7 +168,8 @@ const TeamSpecific = () => {
 											width: 40,
 											height: 40,
 											float: 'right',
-											marginRight: 2
+											marginRight: 2,
+											marginTop: 1.5,
 										}}
 									/>
 								</Box>
@@ -176,7 +190,7 @@ const TeamSpecific = () => {
 									{chartData.content}
 								</h3>
 							</Box>
-							<Link to="/app/teamSpecificQuestion">
+							<Link to="/se/teamSpecificQuestion">
 								<Button
 									variant="contained"
 									size="medium"

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {
 	Box,
 	Drawer,
-	List,
+	List
 } from '@material-ui/core';
 import NavItem from 'src/components/NavItem';
 
@@ -19,7 +19,7 @@ const items = [
 	},
 ];
 
-const DashboardSidebar = ({ onMobileClose, openMobile }) => {
+const TeamboardSidebar = ({ onMobileClose, openMobile }) => {
 	const location = useLocation();
 
 	useEffect(() => {
@@ -70,14 +70,14 @@ const DashboardSidebar = ({ onMobileClose, openMobile }) => {
 	);
 };
 
-DashboardSidebar.propTypes = {
+TeamboardSidebar.propTypes = {
 	onMobileClose: PropTypes.func,
 	openMobile: PropTypes.bool
 };
 
-DashboardSidebar.defaultProps = {
+TeamboardSidebar.defaultProps = {
 	onMobileClose: () => { },
 	openMobile: false
 };
 
-export default DashboardSidebar;
+export default TeamboardSidebar;

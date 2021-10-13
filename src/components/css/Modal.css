@@ -1,0 +1,15 @@
+#Modal_btn {
+  all: unset;
+  background-color: #6fb14c;
+  color: white;
+  padding: 15px 20px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.Modal_Container {
+  position: fixed;
+  top: 85%;
+  left: 90%;
+  z-index: 1;
+}
+

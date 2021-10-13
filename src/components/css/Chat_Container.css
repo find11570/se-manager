@@ -1,0 +1,46 @@
+.Chat_Container_Container {
+  border: 1px solid black;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  width: 350px;
+  height: 600px;
+
+  position: fixed;
+  top: 30%;
+  left: 70%;
+  z-index: 999;
+
+  /* position: relative; */
+  animation-name: downtoUp;
+  animation-duration: 0.2s;
+  animation-timing-function: ease-in-out;
+}
+.content {
+  /* background-color: #9ac683; */
+  background: linear-gradient(to bottom, #6fb14c 80%, white);
+  height: 90%;
+}
+.test {
+  border: 1px solid black;
+}
+@keyframes downtoUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 3;
+    transform: none;
+  }
+}
+@media screen and (max-width: 1024px) {
+	.Chat_Container_Container {
+	  position: fixed;
+	  top: 0%;
+	  padding-top: 50px;
+	  left: 0%;
+	  width: 100%;
+	  height: 100%;
+	}
+  }

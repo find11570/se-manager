@@ -13,7 +13,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import { Link } from 'react-router-dom';
 import Logo from 'src/components/Logo';
 
-const DashboardNavbar = ({ onMobileNavOpen, ...rest }) => {
+const TeamboardNavbar = ({ onMobileNavOpen, ...rest }) => {
 	const [notifications] = useState([]);
 
 	return (
@@ -26,7 +26,7 @@ const DashboardNavbar = ({ onMobileNavOpen, ...rest }) => {
 					<Logo height="50px" width="150px" />
 				</Link>
 				<Hidden lgDown>
-					<h3>&nbsp;&gt;&nbsp; 프로젝트 모집</h3>
+					<h3>&nbsp;&gt;&nbsp; 팀원 모집</h3>
 				</Hidden>
 				<Box sx={{ flexGrow: 1 }} />
 				<Hidden lgUp>
@@ -51,40 +51,44 @@ const DashboardNavbar = ({ onMobileNavOpen, ...rest }) => {
 					</Link>
 				</Hidden>
 				<Hidden lgDown>
-					<Button
-						variant="contained"
-						size="small"
-						sx={{
-							float: 'right',
-							marginRight: 2,
-							marginTop: 0.5,
-							marginLeft: 2
-						}}
-					>
-						<h3 style={{
-							color: '#006400',
-						}}
+					<Link to="/se/teamRegister">
+						<Button
+							variant="contained"
+							size="small"
+							sx={{
+								float: 'right',
+								marginRight: 2,
+								marginTop: 0.5,
+								marginLeft: 2
+							}}
 						>
-							프로젝트 생성
-						</h3>
-					</Button>
-					<Button
-						variant="contained"
-						size="small"
-						sx={{
-							float: 'right',
-							marginRight: 2,
-							marginTop: 0.5,
-							marginLeft: 2
-						}}
-					>
-						<h3 style={{
-							color: '#006400',
-						}}
+							<h3 style={{
+								color: '#006400',
+							}}
+							>
+								팀원 모집글 등록
+							</h3>
+						</Button>
+					</Link>
+					<Link to="/se/teamupdate">
+						<Button
+							variant="contained"
+							size="small"
+							sx={{
+								float: 'right',
+								marginRight: 2,
+								marginTop: 0.5,
+								marginLeft: 2
+							}}
 						>
-							프로젝트 수정
-						</h3>
-					</Button>
+							<h3 style={{
+								color: '#006400',
+							}}
+							>
+								팀원 모집글 수정
+							</h3>
+						</Button>
+					</Link>
 					<IconButton color="inherit">
 						<Badge
 							badgeContent={notifications.length}
@@ -112,8 +116,8 @@ const DashboardNavbar = ({ onMobileNavOpen, ...rest }) => {
 	);
 };
 
-DashboardNavbar.propTypes = {
+TeamboardNavbar.propTypes = {
 	onMobileNavOpen: PropTypes.func
 };
 
-export default DashboardNavbar;
+export default TeamboardNavbar;

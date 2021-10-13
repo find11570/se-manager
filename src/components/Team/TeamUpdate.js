@@ -453,7 +453,7 @@ const TeamUpdate = () => {
 										py: 3,
 									}}
 								/>
-								<Link to="/app/Team">
+								<Link to="/se/Team">
 									<Button
 										variant="contained"
 										color="success"
@@ -464,7 +464,7 @@ const TeamUpdate = () => {
 										수정
 									</Button>
 								</Link>
-								<Link to="/app/Team">
+								<Link to="/se/Team">
 									<Button
 										variant="contained"
 										color="success"

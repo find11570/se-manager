@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import {
 	Box,
 	Drawer,
+	Hidden,
 	List,
 } from '@material-ui/core';
 import NavItem from 'src/components/NavItem';
@@ -19,7 +20,7 @@ const items = [
 	},
 ];
 
-const DashboardSidebar = ({ onMobileClose, openMobile }) => {
+const ChatboardSidebar = ({ onMobileClose, openMobile }) => {
 	const location = useLocation();
 
 	useEffect(() => {
@@ -53,31 +54,33 @@ const DashboardSidebar = ({ onMobileClose, openMobile }) => {
 
 	return (
 		<>
-			<Drawer
-				anchor="left"
-				onClose={onMobileClose}
-				open={openMobile}
-				variant="temporary"
-				PaperProps={{
-					sx: {
-						width: 256
-					}
-				}}
-			>
-				{content}
-			</Drawer>
+			<Hidden lgUp>
+				<Drawer
+					anchor="left"
+					onClose={onMobileClose}
+					open={openMobile}
+					variant="temporary"
+					PaperProps={{
+						sx: {
+							width: 256
+						}
+					}}
+				>
+					{content}
+				</Drawer>
+			</Hidden>
 		</>
 	);
 };
 
-DashboardSidebar.propTypes = {
+ChatboardSidebar.propTypes = {
 	onMobileClose: PropTypes.func,
 	openMobile: PropTypes.bool
 };
 
-DashboardSidebar.defaultProps = {
+ChatboardSidebar.defaultProps = {
 	onMobileClose: () => { },
 	openMobile: false
 };
 
-export default DashboardSidebar;
+export default ChatboardSidebar;
