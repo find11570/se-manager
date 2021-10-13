@@ -10,7 +10,11 @@ import TeamSpecificQuestion from 'src/components/Team/TeamSpecificQuestion';
 import Project from 'src/pages/Project';
 import Chat from 'src/pages/Chat';
 import ChatLayout from 'src/components/modal/ChatboardLayout';
-import TeamboardLayout from './components/Team/TeamboardLayout';
+import TeamboardLayout from 'src/components/Team/TeamboardLayout';
+import LoginLayout from 'src/components/Login/LoginboardLayout';
+import Login from 'src/components/Login/Login';
+import SignUpLayout from 'src/components/Signup/SignUpboardLayout';
+import SignUp from 'src/components/Signup/SignUpRegister';
 
 const routes = [
 	{
@@ -44,6 +48,20 @@ const routes = [
 		element: <ChatLayout />,
 		children: [
 			{ path: 'chat', element: <Chat /> }
+		]
+	},
+	{
+		path: 'login',
+		element: <LoginLayout />,
+		children: [
+			{ path: 'login', element: <Login /> }
+		]
+	},
+	{
+		path: 'sign',
+		element: <SignUpLayout />,
+		children: [
+			{ path: 'up', element: <SignUp /> },
 		]
 	}
 ];

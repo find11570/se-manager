@@ -10,6 +10,10 @@ import NavItem from 'src/components/NavItem';
 
 const items = [
 	{
+		href: '/login/login',
+		title: '로그인 및 회원가입'
+	},
+	{
 		href: '/app/dashboard',
 		title: '인터넷디스크'
 	},

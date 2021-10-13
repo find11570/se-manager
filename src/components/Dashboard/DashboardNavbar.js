@@ -36,7 +36,6 @@ const DashboardNavbar = ({ onMobileNavOpen, ...rest }) => {
 							size="small"
 							sx={{
 								float: 'right',
-								marginRight: 2,
 								marginTop: 0.5,
 								marginLeft: 2
 							}}
@@ -68,23 +67,25 @@ const DashboardNavbar = ({ onMobileNavOpen, ...rest }) => {
 							프로젝트 생성
 						</h3>
 					</Button>
-					<Button
-						variant="contained"
-						size="small"
-						sx={{
-							float: 'right',
-							marginRight: 2,
-							marginTop: 0.5,
-							marginLeft: 2
-						}}
-					>
-						<h3 style={{
-							color: '#006400',
-						}}
+					<Link to="/login/login">
+						<Button
+							variant="contained"
+							size="small"
+							sx={{
+								float: 'right',
+								marginRight: 2,
+								marginTop: 0.5,
+								marginLeft: 2
+							}}
 						>
-							프로젝트 수정
-						</h3>
-					</Button>
+							<h3 style={{
+								color: '#006400',
+							}}
+							>
+								로그인
+							</h3>
+						</Button>
+					</Link>
 					<IconButton color="inherit">
 						<Badge
 							badgeContent={notifications.length}

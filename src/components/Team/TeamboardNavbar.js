@@ -36,7 +36,6 @@ const TeamboardNavbar = ({ onMobileNavOpen, ...rest }) => {
 							size="small"
 							sx={{
 								float: 'right',
-								marginRight: 2,
 								marginTop: 0.5,
 								marginLeft: 2
 							}}
@@ -70,7 +69,7 @@ const TeamboardNavbar = ({ onMobileNavOpen, ...rest }) => {
 							</h3>
 						</Button>
 					</Link>
-					<Link to="/se/teamupdate">
+					<Link to="/login/login">
 						<Button
 							variant="contained"
 							size="small"
@@ -85,7 +84,7 @@ const TeamboardNavbar = ({ onMobileNavOpen, ...rest }) => {
 								color: '#006400',
 							}}
 							>
-								팀원 모집글 수정
+								로그인
 							</h3>
 						</Button>
 					</Link>
