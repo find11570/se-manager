@@ -51,6 +51,10 @@ const ProjectDetail = () => {
 			name: '현수',
 			text: 'ㅋㅋㅋㅋㅋㅋ'
 		},
+		{
+			name: ' 나는야 카와이 소졍쨩',
+			text: '소정이는 귀여워 왜나 나는 귀엽기때문이야 키키키 소정이는 애기소졍짱 하와와와와~'
+		}
 	];
 	const [postBody, setPostBody] = useState({
 		content: ''

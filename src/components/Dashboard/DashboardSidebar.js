@@ -22,7 +22,7 @@ const items = [
 		title: '팀원 모집'
 	},
 	{
-		href: '/mypage/mypage',
+		href: '/mypage/page',
 		title: '마이페이지'
 	}
 ];

@@ -7,6 +7,7 @@ import {
 	Hidden,
 	IconButton,
 	Toolbar,
+	Button
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import { Link } from 'react-router-dom';
@@ -29,6 +30,24 @@ const MypageboardNavbar = ({ onMobileNavOpen, ...rest }) => {
 				</Hidden>
 				<Box sx={{ flexGrow: 1 }} />
 				<Hidden lgDown>
+					<Link to="/mypage/update">
+						<Button
+							variant="contained"
+							size="small"
+							sx={{
+								float: 'right',
+								marginTop: 0.5,
+								marginLeft: 2
+							}}
+						>
+							<h3 style={{
+								color: '#006400',
+							}}
+							>
+								마이페이지 수정
+							</h3>
+						</Button>
+					</Link>
 					<IconButton color="inherit">
 						<Badge
 							badgeContent={notifications.length}
