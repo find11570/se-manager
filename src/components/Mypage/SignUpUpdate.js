@@ -5,7 +5,10 @@ import {
 	Card,
 	CardContent,
 	Grid,
+	Button,
+	Avatar
 } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 
 const SignUpUpdate = () => {
 	const [postBody] = useState({
@@ -122,6 +125,84 @@ const SignUpUpdate = () => {
 										py: 2,
 									}}
 								/>
+								<Avatar
+									sx={{
+										cursor: 'pointer',
+										width: 60,
+										height: 60,
+										float: 'left',
+										marginTop: 4,
+										marginRight: 2,
+									}}
+								/>
+								<Button
+									variant="contained"
+									size="medium"
+									color="success"
+									sx={{
+										marginTop: 2,
+										width: 180
+									}}
+								>
+									<h3 style={{
+										color: '#ffffff',
+									}}
+									>
+										사진선택
+									</h3>
+								</Button>
+								<Box
+									sx={{
+										minHeight: '100%',
+										py: 0.5,
+									}}
+								/>
+								<Button
+									variant="contained"
+									size="medium"
+									color="success"
+									sx={{
+										marginTop: 2,
+										width: 180
+									}}
+								>
+									<h3 style={{
+										color: '#ffffff',
+									}}
+									>
+										기본 이미지로 변경
+									</h3>
+								</Button>
+								<Box
+									sx={{
+										minHeight: '100%',
+										py: 2,
+									}}
+								/>
+								<h3>비밀번호 수정</h3>
+								<Box
+									sx={{
+										minHeight: '100%',
+										py: 0.5,
+									}}
+								/>
+								<Link to="/login/password">
+									<Button
+										variant="contained"
+										size="medium"
+										color="success"
+										sx={{
+											marginTop: 1,
+										}}
+									>
+										<h3 style={{
+											color: '#ffffff',
+										}}
+										>
+											비밀번호 수정
+										</h3>
+									</Button>
+								</Link>
 							</Box>
 						</CardContent>
 					</Card>

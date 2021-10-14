@@ -14,7 +14,8 @@ import {
 	FormControl,
 	FormControlLabel,
 	Checkbox,
-	Hidden
+	Hidden,
+	Avatar,
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 
@@ -27,7 +28,11 @@ const SignUpRegister = () => {
 		number: '',
 		checkid: '',
 		type: '학생',
-		checked: false
+		checked: false,
+		github: '',
+		blog: '',
+		content: '',
+		position: ''
 	});
 	const handlecheckChange = (event) => {
 		setPostBody({ ...postBody, [event.target.name]: event.target.checked });
@@ -65,6 +70,26 @@ const SignUpRegister = () => {
 	const handlenameChange = (event) => {
 		setPostBody({
 			name: event.currentTarget.value,
+		});
+	};
+	const handlecontentChange = (event) => {
+		setPostBody({
+			content: event.currentTarget.value,
+		});
+	};
+	const handlegithubChange = (event) => {
+		setPostBody({
+			github: event.currentTarget.value,
+		});
+	};
+	const handleblogChange = (event) => {
+		setPostBody({
+			blog: event.currentTarget.value,
+		});
+	};
+	const handlepositionChange = (event) => {
+		setPostBody({
+			postion: event.currentTarget.value,
 		});
 	};
 	return (
@@ -382,6 +407,60 @@ const SignUpRegister = () => {
 										py: 2,
 									}}
 								/>
+								<Avatar
+									sx={{
+										cursor: 'pointer',
+										width: 60,
+										height: 60,
+										float: 'left',
+										marginTop: 4,
+										marginRight: 2,
+									}}
+								/>
+								<Button
+									variant="contained"
+									size="medium"
+									color="success"
+									sx={{
+										marginTop: 2,
+										width: 180
+									}}
+								>
+									<h3 style={{
+										color: '#ffffff',
+									}}
+									>
+										사진선택
+									</h3>
+								</Button>
+								<Box
+									sx={{
+										minHeight: '100%',
+										py: 0.5,
+									}}
+								/>
+								<Button
+									variant="contained"
+									size="medium"
+									color="success"
+									sx={{
+										marginTop: 2,
+										width: 180
+									}}
+								>
+									<h3 style={{
+										color: '#ffffff',
+									}}
+									>
+										기본 이미지로 변경
+									</h3>
+								</Button>
+								<Box
+									sx={{
+										minHeight: '100%',
+										py: 2,
+									}}
+								/>
 								<h3>이름</h3>
 								<Box
 									sx={{
@@ -411,8 +490,166 @@ const SignUpRegister = () => {
 											</InputAdornment>
 										)
 									}}
+									placeholder="이름을 입력하세요"
 									variant="outlined"
 									onChange={handlenameChange}
+								/>
+								<Box
+									sx={{
+										minHeight: '100%',
+										py: 2,
+									}}
+								/>
+								<h3>github주소</h3>
+								<Box
+									sx={{
+										minHeight: '100%',
+										py: 0.5,
+									}}
+								/>
+								<TextField
+									halfwidth="true"
+									sx={{
+										flex: '1',
+										flexDirection: 'row',
+										boxShadow: 5,
+										borderBottomRightRadius: 5,
+										borderBottomLeftRadius: 5,
+										borderTopRightRadius: 5,
+										borderTopLeftRadius: 5,
+										backgroundColor: 'primary.smoothgreen',
+									}}
+									InputProps={{
+										startAdornment: (
+											<InputAdornment position="start">
+												<SvgIcon
+													fontSize="small"
+													color="action"
+												/>
+											</InputAdornment>
+										)
+									}}
+									placeholder="www.github.com"
+									variant="outlined"
+									onChange={handlegithubChange}
+								/>
+								<Box
+									sx={{
+										minHeight: '100%',
+										py: 2,
+									}}
+								/>
+								<h3>blog주소</h3>
+								<Box
+									sx={{
+										minHeight: '100%',
+										py: 0.5,
+									}}
+								/>
+								<TextField
+									halfwidth="true"
+									sx={{
+										flex: '1',
+										flexDirection: 'row',
+										boxShadow: 5,
+										borderBottomRightRadius: 5,
+										borderBottomLeftRadius: 5,
+										borderTopRightRadius: 5,
+										borderTopLeftRadius: 5,
+										backgroundColor: 'primary.smoothgreen',
+									}}
+									InputProps={{
+										startAdornment: (
+											<InputAdornment position="start">
+												<SvgIcon
+													fontSize="small"
+													color="action"
+												/>
+											</InputAdornment>
+										)
+									}}
+									placeholder="www.blog.com"
+									variant="outlined"
+									onChange={handleblogChange}
+								/>
+								<Box
+									sx={{
+										minHeight: '100%',
+										py: 2,
+									}}
+								/>
+								<h3>포지션</h3>
+								<Box
+									sx={{
+										minHeight: '100%',
+										py: 0.5,
+									}}
+								/>
+								<TextField
+									halfwidth="true"
+									sx={{
+										flex: '1',
+										flexDirection: 'row',
+										boxShadow: 5,
+										borderBottomRightRadius: 5,
+										borderBottomLeftRadius: 5,
+										borderTopRightRadius: 5,
+										borderTopLeftRadius: 5,
+										backgroundColor: 'primary.smoothgreen',
+									}}
+									InputProps={{
+										startAdornment: (
+											<InputAdornment position="start">
+												<SvgIcon
+													fontSize="small"
+													color="action"
+												/>
+											</InputAdornment>
+										)
+									}}
+									placeholder="포지션을 입력하세요"
+									variant="outlined"
+									onChange={handlepositionChange}
+								/>
+								<Box
+									sx={{
+										minHeight: '100%',
+										py: 2,
+									}}
+								/>
+								<h3>자기소개</h3>
+								<Box
+									sx={{
+										minHeight: '100%',
+										py: 0.5,
+									}}
+								/>
+								<TextField
+									fullWidth
+									sx={{
+										flex: '1',
+										flexDirection: 'row',
+										boxShadow: 5,
+										borderBottomRightRadius: 5,
+										borderBottomLeftRadius: 5,
+										borderTopRightRadius: 5,
+										borderTopLeftRadius: 5,
+										backgroundColor: 'primary.smoothgreen',
+									}}
+									InputProps={{
+										startAdornment: (
+											<InputAdornment position="start">
+												<SvgIcon
+													fontSize="small"
+													color="action"
+												/>
+											</InputAdornment>
+										)
+									}}
+									multiline
+									rows={4}
+									variant="outlined"
+									onChange={handlecontentChange}
 								/>
 								<Box
 									sx={{
