@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { experimentalStyled } from '@material-ui/core';
 import ChatboardNavbar from './ChatboardNavbar';
-import ChatboardSidebar from './ChatboardSidebar';
+import DashboardSidebar from 'src/components/Dashboard/DashboardSidebar';
 
 const ChatboardLayoutRoot = experimentalStyled('div')(
 	({ theme }) => ({
@@ -44,7 +44,7 @@ const ChatboardLayout = () => {
 	return (
 		<ChatboardLayoutRoot>
 			<ChatboardNavbar onMobileNavOpen={() => setMobileNavOpen(true)} />
-			<ChatboardSidebar
+			<DashboardSidebar
 				onMobileClose={() => setMobileNavOpen(false)}
 				openMobile={isMobileNavOpen}
 			/>

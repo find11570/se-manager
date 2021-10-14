@@ -21,6 +21,10 @@ const items = [
 		href: '/se/team',
 		title: '팀원 모집'
 	},
+	{
+		href: '/mypage/mypage',
+		title: '마이페이지'
+	}
 ];
 
 const DashboardSidebar = ({ onMobileClose, openMobile }) => {

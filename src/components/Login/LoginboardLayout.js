@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { experimentalStyled } from '@material-ui/core';
-import LoginboardNavbar from './LoginboardNavbar';
-import LoginboardSidebar from './LoginboardSidebar';
+import LoginboardNavbar from 'src/components/Login/LoginboardNavbar';
+import DashboardSidebar from 'src/components/Dashboard/DashboardSidebar';
 
 const LoginboardLayoutRoot = experimentalStyled('div')(
 	({ theme }) => ({
@@ -44,7 +44,7 @@ const LoginboardLayout = () => {
 	return (
 		<LoginboardLayoutRoot>
 			<LoginboardNavbar onMobileNavOpen={() => setMobileNavOpen(true)} />
-			<LoginboardSidebar
+			<DashboardSidebar
 				onMobileClose={() => setMobileNavOpen(false)}
 				openMobile={isMobileNavOpen}
 			/>

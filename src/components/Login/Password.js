@@ -12,12 +12,24 @@ import {
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 
-const Login = () => {
+const Password = () => {
 	const [postBody, setPostBody] = useState({
+		name: '',
+		number: '',
 		id: '',
 		pw: '',
+		checkpw: '',
 	});
-
+	const handlenameChange = (event) => {
+		setPostBody({
+			name: event.currentTarget.value,
+		});
+	};
+	const handlenumberChange = (event) => {
+		setPostBody({
+			number: event.currentTarget.value,
+		});
+	};
 	const handleidChange = (event) => {
 		setPostBody({
 			id: event.currentTarget.value,
@@ -28,10 +40,15 @@ const Login = () => {
 			pw: event.currentTarget.value,
 		});
 	};
+	const handlecheckpwChange = (event) => {
+		setPostBody({
+			checkpw: event.currentTarget.value,
+		});
+	};
 	return (
 		<>
 			<Helmet>
-				<title>Login</title>
+				<title>Password</title>
 			</Helmet>
 			<Box>
 				<Box
@@ -58,7 +75,7 @@ const Login = () => {
 					>
 						<CardContent>
 							<h2 style={{ color: '#006400' }}>
-								로그인
+								비밀번호 찾기
 							</h2>
 							<Box
 								sx={{
@@ -79,7 +96,7 @@ const Login = () => {
 										py: 1.5,
 									}}
 								/>
-								<h3>아이디</h3>
+								<h3>학번</h3>
 								{postBody.id}
 								<Box
 									sx={{
@@ -109,9 +126,8 @@ const Login = () => {
 											</InputAdornment>
 										)
 									}}
-									placeholder="아이디 및 이메일 입력"
 									variant="outlined"
-									onChange={handleidChange}
+									onChange={handlenumberChange}
 								/>
 								<Box
 									sx={{
@@ -119,7 +135,7 @@ const Login = () => {
 										py: 2,
 									}}
 								/>
-								<h3>비밀번호</h3>
+								<h3>이름</h3>
 								<Box
 									sx={{
 										minHeight: '100%',
@@ -150,50 +166,130 @@ const Login = () => {
 									}}
 									placeholder="비밀번호 입력"
 									variant="outlined"
-									onChange={handlepwChange}
+									onChange={handlenameChange}
 								/>
-								<Link to="/login/password">
-									<Button
-										variant="contained"
-										size="medium"
-										color="success"
-										sx={{
-											marginTop: 1,
-										}}
-									>
-										<h3 style={{
-											color: '#ffffff',
-										}}
-										>
-											비밀번호 찾기
-										</h3>
-									</Button>
-								</Link>
 								<Box
 									sx={{
 										minHeight: '100%',
 										py: 2,
 									}}
 								/>
-								<Link to="/sign/up">
-									<Button
-										variant="contained"
-										size="medium"
-										color="success"
-										sx={{
-											marginTop: 0.5,
-											marginRight: 3,
-											float: 'right'
-										}}
-									>
-										<h3 style={{
-											color: '#ffffff',
-										}}
-										>
-											회원가입
-										</h3>
-									</Button>
-								</Link>
+								<h3>아이디</h3>
+								<Box
+									sx={{
+										minHeight: '100%',
+										py: 0.5,
+									}}
+								/>
+								<TextField
+									fullWidth
+									sx={{
+										flex: '1',
+										flexDirection: 'row',
+										boxShadow: 5,
+										borderBottomRightRadius: 5,
+										borderBottomLeftRadius: 5,
+										borderTopRightRadius: 5,
+										borderTopLeftRadius: 5,
+										backgroundColor: 'primary.smoothgreen',
+									}}
+									InputProps={{
+										startAdornment: (
+											<InputAdornment position="start">
+												<SvgIcon
+													fontSize="small"
+													color="action"
+												/>
+											</InputAdornment>
+										)
+									}}
+									variant="outlined"
+									onChange={handleidChange}
+								/>
+								<Box
+									sx={{
+										minHeight: '100%',
+										py: 2,
+									}}
+								/>
+								<h3>변경할 비밀번호</h3>
+								<Box
+									sx={{
+										minHeight: '100%',
+										py: 0.5,
+									}}
+								/>
+								<TextField
+									fullWidth
+									sx={{
+										flex: '1',
+										flexDirection: 'row',
+										boxShadow: 5,
+										borderBottomRightRadius: 5,
+										borderBottomLeftRadius: 5,
+										borderTopRightRadius: 5,
+										borderTopLeftRadius: 5,
+										backgroundColor: 'primary.smoothgreen',
+									}}
+									InputProps={{
+										startAdornment: (
+											<InputAdornment position="start">
+												<SvgIcon
+													fontSize="small"
+													color="action"
+												/>
+											</InputAdornment>
+										)
+									}}
+									placeholder="영어 대/소문자,특수문자"
+									variant="outlined"
+									onChange={handlepwChange}
+								/>
+								<Box
+									sx={{
+										minHeight: '100%',
+										py: 2,
+									}}
+								/>
+								<h3>변경할 비밀번호 확인</h3>
+								<Box
+									sx={{
+										minHeight: '100%',
+										py: 0.5,
+									}}
+								/>
+								<TextField
+									fullWidth
+									sx={{
+										flex: '1',
+										flexDirection: 'row',
+										boxShadow: 5,
+										borderBottomRightRadius: 5,
+										borderBottomLeftRadius: 5,
+										borderTopRightRadius: 5,
+										borderTopLeftRadius: 5,
+										backgroundColor: 'primary.smoothgreen',
+									}}
+									InputProps={{
+										startAdornment: (
+											<InputAdornment position="start">
+												<SvgIcon
+													fontSize="small"
+													color="action"
+												/>
+											</InputAdornment>
+										)
+									}}
+									placeholder="영어 대/소문자,특수문자"
+									variant="outlined"
+									onChange={handlecheckpwChange}
+								/>
+								<Box
+									sx={{
+										minHeight: '100%',
+										py: 2,
+									}}
+								/>
 								<Link to="/app/dashboard">
 									<Button
 										variant="contained"
@@ -209,7 +305,7 @@ const Login = () => {
 											color: '#ffffff',
 										}}
 										>
-											로그인
+											변경
 										</h3>
 									</Button>
 								</Link>
@@ -228,4 +324,4 @@ const Login = () => {
 	);
 };
 
-export default Login;
+export default Password;

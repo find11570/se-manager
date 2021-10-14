@@ -15,6 +15,9 @@ import LoginLayout from 'src/components/Login/LoginboardLayout';
 import Login from 'src/components/Login/Login';
 import SignUpLayout from 'src/components/Signup/SignUpboardLayout';
 import SignUp from 'src/components/Signup/SignUpRegister';
+import Password from 'src/components/Login/Password';
+import SignUpUpdate from 'src/components/Mypage/SignUpUpdate';
+import MypageLayout from 'src/components/Mypage/MypageboardLayout';
 
 const routes = [
 	{
@@ -54,7 +57,8 @@ const routes = [
 		path: 'login',
 		element: <LoginLayout />,
 		children: [
-			{ path: 'login', element: <Login /> }
+			{ path: 'login', element: <Login /> },
+			{ path: 'password', element: <Password /> }
 		]
 	},
 	{
@@ -63,7 +67,14 @@ const routes = [
 		children: [
 			{ path: 'up', element: <SignUp /> },
 		]
-	}
+	},
+	{
+		path: 'mypage',
+		element: <MypageLayout />,
+		children: [
+			{ path: 'update', element: <SignUpUpdate /> }
+		]
+	},
 ];
 
 export default routes;

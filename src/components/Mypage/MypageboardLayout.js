@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { experimentalStyled } from '@material-ui/core';
-import TeamboardNavbar from './TeamboardNavbar';
+import MypageboardNavbar from 'src/components/Mypage/MypageboardNavbar';
 import DashboardSidebar from 'src/components/Dashboard/DashboardSidebar';
 
-const TeamboardLayoutRoot = experimentalStyled('div')(
+const MypageboardLayoutRoot = experimentalStyled('div')(
 	({ theme }) => ({
 		backgroundColor: theme.palette.background.default,
 		display: 'flex',
@@ -14,7 +14,7 @@ const TeamboardLayoutRoot = experimentalStyled('div')(
 	})
 );
 
-const TeamboardLayoutWrapper = experimentalStyled('div')(
+const MypageboardLayoutWrapper = experimentalStyled('div')(
 	({ theme }) => ({
 		display: 'flex',
 		flex: '1 1 auto',
@@ -26,37 +26,37 @@ const TeamboardLayoutWrapper = experimentalStyled('div')(
 	})
 );
 
-const TeamboardLayoutContainer = experimentalStyled('div')({
+const MypageboardLayoutContainer = experimentalStyled('div')({
 	display: 'flex',
 	flex: '1 1 auto',
 	overflow: 'hidden'
 });
 
-const TeamboardLayoutContent = experimentalStyled('div')({
+const MypageboardLayoutContent = experimentalStyled('div')({
 	flex: '1 1 auto',
 	height: '100%',
 	overflow: 'auto'
 });
 
-const TeamboardLayout = () => {
+const MypageboardLayout = () => {
 	const [isMobileNavOpen, setMobileNavOpen] = useState(false);
 
 	return (
-		<TeamboardLayoutRoot>
-			<TeamboardNavbar onMobileNavOpen={() => setMobileNavOpen(true)} />
+		<MypageboardLayoutRoot>
+			<MypageboardNavbar onMobileNavOpen={() => setMobileNavOpen(true)} />
 			<DashboardSidebar
 				onMobileClose={() => setMobileNavOpen(false)}
 				openMobile={isMobileNavOpen}
 			/>
-			<TeamboardLayoutWrapper>
-				<TeamboardLayoutContainer>
-					<TeamboardLayoutContent>
+			<MypageboardLayoutWrapper>
+				<MypageboardLayoutContainer>
+					<MypageboardLayoutContent>
 						<Outlet />
-					</TeamboardLayoutContent>
-				</TeamboardLayoutContainer>
-			</TeamboardLayoutWrapper>
-		</TeamboardLayoutRoot>
+					</MypageboardLayoutContent>
+				</MypageboardLayoutContainer>
+			</MypageboardLayoutWrapper>
+		</MypageboardLayoutRoot>
 	);
 };
 
-export default TeamboardLayout;
+export default MypageboardLayout;
