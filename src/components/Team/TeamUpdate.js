@@ -461,7 +461,12 @@ const TeamUpdate = () => {
 											alert('수정되었습니다.');
 										}}
 									>
-										수정
+										<h3 style={{
+											color: '#ffffff',
+										}}
+										>
+											수정
+										</h3>
 									</Button>
 								</Link>
 								<Link to="/se/Team">
@@ -475,7 +480,12 @@ const TeamUpdate = () => {
 											alert('삭제되었습니다.');
 										}}
 									>
-										삭제
+										<h3 style={{
+											color: '#ffffff',
+										}}
+										>
+											삭제
+										</h3>
 									</Button>
 								</Link>
 							</Box>

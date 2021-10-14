@@ -271,7 +271,7 @@ const Project = () => {
 				<Box
 					sx={{
 						minHeight: '100%',
-						py: 2,
+						py: 1,
 					}}
 				/>
 				{postBody.name}
@@ -322,147 +322,146 @@ const Project = () => {
 								height: 2,
 							}}
 						/>
-						<Box
-							sx={{
-								minHeight: '100%',
-								py: 2,
-							}}
-						/>
-						<FormControl
-							sx={{
-								width: 200,
-								marginLeft: 2.5,
-							}}
-						>
-							<InputLabel id="기술스택">&nbsp;기술스택</InputLabel>
-							<Select
-								labelId="기술스택"
-								id="기술스택"
-								multiple
-								value={stack}
-								onChange={handlestackChange}
-								input={<OutlinedInput label="기술스택" />}
-								renderValue={(selected) => selected.join(', ')}
-								MenuProps={MenuProps}
-							>
-								{stacks.map((s) => (
-									<MenuItem key={s} value={s}>
-										<Checkbox
-											sx={{
-												color: 'primary.darkgreen',
-												'&.Mui-checked': {
-													color: 'primary.darkgreen',
-												},
-											}}
-											checked={stack.indexOf(s) > -1}
-										/>
-										<ListItemText primary={s} />
-									</MenuItem>
-								))}
-							</Select>
-						</FormControl>
-						<FormControl
-							sx={{
-								width: 200,
-								marginLeft: 2.5,
-								backgroundColor: 'primary.smoothgreen'
-							}}
-						>
-							<InputLabel id="과목명">&nbsp;과목명</InputLabel>
-							<Select
-								labelId="과목명"
-								id="과목명"
-								multiple
-								value={subject}
-								onChange={handlesubjectChange}
-								input={<OutlinedInput label="과목명" />}
-								renderValue={(selected) => selected.join(', ')}
-								MenuProps={MenuProps}
-							>
-								{subjects.map((s) => (
-									<MenuItem key={s} value={s}>
-										<Checkbox
-											sx={{
-												color: 'primary.darkgreen',
-												'&.Mui-checked': {
-													color: 'primary.darkgreen',
-												},
-											}}
-											checked={subject.indexOf(s) > -1}
-										/>
-										<ListItemText primary={s} />
-									</MenuItem>
-								))}
-							</Select>
-						</FormControl>
-						<FormControl
-							sx={{
-								width: 200,
-								marginLeft: 2.5,
-							}}
-						>
-							<InputLabel id="년도">&nbsp;년도</InputLabel>
-							<Select
-								labelId="년도"
-								id="년도"
-								multiple
-								value={year}
-								onChange={handleyearChange}
-								input={<OutlinedInput label="년도" />}
-								renderValue={(selected) => selected.join(', ')}
-								MenuProps={MenuProps}
-							>
-								{years.map((s) => (
-									<MenuItem key={s} value={s}>
-										<Checkbox
-											sx={{
-												color: 'primary.darkgreen',
-												'&.Mui-checked': {
-													color: 'primary.darkgreen',
-												},
-											}}
-											checked={year.indexOf(s) > -1}
-										/>
-										<ListItemText primary={s} />
-									</MenuItem>
-								))}
-							</Select>
-						</FormControl>
-						<FormControl
-							sx={{
-								width: 200,
-								marginLeft: 2.5,
-								backgroundColor: 'primary.smoothgreen'
-							}}
-						>
-							<InputLabel id="지도교수">&nbsp;지도교수</InputLabel>
-							<Select
-								labelId="지도교수"
-								id="지도교수"
-								multiple
-								value={professor}
-								onChange={handleprofessorChange}
-								input={<OutlinedInput label="지도교수" />}
-								renderValue={(selected) => selected.join(', ')}
-								MenuProps={MenuProps}
-							>
-								{professors.map((s) => (
-									<MenuItem key={s} value={s}>
-										<Checkbox
-											sx={{
-												color: 'primary.darkgreen',
-												'&.Mui-checked': {
-													color: 'primary.darkgreen',
-												},
-											}}
-											checked={professor.indexOf(s) > -1}
-										/>
-										<ListItemText primary={s} />
-									</MenuItem>
-								))}
-							</Select>
-						</FormControl>
 						<Hidden lgDown>
+							<Box
+								sx={{
+									minHeight: '100%',
+									py: 2,
+								}}
+							/>
+							<FormControl
+								sx={{
+									width: 200,
+								}}
+							>
+								<InputLabel id="기술스택">&nbsp;기술스택</InputLabel>
+								<Select
+									labelId="기술스택"
+									id="기술스택"
+									multiple
+									value={stack}
+									onChange={handlestackChange}
+									input={<OutlinedInput label="기술스택" />}
+									renderValue={(selected) => selected.join(', ')}
+									MenuProps={MenuProps}
+								>
+									{stacks.map((s) => (
+										<MenuItem key={s} value={s}>
+											<Checkbox
+												sx={{
+													color: 'primary.darkgreen',
+													'&.Mui-checked': {
+														color: 'primary.darkgreen',
+													},
+												}}
+												checked={stack.indexOf(s) > -1}
+											/>
+											<ListItemText primary={s} />
+										</MenuItem>
+									))}
+								</Select>
+							</FormControl>
+							<FormControl
+								sx={{
+									width: 200,
+									marginLeft: 2.5,
+									backgroundColor: 'primary.smoothgreen'
+								}}
+							>
+								<InputLabel id="과목명">&nbsp;과목명</InputLabel>
+								<Select
+									labelId="과목명"
+									id="과목명"
+									multiple
+									value={subject}
+									onChange={handlesubjectChange}
+									input={<OutlinedInput label="과목명" />}
+									renderValue={(selected) => selected.join(', ')}
+									MenuProps={MenuProps}
+								>
+									{subjects.map((s) => (
+										<MenuItem key={s} value={s}>
+											<Checkbox
+												sx={{
+													color: 'primary.darkgreen',
+													'&.Mui-checked': {
+														color: 'primary.darkgreen',
+													},
+												}}
+												checked={subject.indexOf(s) > -1}
+											/>
+											<ListItemText primary={s} />
+										</MenuItem>
+									))}
+								</Select>
+							</FormControl>
+							<FormControl
+								sx={{
+									width: 200,
+									marginLeft: 2.5,
+								}}
+							>
+								<InputLabel id="년도">&nbsp;년도</InputLabel>
+								<Select
+									labelId="년도"
+									id="년도"
+									multiple
+									value={year}
+									onChange={handleyearChange}
+									input={<OutlinedInput label="년도" />}
+									renderValue={(selected) => selected.join(', ')}
+									MenuProps={MenuProps}
+								>
+									{years.map((s) => (
+										<MenuItem key={s} value={s}>
+											<Checkbox
+												sx={{
+													color: 'primary.darkgreen',
+													'&.Mui-checked': {
+														color: 'primary.darkgreen',
+													},
+												}}
+												checked={year.indexOf(s) > -1}
+											/>
+											<ListItemText primary={s} />
+										</MenuItem>
+									))}
+								</Select>
+							</FormControl>
+							<FormControl
+								sx={{
+									width: 200,
+									marginLeft: 2.5,
+									backgroundColor: 'primary.smoothgreen'
+								}}
+							>
+								<InputLabel id="지도교수">&nbsp;지도교수</InputLabel>
+								<Select
+									labelId="지도교수"
+									id="지도교수"
+									multiple
+									value={professor}
+									onChange={handleprofessorChange}
+									input={<OutlinedInput label="지도교수" />}
+									renderValue={(selected) => selected.join(', ')}
+									MenuProps={MenuProps}
+								>
+									{professors.map((s) => (
+										<MenuItem key={s} value={s}>
+											<Checkbox
+												sx={{
+													color: 'primary.darkgreen',
+													'&.Mui-checked': {
+														color: 'primary.darkgreen',
+													},
+												}}
+												checked={professor.indexOf(s) > -1}
+											/>
+											<ListItemText primary={s} />
+										</MenuItem>
+									))}
+								</Select>
+							</FormControl>
 							<FormControl
 								sx={{
 									width: 150,
@@ -496,47 +495,13 @@ const Project = () => {
 									))}
 								</Select>
 							</FormControl>
-						</Hidden>
-						<Hidden lgUp>
-							<FormControl
+							<Box
 								sx={{
-									width: 150,
-									marginLeft: 2.5,
+									minHeight: '100%',
+									py: 2,
 								}}
-							>
-								<InputLabel id="최신순">&nbsp;최신순</InputLabel>
-								<Select
-									labelId="최신순"
-									id="최신순"
-									value={menu}
-									onChange={handlemenuChange}
-									input={<OutlinedInput label="최신순" />}
-									renderValue={(selected) => selected.join(', ')}
-									MenuProps={MenuProps}
-								>
-									{menus.map((s) => (
-										<MenuItem key={s} value={s}>
-											<Checkbox
-												sx={{
-													color: 'primary.darkgreen',
-													'&.Mui-checked': {
-														color: 'primary.darkgreen',
-													},
-												}}
-												checked={menu.indexOf(s) > -1}
-											/>
-											<ListItemText primary={s} />
-										</MenuItem>
-									))}
-								</Select>
-							</FormControl>
+							/>
 						</Hidden>
-						<Box
-							sx={{
-								minHeight: '100%',
-								py: 2,
-							}}
-						/>
 					</Grid>
 					<Box
 						sx={{
@@ -555,7 +520,7 @@ const Project = () => {
 								xs={12}
 								p={5}
 							>
-								<Link to="/app/project">
+								<Link to="/app/projectDetail">
 									<Card
 										sx={{
 											boxShadow: 5,
@@ -610,7 +575,7 @@ const Project = () => {
 								xs={12}
 								p={5}
 							>
-								<Link to="/app/project">
+								<Link to="/app/projectDetail">
 									<Card
 										sx={{
 											boxShadow: 5,
@@ -665,7 +630,7 @@ const Project = () => {
 								xs={12}
 								p={5}
 							>
-								<Link to="/app/project">
+								<Link to="/app/projectDetail">
 									<Card
 										sx={{
 											boxShadow: 5,
@@ -720,7 +685,7 @@ const Project = () => {
 								xs={12}
 								p={5}
 							>
-								<Link to="/app/project">
+								<Link to="/app/projectDetail">
 									<Card
 										sx={{
 											boxShadow: 5,
@@ -775,7 +740,7 @@ const Project = () => {
 								xs={12}
 								p={5}
 							>
-								<Link to="/app/project">
+								<Link to="/app/projectDetail">
 									<Card
 										sx={{
 											boxShadow: 5,
@@ -830,7 +795,7 @@ const Project = () => {
 								xs={12}
 								p={5}
 							>
-								<Link to="/app/project">
+								<Link to="/app/projectDetail">
 									<Card
 										sx={{
 											boxShadow: 5,
@@ -885,7 +850,7 @@ const Project = () => {
 								xs={12}
 								p={5}
 							>
-								<Link to="/app/project">
+								<Link to="/app/projectDetail">
 									<Card
 										sx={{
 											boxShadow: 5,

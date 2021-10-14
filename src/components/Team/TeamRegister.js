@@ -457,7 +457,12 @@ const TeamRegister = () => {
 											alert('등록되었습니다.');
 										}}
 									>
-										등록
+										<h3 style={{
+											color: '#ffffff',
+										}}
+										>
+											등록
+										</h3>
 									</Button>
 								</Link>
 							</Box>

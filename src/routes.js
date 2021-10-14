@@ -18,6 +18,7 @@ import SignUp from 'src/components/Signup/SignUpRegister';
 import Password from 'src/components/Login/Password';
 import SignUpUpdate from 'src/components/Mypage/SignUpUpdate';
 import MypageLayout from 'src/components/Mypage/MypageboardLayout';
+import ProjectDetail from 'src/components/Dashboard/ProjectDetail';
 
 const routes = [
 	{
@@ -26,6 +27,7 @@ const routes = [
 		children: [
 			{ path: 'dashboard', element: <Dashboard /> },
 			{ path: 'project', element: <Project /> },
+			{ path: 'ProjectDetail', element: <ProjectDetail /> }
 		]
 	},
 	{

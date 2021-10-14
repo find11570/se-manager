@@ -24,10 +24,6 @@ const TeamSpecific = () => {
 		content: '으아아아아아ㅏㅇ 나는 프로젝트하는 중이다..... 으아아아아아아아 배고파아아아아앙 키키키키키키키키 졸려어ㅓㅌ어어어어어라너미런아ㅣㅓㄹ민ㅇㄹ'
 	});
 
-	// const click() => {
-	// 	<Chats />
-	// };
-
 	const List = chartData.tag.map((t) => (
 		<Box
 			key={t}
@@ -149,29 +145,40 @@ const TeamSpecific = () => {
 												</h3>
 											</Button>
 										</Link>
+										<h4 style={{
+											color: '#ffffff',
+											float: 'right',
+											marginTop: 5,
+											marginRight: 5,
+										}}
+										>
+											{chartData.name}
+										</h4>
 									</Hidden>
 									<Hidden lgDown>
 										<Modal2 />
 									</Hidden>
-									<h2 style={{
-										color: '#ffffff',
-										float: 'right',
-										marginTop: 15,
-										marginRight: 20,
-									}}
-									>
-										{chartData.name}
-									</h2>
-									<Avatar
-										sx={{
-											cursor: 'pointer',
-											width: 40,
-											height: 40,
+									<Hidden lgDown>
+										<h2 style={{
+											color: '#ffffff',
 											float: 'right',
-											marginRight: 2,
-											marginTop: 1.5,
+											marginTop: 15,
+											marginRight: 20,
 										}}
-									/>
+										>
+											{chartData.name}
+										</h2>
+										<Avatar
+											sx={{
+												cursor: 'pointer',
+												width: 40,
+												height: 40,
+												float: 'right',
+												marginRight: 2,
+												marginTop: 1.5,
+											}}
+										/>
+									</Hidden>
 								</Box>
 							</Box>
 						</CardContent>
