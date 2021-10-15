@@ -28,31 +28,38 @@ const ProjectDetail = () => {
 	});
 	const comment = [
 		{
+			id: 1,
 			name: '현수',
 			text: 'ㅋ'
 		},
 		{
-			name: '현수',
+			id: 2,
+			name: '채연',
 			text: 'ㅋㅋ'
 		},
 		{
-			name: '현수',
+			id: 3,
+			name: '영민',
 			text: 'ㅋㅋㅋ'
 		},
 		{
-			name: '현수',
+			id: 4,
+			name: '지영',
 			text: 'ㅋㅋㅋㅋ'
 		},
 		{
-			name: '현수',
+			id: 5,
+			name: '현수찡',
 			text: 'ㅋㅋㅋㅋㅋ'
 		},
 		{
-			name: '현수',
+			id: 6,
+			name: '채연찡',
 			text: 'ㅋㅋㅋㅋㅋㅋ'
 		},
 		{
-			name: ' 나는야 카와이 소졍쨩',
+			id: 7,
+			name: '나는야 카와이 소졍쨩',
 			text: '소정이는 귀여워 왜나 나는 귀엽기때문이야 키키키 소정이는 애기소졍짱 하와와와와~'
 		}
 	];
@@ -294,6 +301,7 @@ const ProjectDetail = () => {
 						}}
 					/>
 					<Grid
+						item
 						lg={12}
 						md={12}
 						sm={12}
@@ -301,6 +309,8 @@ const ProjectDetail = () => {
 					>
 						{comment.map((comments) => (
 							<Card
+								key={comments.id}
+								value={comments}
 								sx={{
 									borderBottomRightRadius: 10,
 									borderBottomLeftRadius: 10,

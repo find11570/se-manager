@@ -33,7 +33,7 @@ function TabPanel(props) {
 		>
 			{value === index && (
 				<Box p={3}>
-					<Typography>{children}</Typography>
+					<Typography component="span">{children}</Typography>
 				</Box>
 			)}
 		</div>
@@ -85,7 +85,7 @@ export default function MypageTabs() {
 	return (
 		<div className={classes.root}>
 			<AppBar position="static">
-				<Tabs textColor="primary.darkgreen" value={Data.type} onChange={handleChange} aria-label="simple tabs example">
+				<Tabs textColor="inherit" value={Data.type} onChange={handleChange} aria-label="simple tabs example">
 					<Tab label="내 프로젝트" {...a11yProps(0)} />
 					<Tab label="좋아요 한 프로젝트" {...a11yProps(1)} />
 				</Tabs>

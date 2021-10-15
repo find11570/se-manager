@@ -29,7 +29,7 @@ function TabPanel(props) {
 		>
 			{value === index && (
 				<Box p={3}>
-					<Typography>{children}</Typography>
+					<Typography component="span">{children}</Typography>
 				</Box>
 			)}
 		</div>
@@ -73,14 +73,22 @@ export default function SimpleTabs() {
 	return (
 		<div className={classes.root}>
 			<AppBar position="static">
-				<Tabs textColor="primary.darkgreen" value={value.type} onChange={handleChange} aria-label="simple tabs example">
-					<Tab label="프로젝트 소개" {...a11yProps(0)} />
+				<Tabs
+					textColor="inherit"
+					value={value.type}
+					onChange={handleChange}
+					aria-label="simple tabs example"
+					variant="scrollable"
+					scrollButtons
+					allowScrollButtonsMobile
+				>
+					<Tab label="프로젝트소개" {...a11yProps(0)} />
 					<Tab label="주제제안서" {...a11yProps(1)} />
 					<Tab label="요구사항명세서" {...a11yProps(2)} />
 					<Tab label="설계명세서" {...a11yProps(3)} />
 					<Tab label="중간발표" {...a11yProps(4)} />
 					<Tab label="최종발표" {...a11yProps(5)} />
-					<Tab label="팀원 소개" {...a11yProps(6)} />
+					<Tab label="팀원소개" {...a11yProps(6)} />
 				</Tabs>
 			</AppBar>
 			<TabPanel value={value.type} index={0}>

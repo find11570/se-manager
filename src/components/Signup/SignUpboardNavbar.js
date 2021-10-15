@@ -7,7 +7,6 @@ import {
 	Hidden,
 	IconButton,
 	Toolbar,
-	Button
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import { Link } from 'react-router-dom';
@@ -29,25 +28,6 @@ const SignUpboardNavbar = ({ onMobileNavOpen, ...rest }) => {
 					<h3>&nbsp;&gt;&nbsp; 회원가입</h3>
 				</Hidden>
 				<Box sx={{ flexGrow: 1 }} />
-				<Link to="/mypage/update">
-					<Button
-						variant="contained"
-						size="small"
-						sx={{
-							float: 'right',
-							marginRight: 2,
-							marginTop: 0.5,
-							marginLeft: 2
-						}}
-					>
-						<h3 style={{
-							color: '#006400',
-						}}
-						>
-							회원정보 수정
-						</h3>
-					</Button>
-				</Link>
 				<Hidden lgDown>
 					<IconButton color="inherit">
 						<Badge

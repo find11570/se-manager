@@ -146,8 +146,8 @@ const SignUpRegister = () => {
 								<h3>회원 타입</h3>
 								<FormControl component="fieldset">
 									<RadioGroup aria-label="회원 타입" name="회원 타입" value={postBody.type} onChange={handleChange}>
-										<FormControlLabel value="학생" control={<Radio color="success" />} label="학생" />
-										<FormControlLabel value="교수" control={<Radio color="success" />} label="교수" />
+										<FormControlLabel value="학생" control={<Radio color="default" />} label="학생" />
+										<FormControlLabel value="교수" control={<Radio color="default" />} label="교수" />
 									</RadioGroup>
 								</FormControl>
 								{postBody.id}
@@ -663,7 +663,7 @@ const SignUpRegister = () => {
 											checked={postBody.checked}
 											onChange={handlecheckChange}
 											name="checked"
-											color="success"
+											color="default"
 										/>
 									)}
 									label="이용약관, 개인정보취급방침에 동의합니다."
