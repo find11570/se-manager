@@ -226,6 +226,32 @@ const TeamSpecific = () => {
 							/>
 						</CardContent>
 					</Card>
+					<Box
+						sx={{
+							minHeight: '100%',
+							py: 2,
+						}}
+					/>
+					<Link to="/se/teamupdate">
+						<Button
+							variant="contained"
+							size="medium"
+							color="success"
+							sx={{
+								float: 'right',
+								marginRight: 2,
+								marginTop: 0.5,
+								marginLeft: 2
+							}}
+						>
+							<h3 style={{
+								color: '#ffffff',
+							}}
+							>
+								수정하기
+							</h3>
+						</Button>
+					</Link>
 				</Grid>
 			</Box>
 		</>

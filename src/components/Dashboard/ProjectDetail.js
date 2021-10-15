@@ -21,12 +21,11 @@ const ProjectDetail = () => {
 	const [chartData] = useState({
 		id: '1',
 		name: ['박건우', '이준영', '이창희', '최의준'],
-		field: ['웹사이트', '인공지능'],
 		title: '무인 판매점 키오스크 SW',
 		tag: ['창융1', '리액트', 'Node.js', 'AWS', '김선명교수님', '2021'],
 		picture: '/static/picture.PNG',
 		see: 50,
-		good: 100
+		good: 100,
 	});
 	const comment = [
 		{

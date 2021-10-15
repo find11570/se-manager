@@ -81,6 +81,7 @@ const categorys = [
 ];
 const ProjectUpdate = () => {
 	const [postBody, setPostBody] = useState({
+		id: '2',
 		content: '나는 키오스크야',
 		title: 'SE-Manager',
 		member: '진채연, 김현수, 황영민, 김지영',

@@ -91,6 +91,7 @@ const Project = () => {
 		name: ''
 	});
 	const [Data] = useState({
+		id: '1',
 		title: 'SE-Manager',
 		people: '진채연, 김현수, 황영민, 김지영',
 		see: '50',
@@ -147,6 +148,7 @@ const Project = () => {
 		setmenu(
 			typeof value === 'string' ? value.split(',') : value,
 		);
+		console.log(menu);
 	};
 	const handlecategoryChange = (event) => {
 		const {
