@@ -9,13 +9,8 @@ import {
 	TextField,
 	InputAdornment,
 	SvgIcon,
-	Button
+	Button,
 } from '@material-ui/core';
-import DateFnsUtils from '@date-io/date-fns';
-import {
-	MuiPickersUtilsProvider,
-	KeyboardDatePicker,
-} from '@material-ui/pickers';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -52,22 +47,79 @@ const subjects = [
 	'창의융합종합설계2',
 	'일반 프로젝트'
 ];
-
-const TeamRegister = () => {
+const professors = [
+	'김병만',
+	'김시관',
+	'김선명',
+	'김성렬',
+	'신윤식',
+	'오득환',
+	'이현아',
+	'이해연',
+	'이종열',
+];
+const years = [
+	'2016',
+	'2017',
+	'2018',
+	'2019',
+	'2020',
+	'2021',
+];
+const categorys = [
+	'웹사이트',
+	'모바일앱',
+	'인공지능',
+	'IoT',
+	'블록체인',
+	'보안',
+	'VR/AR',
+	'게임',
+	'로봇',
+	'자연어처리',
+	'영상처리'
+];
+const ProjectUpdate = () => {
 	const [postBody, setPostBody] = useState({
-		title: '',
-		content: '',
-		count: '',
-		selectDate: new Date(),
-		question: ''
+		content: '나는 키오스크야',
+		title: 'SE-Manager',
+		member: '진채연, 김현수, 황영민, 김지영',
+		picture: '/static/picture.PNG'
 	});
 	const [stack, setstack] = useState([]);
 	const [subject, setsubject] = useState([]);
+	const [professor, setprofessor] = useState([]);
+	const [year, setyear] = useState([]);
+	const [category, setcategory] = useState([]);
+	const handlecategoryChange = (event) => {
+		const {
+			target: { value },
+		} = event;
+		setcategory(
+			typeof value === 'string' ? value.split(',') : value,
+		);
+	};
 	const handlesubjectChange = (event) => {
 		const {
 			target: { value },
 		} = event;
 		setsubject(
+			typeof value === 'string' ? value.split(',') : value,
+		);
+	};
+	const handleprofessorChange = (event) => {
+		const {
+			target: { value },
+		} = event;
+		setprofessor(
+			typeof value === 'string' ? value.split(',') : value,
+		);
+	};
+	const handleyearChange = (event) => {
+		const {
+			target: { value },
+		} = event;
+		setyear(
 			typeof value === 'string' ? value.split(',') : value,
 		);
 	};
@@ -79,11 +131,6 @@ const TeamRegister = () => {
 			typeof value === 'string' ? value.split(',') : value,
 		);
 	};
-	const handleDateChange = (date) => {
-		setPostBody({
-			selectDate: date,
-		});
-	};
 	const handletitleChange = (event) => {
 		setPostBody({
 			title: event.currentTarget.value,
@@ -94,20 +141,15 @@ const TeamRegister = () => {
 			content: event.currentTarget.value,
 		});
 	};
-	const handlequestionChange = (event) => {
+	const handlememberChange = (event) => {
 		setPostBody({
-			question: event.currentTarget.value,
-		});
-	};
-	const handlecountChange = (event) => {
-		setPostBody({
-			count: event.currentTarget.value,
+			member: event.currentTarget.value,
 		});
 	};
 	return (
 		<>
 			<Helmet>
-				<title>TeamRegister</title>
+				<title>ProjectUpdate</title>
 			</Helmet>
 			<Box>
 				<Box
@@ -134,11 +176,8 @@ const TeamRegister = () => {
 					>
 						<CardContent>
 							<h2 style={{ color: '#006400' }}>
-								팀원 모집글 등록
+								프로젝트 수정
 							</h2>
-							<h4>
-								팀원을 모집하세요!
-							</h4>
 							<Box
 								sx={{
 									minHeight: '100%',
@@ -152,14 +191,54 @@ const TeamRegister = () => {
 									paddingLeft: 0.5
 								}}
 							>
+								<Grid
+									item
+									lg={3}
+									md={3}
+									sm={6}
+									xs={12}
+								>
+									<Box
+										sx={{
+											minHeight: '100%',
+											py: 1.5,
+										}}
+									/>
+									<h3>프로젝트 사진</h3>
+									<Box
+										sx={{
+											minHeight: '100%',
+											py: 0.5,
+										}}
+									/>
+									<Card
+										sx={{
+											borderBottomRightRadius: 10,
+											borderBottomLeftRadius: 10,
+											borderTopRightRadius: 10,
+											borderTopLeftRadius: 10,
+											boxShadow: 5
+										}}
+									>
+										<CardContent>
+											<img
+												src={postBody.picture}
+												alt="profile"
+												style={{
+													width: 220,
+													height: 120
+												}}
+											/>
+										</CardContent>
+									</Card>
+								</Grid>
 								<Box
 									sx={{
 										minHeight: '100%',
 										py: 1.5,
 									}}
 								/>
-								<h3>글 제목&nbsp;(최대 40자)</h3>
-								{postBody.name}
+								<h3>프로젝트 제목</h3>
 								<Box
 									sx={{
 										minHeight: '100%',
@@ -188,7 +267,7 @@ const TeamRegister = () => {
 											</InputAdornment>
 										)
 									}}
-									placeholder="최대 40자"
+									value={postBody.title}
 									variant="outlined"
 									onChange={handletitleChange}
 								/>
@@ -198,7 +277,7 @@ const TeamRegister = () => {
 										py: 2,
 									}}
 								/>
-								<h3>글 내용</h3>
+								<h3>프로젝트 설명</h3>
 								<Box
 									sx={{
 										minHeight: '100%',
@@ -226,6 +305,7 @@ const TeamRegister = () => {
 											</InputAdornment>
 										)
 									}}
+									value={postBody.content}
 									multiline
 									rows={4}
 									variant="outlined"
@@ -237,7 +317,7 @@ const TeamRegister = () => {
 										py: 2,
 									}}
 								/>
-								<h3>모집 인원&nbsp;(숫자만 입력)</h3>
+								<h3>프로젝트 팀원</h3>
 								<Box
 									sx={{
 										minHeight: '100%',
@@ -255,7 +335,6 @@ const TeamRegister = () => {
 										borderTopRightRadius: 5,
 										borderTopLeftRadius: 5,
 										backgroundColor: 'primary.smoothgreen',
-										display: 'inline-block'
 									}}
 									InputProps={{
 										startAdornment: (
@@ -267,38 +346,11 @@ const TeamRegister = () => {
 											</InputAdornment>
 										)
 									}}
-									placeholder="숫자만 입력해주세요"
+									value={postBody.member}
+									placeholder="이메일을 입력해주세요"
 									variant="outlined"
-									onChange={handlecountChange}
+									onChange={handlememberChange}
 								/>
-								<h3 style={{ display: 'inline-block', width: 20, marginTop: 15 }}>&nbsp;명</h3>
-								<Box
-									sx={{
-										minHeight: '100%',
-										py: 2,
-									}}
-								/>
-								<h3>모집 기간</h3>
-								<Box
-									sx={{
-										minHeight: '100%',
-										py: 0.5,
-									}}
-								/>
-								<MuiPickersUtilsProvider utils={DateFnsUtils}>
-									<KeyboardDatePicker
-										margin="normal"
-										id="date-picker-dialog"
-										label="모집기간"
-										format="yyyy/MM/dd"
-										value={postBody.selectDate}
-										onChange={handleDateChange}
-										KeyboardButtonProps={{
-											'aria-label': 'change date',
-										}}
-										autoOk="true"
-									/>
-								</MuiPickersUtilsProvider>
 								<Box
 									sx={{
 										minHeight: '100%',
@@ -318,7 +370,7 @@ const TeamRegister = () => {
 										backgroundColor: 'primary.smoothgreen'
 									}}
 								>
-									<InputLabel id="과목명">&nbsp;과목명</InputLabel>
+									<InputLabel id="과목명">&nbsp; 과목명</InputLabel>
 									<Select
 										labelId="과목명"
 										id="과목명"
@@ -362,7 +414,7 @@ const TeamRegister = () => {
 										width: 200
 									}}
 								>
-									<InputLabel id="기술스택">&nbsp;기술스택</InputLabel>
+									<InputLabel id="기술스택">&nbsp; 기술스택</InputLabel>
 									<Select
 										labelId="기술스택"
 										id="기술스택"
@@ -395,73 +447,173 @@ const TeamRegister = () => {
 										py: 2,
 									}}
 								/>
+								<h3>년도</h3>
 								<Box
 									sx={{
-										backgroundColor: '#D3D3D3',
-										height: 2,
-										boxShadow: 5
+										minHeight: '100%',
+										py: 0.5,
 									}}
 								/>
+								<FormControl
+									sx={{
+										width: 200,
+									}}
+								>
+									<InputLabel id="년도">&nbsp; 년도</InputLabel>
+									<Select
+										labelId="년도"
+										id="년도"
+										value={year}
+										onChange={handleyearChange}
+										input={<OutlinedInput label="년도" />}
+										renderValue={(selected) => selected.join(', ')}
+										MenuProps={MenuProps}
+									>
+										{years.map((s) => (
+											<MenuItem key={s} value={s}>
+												<Checkbox
+													sx={{
+														color: 'primary.darkgreen',
+														'&.Mui-checked': {
+															color: 'primary.darkgreen',
+														},
+													}}
+													checked={year.indexOf(s) > -1}
+												/>
+												<ListItemText primary={s} />
+											</MenuItem>
+										))}
+									</Select>
+								</FormControl>
 								<Box
 									sx={{
 										minHeight: '100%',
 										py: 2,
 									}}
 								/>
-								<h3 style={{ display: 'inline-block', width: 50, marginTop: 15 }}>질문</h3>
+								<h3>프로젝트 지도 교수</h3>
 								<Box
 									sx={{
 										minHeight: '100%',
-										py: 1,
+										py: 0.5,
 									}}
 								/>
-								<TextField
-									fullWidth
+								<FormControl
 									sx={{
-										flex: '1',
-										flexDirection: 'row',
-										boxShadow: 5,
-										borderBottomRightRadius: 5,
-										borderBottomLeftRadius: 5,
-										borderTopRightRadius: 5,
-										borderTopLeftRadius: 5,
-										backgroundColor: 'primary.smoothgreen',
+										width: 200,
+										backgroundColor: 'primary.smoothgreen'
 									}}
-									InputProps={{
-										startAdornment: (
-											<InputAdornment position="start">
-												<SvgIcon
-													fontSize="small"
-													color="action"
+								>
+									<InputLabel id="지도교수">&nbsp; 지도교수</InputLabel>
+									<Select
+										labelId="지도교수"
+										id="지도교수"
+										value={professor}
+										onChange={handleprofessorChange}
+										input={<OutlinedInput label="지도교수" />}
+										renderValue={(selected) => selected.join(', ')}
+										MenuProps={MenuProps}
+									>
+										{professors.map((s) => (
+											<MenuItem key={s} value={s}>
+												<Checkbox
+													sx={{
+														color: 'primary.darkgreen',
+														'&.Mui-checked': {
+															color: 'primary.darkgreen',
+														},
+													}}
+													checked={professor.indexOf(s) > -1}
 												/>
-											</InputAdornment>
-										)
-									}}
-									multiline
-									rows={4}
-									placeholder="추가 질문을 입력해주세요"
-									variant="outlined"
-									onChange={handlequestionChange}
-								/>
+												<ListItemText primary={s} />
+											</MenuItem>
+										))}
+									</Select>
+								</FormControl>
 								<Box
 									sx={{
 										minHeight: '100%',
-										py: 3,
+										py: 2,
 									}}
 								/>
-								<Link to="/se/teamSpecific">
+								<h3>프로젝트 카테고리</h3>
+								<Box
+									sx={{
+										minHeight: '100%',
+										py: 0.5,
+									}}
+								/>
+								<FormControl
+									sx={{
+										width: 200,
+										backgroundColor: 'primary.smoothgreen'
+									}}
+								>
+									<InputLabel id="카테고리">&nbsp; 카테고리</InputLabel>
+									<Select
+										labelId="카테고리"
+										id="카테고리"
+										multiple
+										value={category}
+										onChange={handlecategoryChange}
+										input={<OutlinedInput label="카테고리" />}
+										renderValue={(selected) => selected.join(', ')}
+										MenuProps={MenuProps}
+									>
+										{categorys.map((s) => (
+											<MenuItem key={s} value={s}>
+												<Checkbox
+													sx={{
+														color: 'primary.darkgreen',
+														'&.Mui-checked': {
+															color: 'primary.darkgreen',
+														},
+													}}
+													checked={category.indexOf(s) > -1}
+												/>
+												<ListItemText primary={s} />
+											</MenuItem>
+										))}
+									</Select>
+								</FormControl>
+								<Box
+									sx={{
+										minHeight: '100%',
+										py: 2,
+									}}
+								/>
+								<Link to="/app/ProjectDetail">
 									<Button
 										variant="contained"
 										color="success"
 										onClick={() => {
-											alert('등록되었습니다.');
+											alert('수정되었습니다.');
 										}}
 									>
 										<h3 style={{
 											color: '#ffffff',
 										}}
 										>
-											등록
+											수정하기
+										</h3>
+									</Button>
+								</Link>
+								<Link to="/app/dashboard">
+									<Button
+										variant="contained"
+										color="success"
+										sx={{
+											float: 'right'
+										}}
+										onClick={() => {
+											alert('삭제되었습니다.');
+										}}
+									>
+										<h3 style={{
+											color: '#ffffff',
+										}}
+										>
+											삭제하기
 										</h3>
 									</Button>
 								</Link>
@@ -474,4 +626,4 @@ const TeamRegister = () => {
 	);
 };
 
-export default TeamRegister;
+export default ProjectUpdate;

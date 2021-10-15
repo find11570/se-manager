@@ -63,6 +63,8 @@ const useStyles = makeStyles((theme) => ({
 export default function MypageTabs() {
 	const classes = useStyles();
 	const [Data, setData] = React.useState({
+		id: '1',
+		projectid: '1',
 		title: 'SE-Manager',
 		people: '진채연, 김현수, 황영민, 김지영',
 		see: '50',

@@ -15,6 +15,7 @@ import Modal2 from 'src/components/modal/Modal2';
 const TeamSpecific = () => {
 	const [chartData] = useState({
 		id: '1',
+		peopleKey: '1',
 		name: '진채연',
 		date: '5',
 		title: '창의 융합 종합 설계 1 프로젝트 인원 모집',

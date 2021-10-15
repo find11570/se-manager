@@ -21,7 +21,6 @@ import { Link } from 'react-router-dom';
 
 const SignUpRegister = () => {
 	const [postBody, setPostBody] = useState({
-		id: '',
 		pw: '',
 		checkpw: '',
 		name: '',

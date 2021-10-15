@@ -59,7 +59,6 @@ const TeamUpdate = () => {
 		name: '진채연',
 		date: '2021-05-08',
 		title: '창의 융합 종합 설계 1 프로젝트 인원 모집',
-		tag: ['hi', 'my', 'name', 'is', 'door'],
 		Maxpeople: '4',
 		content: '으아아아아아ㅏㅇ 나는 프로젝트하는 중이다..... 으아아아아아아아 배고파아아아아앙 키키키키키키키키 졸려어ㅓㅌ어어어어어라너미런아ㅣㅓㄹ민ㅇㄹ',
 		question: '너무졸린심경을 표현하시오'
@@ -453,7 +452,7 @@ const TeamUpdate = () => {
 										py: 3,
 									}}
 								/>
-								<Link to="/se/Team">
+								<Link to="/se/teamSpecific">
 									<Button
 										variant="contained"
 										color="success"

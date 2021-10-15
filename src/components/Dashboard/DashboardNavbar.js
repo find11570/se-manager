@@ -50,23 +50,25 @@ const DashboardNavbar = ({ onMobileNavOpen, ...rest }) => {
 					</Link>
 				</Hidden>
 				<Hidden lgDown>
-					<Button
-						variant="contained"
-						size="small"
-						sx={{
-							float: 'right',
-							marginRight: 2,
-							marginTop: 0.5,
-							marginLeft: 2
-						}}
-					>
-						<h3 style={{
-							color: '#006400',
-						}}
+					<Link to="/app/ProjectRegister">
+						<Button
+							variant="contained"
+							size="small"
+							sx={{
+								float: 'right',
+								marginRight: 2,
+								marginTop: 0.5,
+								marginLeft: 2
+							}}
 						>
-							프로젝트 생성
-						</h3>
-					</Button>
+							<h3 style={{
+								color: '#006400',
+							}}
+							>
+								프로젝트 생성
+							</h3>
+						</Button>
+					</Link>
 					<Link to="/login/login">
 						<Button
 							variant="contained"

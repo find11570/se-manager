@@ -10,10 +10,12 @@ import {
 	InputAdornment,
 	SvgIcon,
 	Avatar,
+	Button
 } from '@material-ui/core';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import SimpleTabs from 'src/components/Dashboard/SimpleTabs';
+import { Link } from 'react-router-dom';
 
 const ProjectDetail = () => {
 	const [chartData] = useState({
@@ -243,6 +245,28 @@ const ProjectDetail = () => {
 						sx={{
 							minHeight: '100%',
 							py: 2,
+						}}
+					/>
+					<Link to="/app/ProjectUpdate">
+						<Button
+							variant="contained"
+							color="success"
+							sx={{
+								float: 'right'
+							}}
+						>
+							<h3 style={{
+								color: '#ffffff',
+							}}
+							>
+								수정하기
+							</h3>
+						</Button>
+					</Link>
+					<Box
+						sx={{
+							minHeight: '100%',
+							py: 4,
 						}}
 					/>
 					<Box
