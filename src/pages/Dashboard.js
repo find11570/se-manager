@@ -611,6 +611,7 @@ const Dashboard = () => {
 									<Card
 										sx={{
 											boxShadow: 5,
+											backgroundColor: 'primary.smoothgreen'
 										}}
 									>
 										<CardContent>
