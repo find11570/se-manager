@@ -22,6 +22,7 @@ import ProjectDetail from 'src/components/Dashboard/ProjectDetail';
 import Mypage from 'src/components/Mypage/Mypage';
 import ProjectRegister from 'src/components/Dashboard/ProjectRegister';
 import ProjectUpdate from 'src/components/Dashboard/ProjectUpdate';
+import TeamList from 'src/components/Team/TeamList';
 
 const routes = [
 	{
@@ -44,6 +45,7 @@ const routes = [
 			{ path: 'teamSpecific', element: <TeamSpecific /> },
 			{ path: 'teamupdate', element: <TeamUpdate /> },
 			{ path: 'teamSpecificQuestion', element: <TeamSpecificQuestion /> },
+			{ path: 'teamList', element: <TeamList /> }
 		]
 	},
 	{

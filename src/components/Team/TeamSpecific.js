@@ -198,6 +198,26 @@ const TeamSpecific = () => {
 									{chartData.content}
 								</h3>
 							</Box>
+							<Link to="/se/team">
+								<Button
+									variant="contained"
+									size="medium"
+									color="success"
+									sx={{
+										float: 'right',
+										marginRight: 2,
+										marginTop: 0.5,
+										marginLeft: 2
+									}}
+								>
+									<h3 style={{
+										color: '#ffffff',
+									}}
+									>
+										마감하기
+									</h3>
+								</Button>
+							</Link>
 							<Link to="/se/teamSpecificQuestion">
 								<Button
 									variant="contained"
@@ -232,6 +252,26 @@ const TeamSpecific = () => {
 							py: 2,
 						}}
 					/>
+					<Link to="/se/teamList">
+						<Button
+							variant="contained"
+							size="medium"
+							color="success"
+							sx={{
+								float: 'right',
+								marginRight: 2,
+								marginTop: 0.5,
+								marginLeft: 2
+							}}
+						>
+							<h3 style={{
+								color: '#ffffff',
+							}}
+							>
+								신청목록
+							</h3>
+						</Button>
+					</Link>
 					<Link to="/se/teamupdate">
 						<Button
 							variant="contained"
