@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import { experimentalStyled } from '@material-ui/core';
+import { experimentalStyled } from '@material-ui/core/styles';
 import MypageboardNavbar from 'src/components/Mypage/MypageboardNavbar';
 import DashboardSidebar from 'src/components/Dashboard/DashboardSidebar';
 

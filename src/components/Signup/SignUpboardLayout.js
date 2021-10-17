@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import { experimentalStyled } from '@material-ui/core';
-import SignUpboardNavbar from './SignUpboardNavbar';
+import { experimentalStyled } from '@material-ui/core/styles';
+import SignUpboardNavbar from 'src/components/Signup/SignUpboardNavbar';
 import DashboardSidebar from 'src/components/Dashboard/DashboardSidebar';
 
 const SignUpboardLayoutRoot = experimentalStyled('div')(

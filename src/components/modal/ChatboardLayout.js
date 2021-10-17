@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import { experimentalStyled } from '@material-ui/core';
-import ChatboardNavbar from './ChatboardNavbar';
+import { experimentalStyled } from '@material-ui/core/styles';
+import ChatboardNavbar from 'src/components/modal/ChatboardNavbar';
 import DashboardSidebar from 'src/components/Dashboard/DashboardSidebar';
 
 const ChatboardLayoutRoot = experimentalStyled('div')(

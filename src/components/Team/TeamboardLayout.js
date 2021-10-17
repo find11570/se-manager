@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import { experimentalStyled } from '@material-ui/core';
-import TeamboardNavbar from './TeamboardNavbar';
+import { experimentalStyled } from '@material-ui/core/styles';
+import TeamboardNavbar from 'src/components/Team/TeamboardNavbar';
 import DashboardSidebar from 'src/components/Dashboard/DashboardSidebar';
 
 const TeamboardLayoutRoot = experimentalStyled('div')(

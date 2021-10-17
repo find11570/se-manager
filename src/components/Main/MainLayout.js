@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router-dom';
-import { experimentalStyled } from '@material-ui/core';
+import { experimentalStyled } from '@material-ui/core/styles';
 import MainNavbar from './MainNavbar';
 
 const MainLayoutRoot = experimentalStyled('div')(
