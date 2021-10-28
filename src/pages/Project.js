@@ -9,7 +9,8 @@ import {
 	SvgIcon,
 	Card,
 	CardContent,
-	Hidden
+	Hidden,
+	Button
 } from '@material-ui/core';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
@@ -279,51 +280,86 @@ const Project = () => {
 				{postBody.name}
 				<Container maxWidth={false}>
 					<Grid
+						container
+						spacing={3}
+					>
+						<Grid
+							item
+							lg={9}
+							md={9}
+							sm={9}
+							xs={9}
+						>
+							<TextField
+								fullWidth
+								sx={{
+									flex: '1',
+									flexDirection: 'row',
+									boxShadow: 5,
+									borderBottomRightRadius: 5,
+									borderBottomLeftRadius: 5,
+									borderTopRightRadius: 5,
+									borderTopLeftRadius: 5,
+									backgroundColor: 'primary.smoothgreen'
+								}}
+								InputProps={{
+									startAdornment: (
+										<InputAdornment position="start">
+											<SvgIcon
+												fontSize="small"
+												color="action"
+											/>
+										</InputAdornment>
+									)
+								}}
+								placeholder="프로젝트를 검색 해보세요!"
+								variant="outlined"
+								onChange={handleTextChange}
+							/>
+						</Grid>
+						<Grid
+							item
+							lg={2}
+							md={2}
+							sm={2}
+							xs={2}
+						>
+							<Link to="/app/project">
+								<Button
+									variant="contained"
+									color="success"
+									size="large"
+								>
+									<h4 style={{
+										color: '#ffffff',
+									}}
+									>
+										검색
+									</h4>
+								</Button>
+							</Link>
+						</Grid>
+					</Grid>
+					<Box
+						sx={{
+							minHeight: '100%',
+							py: 2,
+						}}
+					/>
+					<Box
+						sx={{
+							bgcolor: 'primary.darkgreen',
+							width: '100%',
+							height: 2,
+						}}
+					/>
+					<Grid
 						item
 						lg={10}
 						md={10}
 						sm={12}
 						xs={12}
 					>
-						<TextField
-							fullWidth
-							sx={{
-								flex: '1',
-								flexDirection: 'row',
-								boxShadow: 5,
-								borderBottomRightRadius: 5,
-								borderBottomLeftRadius: 5,
-								borderTopRightRadius: 5,
-								borderTopLeftRadius: 5,
-								backgroundColor: 'primary.smoothgreen',
-							}}
-							InputProps={{
-								startAdornment: (
-									<InputAdornment position="start">
-										<SvgIcon
-											fontSize="small"
-											color="action"
-										/>
-									</InputAdornment>
-								)
-							}}
-							placeholder="프로젝트를 검색 해보세요!"
-							variant="outlined"
-							onChange={handleTextChange}
-						/>
-						<Box
-							sx={{
-								minHeight: '100%',
-								py: 2,
-							}}
-						/>
-						<Box
-							sx={{
-								bgcolor: 'primary.darkgreen',
-								width: '100%',
-								height: 2,
-							}}
-						/>
 						<Hidden lgDown>
 							<Box
 								sx={{
@@ -336,7 +372,7 @@ const Project = () => {
 									width: 200,
 								}}
 							>
-								<InputLabel id="기술스택">&nbsp;기술스택</InputLabel>
+								<InputLabel id="기술스택">&nbsp; 기술스택</InputLabel>
 								<Select
 									labelId="기술스택"
 									id="기술스택"
@@ -370,7 +406,7 @@ const Project = () => {
 									backgroundColor: 'primary.smoothgreen'
 								}}
 							>
-								<InputLabel id="과목명">&nbsp;과목명</InputLabel>
+								<InputLabel id="과목명">&nbsp; 과목명</InputLabel>
 								<Select
 									labelId="과목명"
 									id="과목명"
@@ -403,7 +439,7 @@ const Project = () => {
 									marginLeft: 2.5,
 								}}
 							>
-								<InputLabel id="년도">&nbsp;년도</InputLabel>
+								<InputLabel id="년도">&nbsp; 년도</InputLabel>
 								<Select
 									labelId="년도"
 									id="년도"
@@ -437,7 +473,7 @@ const Project = () => {
 									backgroundColor: 'primary.smoothgreen'
 								}}
 							>
-								<InputLabel id="지도교수">&nbsp;지도교수</InputLabel>
+								<InputLabel id="지도교수">&nbsp; 지도교수</InputLabel>
 								<Select
 									labelId="지도교수"
 									id="지도교수"
@@ -471,7 +507,7 @@ const Project = () => {
 									float: 'right'
 								}}
 							>
-								<InputLabel id="최신순">&nbsp;최신순</InputLabel>
+								<InputLabel id="최신순">&nbsp; 최신순</InputLabel>
 								<Select
 									labelId="최신순"
 									id="최신순"

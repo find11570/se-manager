@@ -62,6 +62,11 @@ const ProjectDetail = () => {
 			id: 7,
 			name: '나는야 카와이 소졍쨩',
 			text: '소정이는 귀여워 왜나 나는 귀엽기때문이야 키키키 소정이는 애기소졍짱 하와와와와~'
+		},
+		{
+			id: 8,
+			name: '기범',
+			text: '냐미~'
 		}
 	];
 	const [postBody, setPostBody] = useState({
@@ -216,7 +221,6 @@ const ProjectDetail = () => {
 											&nbsp;
 											{chartData.good}
 										</h4>
-
 									</Box>
 								</Hidden>
 								<Hidden lgUp>
@@ -291,32 +295,67 @@ const ProjectDetail = () => {
 						}}
 					/>
 					{postBody.content}
-					<TextField
-						fullWidth
-						sx={{
-							flex: '1',
-							flexDirection: 'row',
-							boxShadow: 5,
-							borderBottomRightRadius: 5,
-							borderBottomLeftRadius: 5,
-							borderTopRightRadius: 5,
-							borderTopLeftRadius: 5,
-							backgroundColor: 'primary.smoothgreen'
-						}}
-						InputProps={{
-							startAdornment: (
-								<InputAdornment position="start">
-									<SvgIcon
-										fontSize="small"
-										color="action"
-									/>
-								</InputAdornment>
-							)
-						}}
-						placeholder="댓글을 입력하세요!"
-						variant="outlined"
-						onChange={handleTextChange}
-					/>
+					<Grid
+						container
+						spacing={2}
+					>
+						<Grid
+							item
+							lg={9}
+							md={9}
+							sm={9}
+							xs={9}
+						>
+							<TextField
+								fullWidth
+								sx={{
+									flex: '1',
+									flexDirection: 'row',
+									boxShadow: 5,
+									borderBottomRightRadius: 5,
+									borderBottomLeftRadius: 5,
+									borderTopRightRadius: 5,
+									borderTopLeftRadius: 5,
+									backgroundColor: 'primary.smoothgreen'
+								}}
+								InputProps={{
+									startAdornment: (
+										<InputAdornment position="start">
+											<SvgIcon
+												fontSize="small"
+												color="action"
+											/>
+										</InputAdornment>
+									)
+								}}
+								placeholder="댓글을 입력하세요!"
+								variant="outlined"
+								onChange={handleTextChange}
+							/>
+						</Grid>
+						<Grid
+							item
+							lg={2}
+							md={2}
+							sm={2}
+							xs={2}
+						>
+							<Link to="/app/project">
+								<Button
+									variant="contained"
+									color="success"
+									size="large"
+								>
+									<h4 style={{
+										color: '#ffffff',
+									}}
+									>
+										검색
+									</h4>
+								</Button>
+							</Link>
+						</Grid>
+					</Grid>
 					<Box
 						sx={{
 							minHeight: '100%',

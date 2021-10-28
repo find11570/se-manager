@@ -119,10 +119,10 @@ const TeamSpecific = () => {
 											marginLeft: 2,
 										}}
 									>
-										<h3 style={{ color: '#006400' }}>
+										<h4 style={{ color: '#006400' }}>
 											#&nbsp;
 											{List}
-										</h3>
+										</h4>
 									</Box>
 								</Hidden>
 								<Box>

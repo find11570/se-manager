@@ -9,7 +9,8 @@ import {
 	SvgIcon,
 	Card,
 	CardContent,
-	Hidden
+	Hidden,
+	Button
 } from '@material-ui/core';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
@@ -304,38 +305,65 @@ const Dashboard = () => {
 				{postBody.name}
 				<Container maxWidth={false}>
 					<Grid
-						item
-						lg={10}
-						md={10}
-						sm={12}
-						xs={12}
+						container
+						spacing={3}
 					>
-						<TextField
-							fullWidth
-							sx={{
-								flex: '1',
-								flexDirection: 'row',
-								boxShadow: 5,
-								borderBottomRightRadius: 5,
-								borderBottomLeftRadius: 5,
-								borderTopRightRadius: 5,
-								borderTopLeftRadius: 5,
-								backgroundColor: 'primary.smoothgreen'
-							}}
-							InputProps={{
-								startAdornment: (
-									<InputAdornment position="start">
-										<SvgIcon
-											fontSize="small"
-											color="action"
-										/>
-									</InputAdornment>
-								)
-							}}
-							placeholder="프로젝트를 검색 해보세요!"
-							variant="outlined"
-							onChange={handleTextChange}
-						/>
+						<Grid
+							item
+							lg={9}
+							md={9}
+							sm={9}
+							xs={9}
+						>
+							<TextField
+								fullWidth
+								sx={{
+									flex: '1',
+									flexDirection: 'row',
+									boxShadow: 5,
+									borderBottomRightRadius: 5,
+									borderBottomLeftRadius: 5,
+									borderTopRightRadius: 5,
+									borderTopLeftRadius: 5,
+									backgroundColor: 'primary.smoothgreen'
+								}}
+								InputProps={{
+									startAdornment: (
+										<InputAdornment position="start">
+											<SvgIcon
+												fontSize="small"
+												color="action"
+											/>
+										</InputAdornment>
+									)
+								}}
+								placeholder="프로젝트를 검색 해보세요!"
+								variant="outlined"
+								onChange={handleTextChange}
+							/>
+						</Grid>
+						<Grid
+							item
+							lg={2}
+							md={2}
+							sm={2}
+							xs={2}
+						>
+							<Link to="/app/project">
+								<Button
+									variant="contained"
+									color="success"
+									size="large"
+								>
+									<h4 style={{
+										color: '#ffffff',
+									}}
+									>
+										검색
+									</h4>
+								</Button>
+							</Link>
+						</Grid>
 					</Grid>
 					<Box
 						sx={{
