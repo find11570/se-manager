@@ -8,11 +8,29 @@ import {
 } from '@material-ui/core';
 import NavItem from 'src/components/NavItem';
 
+const isLogin = () => {
+	if (sessionStorage.getItem('user_token')) {
+		return (
+			{
+				href: '/mypage/page',
+				title: '마이페이지'
+			},
+			{
+				title: '로그아웃'
+			}
+		);
+	} else {
+		return (
+			{
+				href: '/login/login',
+				title: '로그인 및 회원가입'
+			}
+		);
+	}
+}
+
 const items = [
-	{
-		href: '/login/login',
-		title: '로그인 및 회원가입'
-	},
+	isLogin(),
 	{
 		href: '/app/dashboard',
 		title: '인터넷디스크'
@@ -21,10 +39,6 @@ const items = [
 		href: '/se/team',
 		title: '팀원 모집'
 	},
-	{
-		href: '/mypage/page',
-		title: '마이페이지'
-	}
 ];
 
 const DashboardSidebar = ({ onMobileClose, openMobile }) => {

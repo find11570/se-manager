@@ -10,6 +10,7 @@ import TeamProfile from 'src/components/Dashboard/TeamProfile';
 import FileViewer from 'src/components/Dashboard/FileViewer';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
+import Video from 'src/components/Dashboard/Video';
 
 function TabPanel(props) {
 	const {
@@ -121,7 +122,7 @@ export default function SimpleTabs() {
 				<FileViewer />
 			</TabPanel>
 			<TabPanel value={value.type} index={5}>
-				<FileViewer />
+				<Video />
 			</TabPanel>
 			<TabPanel value={value.type} index={6}>
 				<TeamProfile />

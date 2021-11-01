@@ -8,28 +8,17 @@ import {
 	TextField,
 	InputAdornment,
 	SvgIcon,
-	Button
+	Button,
+	Hidden
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 
 const Password = () => {
 	const [postBody, setPostBody] = useState({
-		name: '',
-		number: '',
 		id: '',
 		pw: '',
 		checkpw: '',
 	});
-	const handlenameChange = (event) => {
-		setPostBody({
-			name: event.currentTarget.value,
-		});
-	};
-	const handlenumberChange = (event) => {
-		setPostBody({
-			number: event.currentTarget.value,
-		});
-	};
 	const handleidChange = (event) => {
 		setPostBody({
 			id: event.currentTarget.value,
@@ -51,6 +40,7 @@ const Password = () => {
 				<title>Password</title>
 			</Helmet>
 			<Box>
+				{postBody.id}
 				<Box
 					sx={{
 						minHeight: '100%',
@@ -93,118 +83,116 @@ const Password = () => {
 								<Box
 									sx={{
 										minHeight: '100%',
-										py: 1.5,
-									}}
-								/>
-								<h3>학번</h3>
-								{postBody.id}
-								<Box
-									sx={{
-										minHeight: '100%',
-										py: 0.5,
-									}}
-								/>
-								<TextField
-									fullWidth
-									sx={{
-										flex: '1',
-										flexDirection: 'row',
-										boxShadow: 5,
-										borderBottomRightRadius: 5,
-										borderBottomLeftRadius: 5,
-										borderTopRightRadius: 5,
-										borderTopLeftRadius: 5,
-										backgroundColor: 'primary.smoothgreen',
-									}}
-									InputProps={{
-										startAdornment: (
-											<InputAdornment position="start">
-												<SvgIcon
-													fontSize="small"
-													color="action"
-												/>
-											</InputAdornment>
-										)
-									}}
-									variant="outlined"
-									onChange={handlenumberChange}
-								/>
-								<Box
-									sx={{
-										minHeight: '100%',
 										py: 2,
 									}}
 								/>
-								<h3>이름</h3>
+								<h3>이메일</h3>
 								<Box
 									sx={{
 										minHeight: '100%',
 										py: 0.5,
 									}}
 								/>
-								<TextField
-									fullWidth
-									sx={{
-										flex: '1',
-										flexDirection: 'row',
-										boxShadow: 5,
-										borderBottomRightRadius: 5,
-										borderBottomLeftRadius: 5,
-										borderTopRightRadius: 5,
-										borderTopLeftRadius: 5,
-										backgroundColor: 'primary.smoothgreen',
-									}}
-									InputProps={{
-										startAdornment: (
-											<InputAdornment position="start">
-												<SvgIcon
-													fontSize="small"
-													color="action"
-												/>
-											</InputAdornment>
-										)
-									}}
-									placeholder="비밀번호 입력"
-									variant="outlined"
-									onChange={handlenameChange}
-								/>
-								<Box
-									sx={{
-										minHeight: '100%',
-										py: 2,
-									}}
-								/>
-								<h3>아이디</h3>
+								<Hidden lgDown>
+									<TextField
+										halfwidth="true"
+										sx={{
+											flex: '1',
+											flexDirection: 'row',
+											boxShadow: 5,
+											borderBottomRightRadius: 5,
+											borderBottomLeftRadius: 5,
+											borderTopRightRadius: 5,
+											borderTopLeftRadius: 5,
+											marginRight: 3,
+											backgroundColor: 'primary.smoothgreen',
+										}}
+										InputProps={{
+											startAdornment: (
+												<InputAdornment position="start">
+													<SvgIcon
+														fontSize="small"
+														color="action"
+													/>
+												</InputAdornment>
+											)
+										}}
+										placeholder="email@email.com"
+										variant="outlined"
+										onChange={handleidChange}
+									/>
+									<Button
+										variant="contained"
+										size="large"
+										color="success"
+										sx={{
+											width: 240,
+											marginTop: 0.5
+										}}
+									>
+										<h3 style={{
+											color: '#ffffff',
+										}}
+										>
+											인증번호 전송
+										</h3>
+									</Button>
+								</Hidden>
+								<Hidden lgUp>
+									<TextField
+										halfwidth="true"
+										sx={{
+											flex: '1',
+											flexDirection: 'row',
+											boxShadow: 5,
+											borderBottomRightRadius: 5,
+											borderBottomLeftRadius: 5,
+											borderTopRightRadius: 5,
+											borderTopLeftRadius: 5,
+											backgroundColor: 'primary.smoothgreen',
+										}}
+										InputProps={{
+											startAdornment: (
+												<InputAdornment position="start">
+													<SvgIcon
+														fontSize="small"
+														color="action"
+													/>
+												</InputAdornment>
+											)
+										}}
+										placeholder="email@email.com"
+										variant="outlined"
+										onChange={handleidChange}
+									/>
+									<Box
+										sx={{
+											minHeight: '100%',
+											py: 0.5,
+										}}
+									/>
+									<Button
+										variant="contained"
+										size="large"
+										color="success"
+										sx={{
+											width: 240,
+											marginTop: 0.5
+										}}
+									>
+										<h3 style={{
+											color: '#ffffff',
+										}}
+										>
+											인증번호 전송
+										</h3>
+									</Button>
+								</Hidden>
 								<Box
 									sx={{
 										minHeight: '100%',
 										py: 0.5,
 									}}
-								/>
-								<TextField
-									fullWidth
-									sx={{
-										flex: '1',
-										flexDirection: 'row',
-										boxShadow: 5,
-										borderBottomRightRadius: 5,
-										borderBottomLeftRadius: 5,
-										borderTopRightRadius: 5,
-										borderTopLeftRadius: 5,
-										backgroundColor: 'primary.smoothgreen',
-									}}
-									InputProps={{
-										startAdornment: (
-											<InputAdornment position="start">
-												<SvgIcon
-													fontSize="small"
-													color="action"
-												/>
-											</InputAdornment>
-										)
-									}}
-									variant="outlined"
-									onChange={handleidChange}
 								/>
 								<Box
 									sx={{

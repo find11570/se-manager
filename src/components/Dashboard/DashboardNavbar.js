@@ -15,7 +15,122 @@ import Logo from 'src/components/Logo';
 
 const DashboardNavbar = ({ onMobileNavOpen, ...rest }) => {
 	const [notifications] = useState([]);
+	const isLogin = () => {
+		if (sessionStorage.getItem('user_token')) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 
+	function check() {
+		if (isLogin()) {
+			return (
+				<Box>
+					<Hidden lgUp>
+						<Link to="/app/ProjectRegister">
+							<Button
+								variant="contained"
+								size="small"
+								sx={{
+									float: 'right',
+									marginRight: 2,
+									marginTop: 0.5,
+									marginLeft: 2
+								}}
+							>
+								<h4 style={{
+									color: '#006400',
+								}}
+								>
+									글생성
+								</h4>
+							</Button>
+						</Link>
+					</Hidden>
+					<Hidden lgDown>
+						<Link to="/app/ProjectRegister">
+							<Button
+								variant="contained"
+								size="small"
+								sx={{
+									float: 'right',
+									marginRight: 2,
+									marginTop: 0.5,
+									marginLeft: 2
+								}}
+							>
+								<h3 style={{
+									color: '#006400',
+								}}
+								>
+									프로젝트 생성
+								</h3>
+							</Button>
+						</Link>
+						<Link to="/mypage/page">
+							<Button
+								variant="contained"
+								size="small"
+								sx={{
+									float: 'right',
+									marginRight: 2,
+									marginTop: 0.5,
+									marginLeft: 2
+								}}
+							>
+								<h3 style={{
+									color: '#006400',
+								}}
+								>
+									마이페이지
+								</h3>
+							</Button>
+						</Link>
+						<Button
+							variant="contained"
+							size="small"
+							sx={{
+								float: 'right',
+								marginRight: 2,
+								marginTop: 0.5,
+								marginLeft: 2
+							}}
+						>
+							<h3 style={{
+								color: '#006400',
+							}}
+							>
+								로그아웃
+							</h3>
+						</Button>
+					</Hidden>
+				</Box>
+			);
+		} else {
+			return (
+				<Link to="/login/login">
+					<Button
+						variant="contained"
+						size="small"
+						sx={{
+							float: 'right',
+							marginRight: 2,
+							marginTop: 0.5,
+							marginLeft: 2
+						}}
+					>
+						<h3 style={{
+							color: '#006400',
+						}}
+						>
+							로그인
+						</h3>
+					</Button>
+				</Link>
+			);
+		}
+	}
 	return (
 		<AppBar
 			elevation={0}
@@ -29,65 +144,8 @@ const DashboardNavbar = ({ onMobileNavOpen, ...rest }) => {
 					<h3>&nbsp;&gt;&nbsp; 프로젝트 모집</h3>
 				</Hidden>
 				<Box sx={{ flexGrow: 1 }} />
-				<Hidden lgUp>
-					<Link to="/chat/chat">
-						<Button
-							variant="contained"
-							size="small"
-							sx={{
-								float: 'right',
-								marginTop: 0.5,
-								marginLeft: 2
-							}}
-						>
-							<h3 style={{
-								color: '#006400',
-							}}
-							>
-								채팅하기
-							</h3>
-						</Button>
-					</Link>
-				</Hidden>
+				{check()}
 				<Hidden lgDown>
-					<Link to="/app/ProjectRegister">
-						<Button
-							variant="contained"
-							size="small"
-							sx={{
-								float: 'right',
-								marginRight: 2,
-								marginTop: 0.5,
-								marginLeft: 2
-							}}
-						>
-							<h3 style={{
-								color: '#006400',
-							}}
-							>
-								프로젝트 생성
-							</h3>
-						</Button>
-					</Link>
-					<Link to="/login/login">
-						<Button
-							variant="contained"
-							size="small"
-							sx={{
-								float: 'right',
-								marginRight: 2,
-								marginTop: 0.5,
-								marginLeft: 2
-							}}
-						>
-							<h3 style={{
-								color: '#006400',
-							}}
-							>
-								로그인
-							</h3>
-						</Button>
-					</Link>
 					<IconButton color="inherit">
 						<Badge
 							badgeContent={notifications.length}

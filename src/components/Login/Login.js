@@ -11,22 +11,52 @@ import {
 	Button
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+
+const api = 'https://se-disk.herokuapp.com/api';
 
 const Login = () => {
 	const [postBody, setPostBody] = useState({
 		id: '',
-		pw: '',
+		pw: ''
 	});
 
 	const handleidChange = (event) => {
-		setPostBody({
-			id: event.currentTarget.value,
-		});
+		setPostBody((prev) => ({
+			...prev,
+			id: event.target.value
+		}));
 	};
 	const handlepwChange = (event) => {
-		setPostBody({
-			pw: event.currentTarget.value,
-		});
+		setPostBody((prev) => ({
+			...prev,
+			pw: event.target.value
+		}));
+	};
+	const handleLogin = async () => {
+		console.log(postBody);
+		const url = '/auth/login';
+		console.log(api + url);
+		await axios.post(api + url, {
+			user_login_id: postBody.id,
+			user_password: postBody.pw
+		})
+			.then((response) => {
+				console.log(response.data);
+				if (response.data.sucess === true) {
+					alert('로그인 성공');
+					const target = '/app/dashboard';
+					sessionStorage.setItem(
+						'user_data',
+						JSON.stringify(response.data.user)
+					);
+					sessionStorage.setItem('user_token', response.data.token);
+					window.location.href = target;
+				} else {
+					alert('로그인 실패');
+				}
+			})
+			.catch((err) => console.log(err));
 	};
 	return (
 		<>
@@ -37,16 +67,10 @@ const Login = () => {
 				<Box
 					sx={{
 						minHeight: '100%',
-						py: 3,
+						py: 3
 					}}
 				/>
-				<Grid
-					item
-					lg={10}
-					md={10}
-					sm={12}
-					xs={12}
-				>
+				<Grid item lg={10} md={10} sm={12} xs={12}>
 					<Card
 						sx={{
 							borderBottomRightRadius: 10,
@@ -57,9 +81,7 @@ const Login = () => {
 						}}
 					>
 						<CardContent>
-							<h2 style={{ color: '#006400' }}>
-								로그인
-							</h2>
+							<h2 style={{ color: '#006400' }}>로그인</h2>
 							<Box
 								sx={{
 									minHeight: '100%',
@@ -76,18 +98,18 @@ const Login = () => {
 								<Box
 									sx={{
 										minHeight: '100%',
-										py: 1.5,
+										py: 1.5
 									}}
 								/>
 								<h3>아이디</h3>
-								{postBody.id}
 								<Box
 									sx={{
 										minHeight: '100%',
-										py: 0.5,
+										py: 0.5
 									}}
 								/>
 								<TextField
+									id="id_field"
 									fullWidth
 									sx={{
 										flex: '1',
@@ -97,36 +119,36 @@ const Login = () => {
 										borderBottomLeftRadius: 5,
 										borderTopRightRadius: 5,
 										borderTopLeftRadius: 5,
-										backgroundColor: 'primary.smoothgreen',
+										backgroundColor: 'primary.smoothgreen'
 									}}
 									InputProps={{
 										startAdornment: (
 											<InputAdornment position="start">
-												<SvgIcon
-													fontSize="small"
-													color="action"
-												/>
+												<SvgIcon fontSize="small" color="action" />
 											</InputAdornment>
 										)
 									}}
-									placeholder="아이디 및 이메일 입력"
+									// 새로 추가한 부분 - > defaultValue
+									defaultValue={postBody.id}
+									placeholder="아이디 입력"
 									variant="outlined"
 									onChange={handleidChange}
 								/>
 								<Box
 									sx={{
 										minHeight: '100%',
-										py: 2,
+										py: 2
 									}}
 								/>
 								<h3>비밀번호</h3>
 								<Box
 									sx={{
 										minHeight: '100%',
-										py: 0.5,
+										py: 0.5
 									}}
 								/>
 								<TextField
+									id="pw_field"
 									fullWidth
 									sx={{
 										flex: '1',
@@ -136,21 +158,27 @@ const Login = () => {
 										borderBottomLeftRadius: 5,
 										borderTopRightRadius: 5,
 										borderTopLeftRadius: 5,
-										backgroundColor: 'primary.smoothgreen',
+										backgroundColor: 'primary.smoothgreen'
 									}}
 									InputProps={{
 										startAdornment: (
 											<InputAdornment position="start">
-												<SvgIcon
-													fontSize="small"
-													color="action"
-												/>
+												<SvgIcon fontSize="small" color="action" />
 											</InputAdornment>
 										)
 									}}
+									// 새로 추가한 부분 - > defaultValue
+									defaultValue={postBody.pw}
+									type="password"
 									placeholder="비밀번호 입력"
 									variant="outlined"
 									onChange={handlepwChange}
+								/>
+								<Box
+									sx={{
+										minHeight: '100%',
+										py: 2
+									}}
 								/>
 								<Link to="/login/password">
 									<Button
@@ -158,12 +186,13 @@ const Login = () => {
 										size="medium"
 										color="success"
 										sx={{
-											marginTop: 1,
+											marginTop: 1
 										}}
 									>
-										<h3 style={{
-											color: '#ffffff',
-										}}
+										<h3
+											style={{
+												color: '#ffffff'
+											}}
 										>
 											비밀번호 찾기
 										</h3>
@@ -172,7 +201,7 @@ const Login = () => {
 								<Box
 									sx={{
 										minHeight: '100%',
-										py: 2,
+										py: 2
 									}}
 								/>
 								<Link to="/sign/up">
@@ -181,42 +210,40 @@ const Login = () => {
 										size="medium"
 										color="success"
 										sx={{
-											marginTop: 0.5,
-											marginRight: 3,
 											float: 'right'
 										}}
 									>
-										<h3 style={{
-											color: '#ffffff',
-										}}
+										<h3
+											style={{
+												color: '#ffffff'
+											}}
 										>
 											회원가입
 										</h3>
 									</Button>
 								</Link>
-								<Link to="/app/dashboard">
-									<Button
-										variant="contained"
-										size="medium"
-										color="success"
-										sx={{
-											marginTop: 0.5,
-											marginRight: 3,
-											float: 'right'
+								<Button
+									variant="contained"
+									size="medium"
+									color="success"
+									sx={{
+										float: 'left'
+									}}
+									// 새로 추가한 부분
+									onClick={handleLogin}
+								>
+									<h3
+										style={{
+											color: '#ffffff'
 										}}
 									>
-										<h3 style={{
-											color: '#ffffff',
-										}}
-										>
-											로그인
-										</h3>
-									</Button>
-								</Link>
+										로그인
+									</h3>
+								</Button>
 								<Box
 									sx={{
 										minHeight: '100%',
-										py: 2,
+										py: 2
 									}}
 								/>
 							</Box>

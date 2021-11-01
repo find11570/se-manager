@@ -392,45 +392,30 @@ const Dashboard = () => {
 									<Card
 										sx={{
 											boxShadow: 5,
-										}}
-									>
-										<CardContent>
-											<PublicIcon
-												fontSize="large"
-												sx={{
-													width: 50,
-													height: 50,
-												}}
-											/>
-											<h3>웹사이트</h3>
-										</CardContent>
-									</Card>
-								</Link>
-							</Grid>
-							<Grid
-								item
-								lg={2}
-								md={3}
-								sm={5}
-								xs={12}
-								p={5}
-							>
-								<Link to="/app/project">
-									<Card
-										sx={{
-											boxShadow: 5,
+											justifyContent: 'center',
+											alignItems: 'center',
 											backgroundColor: 'primary.smoothgreen'
 										}}
 									>
 										<CardContent>
-											<MobileScreenShareIcon
-												fontSize="large"
+											<Box
 												sx={{
-													width: 50,
-													height: 50
+													display: 'flex',
+													justifyContent: 'center',
+													alignItems: 'center',
+													flexDirection: 'column',
 												}}
-											/>
-											<h3>모바일앱</h3>
+											>
+												<PublicIcon
+													fontSize="large"
+													sx={{
+														width: 50,
+														height: 50,
+														paddingBottom: 1
+													}}
+												/>
+												<h3>웹사이트</h3>
+											</Box>
 										</CardContent>
 									</Card>
 								</Link>
@@ -447,17 +432,29 @@ const Dashboard = () => {
 									<Card
 										sx={{
 											boxShadow: 5,
+											justifyContent: 'center',
+											alignItems: 'center'
 										}}
 									>
 										<CardContent>
-											<MoodIcon
-												fontSize="large"
+											<Box
 												sx={{
-													width: 50,
-													height: 50
+													display: 'flex',
+													justifyContent: 'center',
+													alignItems: 'center',
+													flexDirection: 'column',
 												}}
-											/>
-											<h3>인공지능</h3>
+											>
+												<MobileScreenShareIcon
+													fontSize="large"
+													sx={{
+														width: 50,
+														height: 50,
+														paddingBottom: 1
+													}}
+												/>
+												<h3>모바일앱</h3>
+											</Box>
 										</CardContent>
 									</Card>
 								</Link>
@@ -474,18 +471,30 @@ const Dashboard = () => {
 									<Card
 										sx={{
 											boxShadow: 5,
+											justifyContent: 'center',
+											alignItems: 'center',
 											backgroundColor: 'primary.smoothgreen'
 										}}
 									>
 										<CardContent>
-											<SelectAllIcon
-												fontSize="large"
+											<Box
 												sx={{
-													width: 50,
-													height: 50
+													display: 'flex',
+													justifyContent: 'center',
+													alignItems: 'center',
+													flexDirection: 'column',
 												}}
-											/>
-											<h3>IoT</h3>
+											>
+												<MoodIcon
+													fontSize="large"
+													sx={{
+														width: 50,
+														height: 50,
+														paddingBottom: 1
+													}}
+												/>
+												<h3>인공지능</h3>
+											</Box>
 										</CardContent>
 									</Card>
 								</Link>
@@ -502,17 +511,29 @@ const Dashboard = () => {
 									<Card
 										sx={{
 											boxShadow: 5,
+											justifyContent: 'center',
+											alignItems: 'center'
 										}}
 									>
 										<CardContent>
-											<LinkIcon
-												fontSize="large"
+											<Box
 												sx={{
-													width: 50,
-													height: 50
+													display: 'flex',
+													justifyContent: 'center',
+													alignItems: 'center',
+													flexDirection: 'column',
 												}}
-											/>
-											<h3>블록체인</h3>
+											>
+												<SelectAllIcon
+													fontSize="large"
+													sx={{
+														width: 50,
+														height: 50,
+														paddingBottom: 1
+													}}
+												/>
+												<h3>IoT</h3>
+											</Box>
 										</CardContent>
 									</Card>
 								</Link>
@@ -529,18 +550,30 @@ const Dashboard = () => {
 									<Card
 										sx={{
 											boxShadow: 5,
+											justifyContent: 'center',
+											alignItems: 'center',
 											backgroundColor: 'primary.smoothgreen'
 										}}
 									>
 										<CardContent>
-											<SecurityIcon
-												fontSize="large"
+											<Box
 												sx={{
-													width: 50,
-													height: 50
+													display: 'flex',
+													justifyContent: 'center',
+													alignItems: 'center',
+													flexDirection: 'column',
 												}}
-											/>
-											<h3>보안</h3>
+											>
+												<LinkIcon
+													fontSize="large"
+													sx={{
+														width: 50,
+														height: 50,
+														paddingBottom: 1
+													}}
+												/>
+												<h3>블록체인</h3>
+											</Box>
 										</CardContent>
 									</Card>
 								</Link>
@@ -557,17 +590,29 @@ const Dashboard = () => {
 									<Card
 										sx={{
 											boxShadow: 5,
+											justifyContent: 'center',
+											alignItems: 'center',
 										}}
 									>
 										<CardContent>
-											<ThreeDRotationIcon
-												fontSize="large"
+											<Box
 												sx={{
-													width: 50,
-													height: 50
+													display: 'flex',
+													justifyContent: 'center',
+													alignItems: 'center',
+													flexDirection: 'column',
 												}}
-											/>
-											<h3>VR/AR</h3>
+											>
+												<SecurityIcon
+													fontSize="large"
+													sx={{
+														width: 50,
+														height: 50,
+														paddingBottom: 1
+													}}
+												/>
+												<h3>보안</h3>
+											</Box>
 										</CardContent>
 									</Card>
 								</Link>
@@ -584,18 +629,30 @@ const Dashboard = () => {
 									<Card
 										sx={{
 											boxShadow: 5,
+											justifyContent: 'center',
+											alignItems: 'center',
 											backgroundColor: 'primary.smoothgreen'
 										}}
 									>
 										<CardContent>
-											<DesktopWindowsIcon
-												fontSize="large"
+											<Box
 												sx={{
-													width: 50,
-													height: 50
+													display: 'flex',
+													justifyContent: 'center',
+													alignItems: 'center',
+													flexDirection: 'column',
 												}}
-											/>
-											<h3>게임</h3>
+											>
+												<ThreeDRotationIcon
+													fontSize="large"
+													sx={{
+														width: 50,
+														height: 50,
+														paddingBottom: 1
+													}}
+												/>
+												<h3>VR/AR</h3>
+											</Box>
 										</CardContent>
 									</Card>
 								</Link>
@@ -612,17 +669,29 @@ const Dashboard = () => {
 									<Card
 										sx={{
 											boxShadow: 5,
+											justifyContent: 'center',
+											alignItems: 'center'
 										}}
 									>
 										<CardContent>
-											<AdbIcon
-												fontSize="large"
+											<Box
 												sx={{
-													width: 50,
-													height: 50
+													display: 'flex',
+													justifyContent: 'center',
+													alignItems: 'center',
+													flexDirection: 'column',
 												}}
-											/>
-											<h3>로봇</h3>
+											>
+												<DesktopWindowsIcon
+													fontSize="large"
+													sx={{
+														width: 50,
+														height: 50,
+														paddingBottom: 1
+													}}
+												/>
+												<h3>게임</h3>
+											</Box>
 										</CardContent>
 									</Card>
 								</Link>
@@ -639,18 +708,30 @@ const Dashboard = () => {
 									<Card
 										sx={{
 											boxShadow: 5,
+											justifyContent: 'center',
+											alignItems: 'center',
 											backgroundColor: 'primary.smoothgreen'
 										}}
 									>
 										<CardContent>
-											<TextFormatIcon
-												fontSize="large"
+											<Box
 												sx={{
-													width: 50,
-													height: 50
+													display: 'flex',
+													justifyContent: 'center',
+													alignItems: 'center',
+													flexDirection: 'column',
 												}}
-											/>
-											<h3>자연어처리</h3>
+											>
+												<AdbIcon
+													fontSize="large"
+													sx={{
+														width: 50,
+														height: 50,
+														paddingBottom: 1
+													}}
+												/>
+												<h3>로봇</h3>
+											</Box>
 										</CardContent>
 									</Card>
 								</Link>
@@ -667,17 +748,29 @@ const Dashboard = () => {
 									<Card
 										sx={{
 											boxShadow: 5,
+											justifyContent: 'center',
+											alignItems: 'center'
 										}}
 									>
 										<CardContent>
-											<MovieCreationIcon
-												fontSize="large"
+											<Box
 												sx={{
-													width: 50,
-													height: 50
+													display: 'flex',
+													justifyContent: 'center',
+													alignItems: 'center',
+													flexDirection: 'column',
 												}}
-											/>
-											<h3>영상처리</h3>
+											>
+												<TextFormatIcon
+													fontSize="large"
+													sx={{
+														width: 50,
+														height: 50,
+														paddingBottom: 1
+													}}
+												/>
+												<h3>자연어처리</h3>
+											</Box>
 										</CardContent>
 									</Card>
 								</Link>
@@ -694,18 +787,69 @@ const Dashboard = () => {
 									<Card
 										sx={{
 											boxShadow: 5,
+											justifyContent: 'center',
+											alignItems: 'center',
 											backgroundColor: 'primary.smoothgreen'
 										}}
 									>
 										<CardContent>
-											<AddIcon
-												fontSize="large"
+											<Box
 												sx={{
-													width: 50,
-													height: 50
+													display: 'flex',
+													justifyContent: 'center',
+													alignItems: 'center',
+													flexDirection: 'column',
 												}}
-											/>
-											<h3>전체</h3>
+											>
+												<MovieCreationIcon
+													fontSize="large"
+													sx={{
+														width: 50,
+														height: 50,
+														paddingBottom: 1
+													}}
+												/>
+												<h3>영상처리</h3>
+											</Box>
+										</CardContent>
+									</Card>
+								</Link>
+							</Grid>
+							<Grid
+								item
+								lg={2}
+								md={3}
+								sm={5}
+								xs={12}
+								p={5}
+							>
+								<Link to="/app/project">
+									<Card
+										sx={{
+											boxShadow: 5,
+											justifyContent: 'center',
+											alignItems: 'center'
+										}}
+									>
+										<CardContent>
+											<Box
+												sx={{
+													display: 'flex',
+													justifyContent: 'center',
+													alignItems: 'center',
+													flexDirection: 'column',
+												}}
+											>
+												<AddIcon
+													fontSize="large"
+													sx={{
+														width: 50,
+														height: 50,
+														paddingBottom: 1
+													}}
+												/>
+												<h3>전체</h3>
+											</Box>
 										</CardContent>
 									</Card>
 								</Link>

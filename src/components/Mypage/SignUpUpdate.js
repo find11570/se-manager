@@ -9,42 +9,133 @@ import {
 	Avatar,
 	TextField,
 	InputAdornment,
-	SvgIcon,
+	SvgIcon
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+
+const data = JSON.parse(sessionStorage.getItem('user_data'));
+
+const api = 'https://se-disk.herokuapp.com/api';
 
 const SignUpUpdate = () => {
 	const [postBody, setpostBody] = useState({
-		id: '1',
-		email: 'jinchaeyeon@naver.com',
-		name: '진채연',
-		number: '20191141',
-		type: '학생',
-		github: 'www.jinchaeyeon.com',
-		blog: 'www.jinchaeyeon.com',
-		content: '하하하하하하ㅏㅎ',
-		position: '프론트임'
+		id: data.user_id,
+		login_id: data.user_login_id,
+		email: data.user_email,
+		name: data.user_name,
+		number: data.user_school_num,
+		image: data.user_image,
+		type: data.user_type,
+		github: data.user_github,
+		blog: data.user_blog,
+		content: data.user_introduction,
+		position: data.user_position
 	});
 
 	const handlecontentChange = (event) => {
-		setpostBody({
-			content: event.currentTarget.value,
-		});
+		setpostBody((prev) => ({
+			...prev,
+			content: event.target.value
+		}));
 	};
 	const handlegithubChange = (event) => {
-		setpostBody({
-			github: event.currentTarget.value,
-		});
+		setpostBody((prev) => ({
+			...prev,
+			github: event.target.value
+		}));
 	};
 	const handleblogChange = (event) => {
-		setpostBody({
-			blog: event.currentTarget.value,
-		});
+		setpostBody((prev) => ({
+			...prev,
+			blog: event.target.value
+		}));
 	};
 	const handlepositionChange = (event) => {
-		setpostBody({
-			postion: event.currentTarget.value,
+		setpostBody((prev) => ({
+			...prev,
+			position: event.target.value
+		}));
+	};
+	const update_user = () => {
+		const url = '/user/';
+		const user_id = postBody.id;
+		const token = sessionStorage.getItem('user_token');
+		console.log({
+			user_image: postBody.image,
+			user_introduction: postBody.content,
+			user_github: postBody.github,
+			user_blog: postBody.blog,
+			user_position: postBody.position
 		});
+		console.log(token);
+		axios
+			.post(
+				api + url + user_id,
+				{
+					user_image: postBody.image,
+					user_introduction: postBody.content,
+					user_github: postBody.github,
+					user_blog: postBody.blog,
+					user_position: postBody.position
+				},
+				{
+					headers: { Authorization: `Bearer ${token}` }
+				}
+			)
+			.then((response) => {
+				console.log(response);
+				var user_data = JSON.parse(sessionStorage.getItem('user_data'));
+				user_data.user_image = 'hello';
+				user_data.user_introduction = postBody.content;
+				user_data.user_github = postBody.github;
+				user_data.user_blog = postBody.blog;
+				user_data.user_position = postBody.position;
+				sessionStorage.removeItem('user_data');
+				sessionStorage.setItem('user_data', JSON.stringify(user_data));
+				console.log(sessionStorage.getItem('user_data'));
+				const target = 'page';
+				window.location.href = target;
+			})
+			.catch((err) => console.log(err));
+	};
+	const delete_user = () => {
+		const url = '/user/';
+		const user_id = postBody.id;
+		axios
+			.delete(api + url + user_id)
+			.then((response) => console.log(response))
+			.catch((err) => console.log(err));
+	};
+
+	const input_thumbnail = () => {
+		var input_image = document.getElementById('file');
+		var thumbnail = document.getElementById('thumbnail');
+		if (!thumbnail.hasChildNodes()) {
+			if (input_image.files) {
+				var image_container = document.createElement('div');
+				var image = document.createElement('img');
+				image.style.width = '100px';
+				image.style.height = '100px';
+				image.style.borderRadius = '50%';
+				var image_list = input_image.files;
+				var reader = new FileReader();
+				reader.readAsDataURL(image_list[0]);
+				reader.onload = function () {
+					image.src = reader.result;
+					image.id = 'thumbnail_image';
+				};
+				image_container.id = 'thumbnail_image_container';
+				image_container.appendChild(image);
+				thumbnail.appendChild(image_container);
+			}
+		}
+	};
+	const delete_thumbnail = () => {
+		var image_container_id = document.getElementById(
+			'thumbnail_image_container'
+		);
+		thumbnail.removeChild(image_container_id);
 	};
 	return (
 		<>
@@ -55,16 +146,10 @@ const SignUpUpdate = () => {
 				<Box
 					sx={{
 						minHeight: '100%',
-						py: 3,
+						py: 3
 					}}
 				/>
-				<Grid
-					item
-					lg={10}
-					md={10}
-					sm={12}
-					xs={12}
-				>
+				<Grid item lg={10} md={10} sm={12} xs={12}>
 					<Card
 						sx={{
 							borderBottomRightRadius: 10,
@@ -75,9 +160,7 @@ const SignUpUpdate = () => {
 						}}
 					>
 						<CardContent>
-							<h2 style={{ color: '#006400' }}>
-								회원 정보 수정
-							</h2>
+							<h2 style={{ color: '#006400' }}>회원 정보 수정</h2>
 							<Box
 								sx={{
 									minHeight: '100%',
@@ -94,63 +177,63 @@ const SignUpUpdate = () => {
 								<Box
 									sx={{
 										minHeight: '100%',
-										py: 2,
+										py: 2
 									}}
 								/>
 								<h3>아이디</h3>
 								<Box
 									sx={{
 										minHeight: '100%',
-										py: 0.5,
+										py: 0.5
 									}}
 								/>
-								<h4>{postBody.email}</h4>
+								<h4>{postBody.login_id}</h4>
 								<Box
 									sx={{
 										minHeight: '100%',
-										py: 2,
+										py: 2
 									}}
 								/>
 								<h3>회원타입</h3>
 								<Box
 									sx={{
 										minHeight: '100%',
-										py: 0.5,
+										py: 0.5
 									}}
 								/>
 								<h4>{postBody.type}</h4>
 								<Box
 									sx={{
 										minHeight: '100%',
-										py: 2,
+										py: 2
 									}}
 								/>
 								<h3>학번</h3>
 								<Box
 									sx={{
 										minHeight: '100%',
-										py: 0.5,
+										py: 0.5
 									}}
 								/>
 								<h4>{postBody.number}</h4>
 								<Box
 									sx={{
 										minHeight: '100%',
-										py: 2,
+										py: 2
 									}}
 								/>
 								<h3>이름</h3>
 								<Box
 									sx={{
 										minHeight: '100%',
-										py: 0.5,
+										py: 0.5
 									}}
 								/>
 								<h4>{postBody.name}</h4>
 								<Box
 									sx={{
 										minHeight: '100%',
-										py: 2,
+										py: 2
 									}}
 								/>
 								<Avatar
@@ -160,7 +243,7 @@ const SignUpUpdate = () => {
 										height: 60,
 										float: 'left',
 										marginTop: 4,
-										marginRight: 2,
+										marginRight: 2
 									}}
 								/>
 								<Button
@@ -172,17 +255,35 @@ const SignUpUpdate = () => {
 										width: 180
 									}}
 								>
-									<h3 style={{
-										color: '#ffffff',
-									}}
+									<label
+										htmlFor="file"
+										style={{
+											width: 100
+										}}
 									>
-										사진선택
-									</h3>
+										<h3
+											style={{
+												color: '#ffffff'
+											}}
+										>
+											사진선택
+										</h3>
+									</label>
+									<input
+										type="file"
+										id="file"
+										accept="image/*"
+										style={{
+											color: '#ffffff',
+											display: 'none'
+										}}
+										onChange={input_thumbnail}
+									/>
 								</Button>
 								<Box
 									sx={{
 										minHeight: '100%',
-										py: 0.5,
+										py: 0.5
 									}}
 								/>
 								<Button
@@ -193,25 +294,28 @@ const SignUpUpdate = () => {
 										marginTop: 2,
 										width: 180
 									}}
+									onClick={delete_thumbnail}
 								>
-									<h3 style={{
-										color: '#ffffff',
-									}}
+									<h3
+										style={{
+											color: '#ffffff'
+										}}
 									>
 										기본 이미지로 변경
 									</h3>
 								</Button>
+								<Box id="thumbnail" />
 								<Box
 									sx={{
 										minHeight: '100%',
-										py: 2,
+										py: 2
 									}}
 								/>
 								<h3>비밀번호 수정</h3>
 								<Box
 									sx={{
 										minHeight: '100%',
-										py: 0.5,
+										py: 0.5
 									}}
 								/>
 								<Link to="/login/password">
@@ -220,12 +324,13 @@ const SignUpUpdate = () => {
 										size="medium"
 										color="success"
 										sx={{
-											marginTop: 1,
+											marginTop: 1
 										}}
 									>
-										<h3 style={{
-											color: '#ffffff',
-										}}
+										<h3
+											style={{
+												color: '#ffffff'
+											}}
 										>
 											비밀번호 수정
 										</h3>
@@ -234,14 +339,14 @@ const SignUpUpdate = () => {
 								<Box
 									sx={{
 										minHeight: '100%',
-										py: 2,
+										py: 2
 									}}
 								/>
 								<h3>github주소</h3>
 								<Box
 									sx={{
 										minHeight: '100%',
-										py: 0.5,
+										py: 0.5
 									}}
 								/>
 								<TextField
@@ -254,34 +359,31 @@ const SignUpUpdate = () => {
 										borderBottomLeftRadius: 5,
 										borderTopRightRadius: 5,
 										borderTopLeftRadius: 5,
-										backgroundColor: 'primary.smoothgreen',
+										backgroundColor: 'primary.smoothgreen'
 									}}
 									InputProps={{
 										startAdornment: (
 											<InputAdornment position="start">
-												<SvgIcon
-													fontSize="small"
-													color="action"
-												/>
+												<SvgIcon fontSize="small" color="action" />
 											</InputAdornment>
 										)
 									}}
-									value={postBody.github}
 									placeholder="www.github.com"
+									value={postBody.github}
 									variant="outlined"
 									onChange={handlegithubChange}
 								/>
 								<Box
 									sx={{
 										minHeight: '100%',
-										py: 2,
+										py: 2
 									}}
 								/>
 								<h3>blog주소</h3>
 								<Box
 									sx={{
 										minHeight: '100%',
-										py: 0.5,
+										py: 0.5
 									}}
 								/>
 								<TextField
@@ -294,34 +396,31 @@ const SignUpUpdate = () => {
 										borderBottomLeftRadius: 5,
 										borderTopRightRadius: 5,
 										borderTopLeftRadius: 5,
-										backgroundColor: 'primary.smoothgreen',
+										backgroundColor: 'primary.smoothgreen'
 									}}
 									InputProps={{
 										startAdornment: (
 											<InputAdornment position="start">
-												<SvgIcon
-													fontSize="small"
-													color="action"
-												/>
+												<SvgIcon fontSize="small" color="action" />
 											</InputAdornment>
 										)
 									}}
-									value={postBody.blog}
 									placeholder="www.blog.com"
+									value={postBody.blog}
 									variant="outlined"
 									onChange={handleblogChange}
 								/>
 								<Box
 									sx={{
 										minHeight: '100%',
-										py: 2,
+										py: 2
 									}}
 								/>
 								<h3>포지션</h3>
 								<Box
 									sx={{
 										minHeight: '100%',
-										py: 0.5,
+										py: 0.5
 									}}
 								/>
 								<TextField
@@ -334,34 +433,31 @@ const SignUpUpdate = () => {
 										borderBottomLeftRadius: 5,
 										borderTopRightRadius: 5,
 										borderTopLeftRadius: 5,
-										backgroundColor: 'primary.smoothgreen',
+										backgroundColor: 'primary.smoothgreen'
 									}}
 									InputProps={{
 										startAdornment: (
 											<InputAdornment position="start">
-												<SvgIcon
-													fontSize="small"
-													color="action"
-												/>
+												<SvgIcon fontSize="small" color="action" />
 											</InputAdornment>
 										)
 									}}
-									value={postBody.position}
 									placeholder="포지션을 입력해주세요"
+									value={postBody.position}
 									variant="outlined"
 									onChange={handlepositionChange}
 								/>
 								<Box
 									sx={{
 										minHeight: '100%',
-										py: 2,
+										py: 2
 									}}
 								/>
 								<h3>자기소개</h3>
 								<Box
 									sx={{
 										minHeight: '100%',
-										py: 0.5,
+										py: 0.5
 									}}
 								/>
 								<TextField
@@ -374,47 +470,43 @@ const SignUpUpdate = () => {
 										borderBottomLeftRadius: 5,
 										borderTopRightRadius: 5,
 										borderTopLeftRadius: 5,
-										backgroundColor: 'primary.smoothgreen',
+										backgroundColor: 'primary.smoothgreen'
 									}}
 									InputProps={{
 										startAdornment: (
 											<InputAdornment position="start">
-												<SvgIcon
-													fontSize="small"
-													color="action"
-												/>
+												<SvgIcon fontSize="small" color="action" />
 											</InputAdornment>
 										)
 									}}
 									multiline
 									rows={4}
-									value={postBody.content}
 									placeholder="자기소개를 입력해주세요"
+									value={postBody.content}
 									variant="outlined"
 									onChange={handlecontentChange}
 								/>
 								<Box
 									sx={{
 										minHeight: '100%',
-										py: 2,
+										py: 2
 									}}
 								/>
-								<Link to="/app/dashboard">
-									<Button
-										variant="contained"
-										color="success"
-										onClick={() => {
-											alert('수정되었습니다.');
+								{/* <Link to="/app/dashboard"> */}
+								<Button
+									variant="contained"
+									color="success"
+									onClick={update_user}
+								>
+									<h3
+										style={{
+											color: '#ffffff'
 										}}
 									>
-										<h3 style={{
-											color: '#ffffff',
-										}}
-										>
-											수정
-										</h3>
-									</Button>
-								</Link>
+										수정
+									</h3>
+								</Button>
+								{/* </Link> */}
 								<Link to="/app/dashboard">
 									<Button
 										variant="contained"
@@ -422,13 +514,12 @@ const SignUpUpdate = () => {
 										sx={{
 											float: 'right'
 										}}
-										onClick={() => {
-											alert('탈퇴되었습니다.');
-										}}
+										onClick={delete_user}
 									>
-										<h3 style={{
-											color: '#ffffff',
-										}}
+										<h3
+											style={{
+												color: '#ffffff'
+											}}
 										>
 											탈퇴
 										</h3>
@@ -437,7 +528,7 @@ const SignUpUpdate = () => {
 								<Box
 									sx={{
 										minHeight: '100%',
-										py: 2,
+										py: 2
 									}}
 								/>
 							</Box>

@@ -14,7 +14,8 @@ import {
 import { Link } from 'react-router-dom';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
 function TabPanel(props) {
 	const {
 		children,
@@ -420,6 +421,25 @@ export default function MypageTabs() {
 							</Card>
 						</Link>
 					</Grid>
+					<Grid
+						item
+						lg={12}
+						md={12}
+						sm={12}
+						xs={12}
+					>
+						<Box
+							sx={{
+								justifyContent: 'center',
+								alignItems: 'center',
+								display: 'flex'
+							}}
+						>
+							<Stack spacing={2}>
+								<Pagination count={10} showFirstButton showLastButton />
+							</Stack>
+						</Box>
+					</Grid>
 				</Grid>
 			</TabPanel>
 			<TabPanel value={Data.type} index={1}>
@@ -696,6 +716,25 @@ export default function MypageTabs() {
 								</CardContent>
 							</Card>
 						</Link>
+					</Grid>
+					<Grid
+						item
+						lg={12}
+						md={12}
+						sm={12}
+						xs={12}
+					>
+						<Box
+							sx={{
+								justifyContent: 'center',
+								alignItems: 'center',
+								display: 'flex'
+							}}
+						>
+							<Stack spacing={2}>
+								<Pagination count={10} showFirstButton showLastButton />
+							</Stack>
+						</Box>
 					</Grid>
 				</Grid>
 			</TabPanel>

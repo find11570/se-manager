@@ -7,20 +7,20 @@ import {
 	Grid,
 	Avatar,
 	Hidden,
-	Button
 } from '@material-ui/core';
 import MypageTabs from 'src/components/Mypage/MypageTabs';
-import { Link } from 'react-router-dom';
 import Modal2 from 'src/components/modal/Modal2';
 
+const data = JSON.parse(sessionStorage.getItem('user_data'));
 const Mypage = () => {
 	const [chartData] = useState({
-		id: '1',
-		name: '진채연',
-		number: '20191141',
-		github: 'www.jinchaeyeon.com',
-		blog: 'www.jinchaeyeon.com',
-		content: '하하하하하하ㅏㅎ 개좋열먼ㅇ래ㅑㅓ매ㅑㅈ두랴ㅐ무ㅑㄷ주뭊랴ㅐ무르ㅐ',
+		id: data.user_id,
+		name: data.user_name,
+		number: data.user_school_num,
+		github: data.user_github,
+		blog: data.user_blog,
+		content: data.user_introduction,
+		position: data.user_position
 	});
 
 	return (
@@ -31,16 +31,10 @@ const Mypage = () => {
 			<Box
 				sx={{
 					minHeight: '100%',
-					py: 3,
+					py: 3
 				}}
 			>
-				<Grid
-					item
-					lg={10}
-					md={10}
-					sm={12}
-					xs={12}
-				>
+				<Grid item lg={10} md={10} sm={12} xs={12}>
 					<Card
 						sx={{
 							borderBottomRightRadius: 10,
@@ -52,7 +46,7 @@ const Mypage = () => {
 					>
 						<CardContent
 							sx={{
-								backgroundColor: '#81C147',
+								backgroundColor: '#81C147'
 							}}
 						>
 							<Box
@@ -82,25 +76,15 @@ const Mypage = () => {
 											marginLeft: 3
 										}}
 									>
-										<h3 style={{ marginRight: 15, color: '#ffffff', display: 'inline-block' }}>
+										<h3
+											style={{
+												marginRight: 15,
+												color: '#ffffff',
+												display: 'inline-block'
+											}}
+										>
 											{chartData.name}
 										</h3>
-										<Link to="/chat/chat">
-											<Button
-												variant="contained"
-												size="small"
-												sx={{
-													float: 'right',
-												}}
-											>
-												<h3 style={{
-													color: '#006400',
-												}}
-												>
-													채팅하기
-												</h3>
-											</Button>
-										</Link>
 									</Box>
 								</Hidden>
 							</Box>
@@ -112,6 +96,9 @@ const Mypage = () => {
 							>
 								<h4 style={{ marginLeft: 10, color: '#ffffff' }}>
 									{chartData.number}
+								</h4>
+								<h4 style={{ marginLeft: 10, color: '#ffffff' }}>
+									{chartData.position}
 								</h4>
 								<h4 style={{ marginLeft: 10, color: '#ffffff' }}>
 									{chartData.github}
@@ -143,14 +130,14 @@ const Mypage = () => {
 						</CardContent>
 						<CardContent
 							sx={{
-								backgroundColor: '#ffffff',
+								backgroundColor: '#ffffff'
 							}}
 						>
 							<MypageTabs />
 							<Box
 								sx={{
 									minHeight: '100%',
-									py: 3,
+									py: 3
 								}}
 							/>
 						</CardContent>

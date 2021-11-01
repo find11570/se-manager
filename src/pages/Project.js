@@ -22,6 +22,8 @@ import Checkbox from '@mui/material/Checkbox';
 import { Link } from 'react-router-dom';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -937,6 +939,25 @@ const Project = () => {
 							</Grid>
 						</Grid>
 					</Box>
+					<Grid
+						item
+						lg={10}
+						md={10}
+						sm={12}
+						xs={12}
+					>
+						<Box
+							sx={{
+								justifyContent: 'center',
+								alignItems: 'center',
+								display: 'flex'
+							}}
+						>
+							<Stack spacing={2}>
+								<Pagination count={10} showFirstButton showLastButton />
+							</Stack>
+						</Box>
+					</Grid>
 				</Container>
 			</Box>
 		</>

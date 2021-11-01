@@ -15,7 +15,104 @@ import Logo from 'src/components/Logo';
 
 const TeamboardNavbar = ({ onMobileNavOpen, ...rest }) => {
 	const [notifications] = useState([]);
+	const isLogin = () => {
+		if (sessionStorage.getItem('user_token')) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 
+
+	function check() {
+		if (isLogin()) {
+			return (
+				<Box>
+					<Hidden lgUp>
+						<Link to="/app/ProjectRegister">
+							<Button
+								variant="contained"
+								size="small"
+								sx={{
+									float: 'right',
+									marginTop: 0.5,
+								}}
+							>
+								<h4 style={{
+									color: '#006400',
+								}}
+								>
+									글생성
+								</h4>
+							</Button>
+						</Link>
+					</Hidden>
+					<Hidden lgDown>
+						<Link to="/app/ProjectRegister">
+							<Button
+								variant="contained"
+								size="small"
+								sx={{
+									float: 'right',
+									marginRight: 2,
+									marginTop: 0.5,
+									marginLeft: 2
+								}}
+							>
+								<h3 style={{
+									color: '#006400',
+								}}
+								>
+									팀원모집글 생성
+								</h3>
+							</Button>
+						</Link>
+						<Link to="/mypage/page">
+							<Button
+								variant="contained"
+								size="small"
+								sx={{
+									float: 'right',
+									marginRight: 2,
+									marginTop: 0.5,
+									marginLeft: 2
+								}}
+							>
+								<h3 style={{
+									color: '#006400',
+								}}
+								>
+									마이페이지
+								</h3>
+							</Button>
+						</Link>
+					</Hidden>
+				</Box>
+			);
+		} else {
+			return (
+				<Link to="/login/login">
+					<Button
+						variant="contained"
+						size="small"
+						sx={{
+							float: 'right',
+							marginRight: 2,
+							marginTop: 0.5,
+							marginLeft: 2
+						}}
+					>
+						<h3 style={{
+							color: '#006400',
+						}}
+						>
+							로그인
+						</h3>
+					</Button>
+				</Link>
+			);
+		}
+	}
 	return (
 		<AppBar
 			elevation={0}
@@ -29,74 +126,15 @@ const TeamboardNavbar = ({ onMobileNavOpen, ...rest }) => {
 					<h3>&nbsp;&gt;&nbsp; 팀원 모집</h3>
 				</Hidden>
 				<Box sx={{ flexGrow: 1 }} />
-				<Hidden lgUp>
-					<Link to="/chat/chat">
-						<Button
-							variant="contained"
-							size="small"
-							sx={{
-								float: 'right',
-								marginTop: 0.5,
-								marginLeft: 2
-							}}
-						>
-							<h3 style={{
-								color: '#006400',
-							}}
-							>
-								채팅하기
-							</h3>
-						</Button>
-					</Link>
-				</Hidden>
-				<Hidden lgDown>
-					<Link to="/se/teamRegister">
-						<Button
-							variant="contained"
-							size="small"
-							sx={{
-								float: 'right',
-								marginRight: 2,
-								marginTop: 0.5,
-								marginLeft: 2
-							}}
-						>
-							<h3 style={{
-								color: '#006400',
-							}}
-							>
-								팀원 모집글 등록
-							</h3>
-						</Button>
-					</Link>
-					<Link to="/login/login">
-						<Button
-							variant="contained"
-							size="small"
-							sx={{
-								float: 'right',
-								marginRight: 2,
-								marginTop: 0.5,
-								marginLeft: 2
-							}}
-						>
-							<h3 style={{
-								color: '#006400',
-							}}
-							>
-								로그인
-							</h3>
-						</Button>
-					</Link>
-					<IconButton color="inherit">
-						<Badge
-							badgeContent={notifications.length}
-							color="primary"
-							border-bottom="1px solid #d1d8e4"
-							variant="dot"
-						/>
-					</IconButton>
-				</Hidden>
+				{check()}
+				<IconButton color="inherit">
+					<Badge
+						badgeContent={notifications.length}
+						color="primary"
+						border-bottom="1px solid #d1d8e4"
+						variant="dot"
+					/>
+				</IconButton>
 				<IconButton
 					color="inherit"
 					onClick={onMobileNavOpen}
