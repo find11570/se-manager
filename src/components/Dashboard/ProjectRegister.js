@@ -84,8 +84,8 @@ const ProjectRegister = () => {
 	const [postBody, setPostBody] = useState({
 		title: '',
 		content: '',
-		member: '',
 	});
+	const [member, setmember] = useState([]);
 	const [stack, setstack] = useState([]);
 	const [subject, setsubject] = useState([]);
 	const [professor, setprofessor] = useState([]);
@@ -142,9 +142,12 @@ const ProjectRegister = () => {
 		});
 	};
 	const handlememberChange = (event) => {
-		setPostBody({
-			member: event.currentTarget.value,
-		});
+		const {
+			target: { value },
+		} = event;
+		setmember(
+			typeof value === 'string' ? value.split(',') : value,
+		);
 	};
 	return (
 		<>
@@ -220,14 +223,16 @@ const ProjectRegister = () => {
 											borderBottomLeftRadius: 10,
 											borderTopRightRadius: 10,
 											borderTopLeftRadius: 10,
-											boxShadow: 5
+											boxShadow: 5,
+											width: 140,
+											height: 140,
 										}}
 									>
 										<CardContent>
 											<Avatar
 												sx={{
 													cursor: 'pointer',
-													width: 150,
+													width: 100,
 													height: 100,
 												}}
 											/>
@@ -249,7 +254,7 @@ const ProjectRegister = () => {
 									}}
 								/>
 								<TextField
-									halfwidth="true"
+									fullWidth
 									sx={{
 										flex: '1',
 										flexDirection: 'row',
@@ -326,7 +331,7 @@ const ProjectRegister = () => {
 									}}
 								/>
 								<TextField
-									halfwidth="true"
+									fullWidth
 									sx={{
 										flex: '1',
 										flexDirection: 'row',
@@ -347,7 +352,7 @@ const ProjectRegister = () => {
 											</InputAdornment>
 										)
 									}}
-									placeholder="이메일을 입력해주세요"
+									placeholder="ex) id1,id2,id3"
 									variant="outlined"
 									onChange={handlememberChange}
 								/>

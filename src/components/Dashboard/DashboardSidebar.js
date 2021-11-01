@@ -5,8 +5,30 @@ import {
 	Box,
 	Drawer,
 	List,
+	Button
 } from '@material-ui/core';
 import NavItem from 'src/components/NavItem';
+import axios from 'axios';
+
+const api = 'https://se-disk.herokuapp.com/api';
+
+const logout = () => {
+	const url = '/auth/logout';
+	const target = '/app/dashboard';
+	const token = sessionStorage.getItem('user_token');
+	axios
+		.get(api + url, {
+			headers: {
+				Authorization: `Bearer ${token}`
+			}
+		})
+		.then((response) => {
+			console.log(response);
+			sessionStorage.clear();
+			window.location.href = target;
+		})
+		.catch((err) => console.log(err));
+};
 
 const isLogin = () => {
 	if (sessionStorage.getItem('user_token')) {
@@ -14,9 +36,6 @@ const isLogin = () => {
 			{
 				href: '/mypage/page',
 				title: '마이페이지'
-			},
-			{
-				title: '로그아웃'
 			}
 		);
 	} else {
@@ -28,6 +47,36 @@ const isLogin = () => {
 		);
 	}
 }
+
+const Logout = () => {
+	if (sessionStorage.getItem('user_token')) {
+		return (
+			<Button
+				variant="contained"
+				size="small"
+				sx={{
+					float: 'right',
+					marginRight: 2,
+					marginBottom: 0.5,
+					marginLeft: 2
+				}}
+				onClick={() => {
+					logout()
+				}}
+			>
+				<h3 style={{
+					color: '#006400',
+				}}
+				>
+					로그아웃
+				</h3>
+			</Button>
+		)
+	} else {
+		return false
+	}
+}
+
 
 const items = [
 	isLogin(),
@@ -87,6 +136,7 @@ const DashboardSidebar = ({ onMobileClose, openMobile }) => {
 				}}
 			>
 				{content}
+				{Logout()}
 			</Drawer>
 		</>
 	);

@@ -91,25 +91,50 @@ const TeamboardNavbar = ({ onMobileNavOpen, ...rest }) => {
 			);
 		} else {
 			return (
-				<Link to="/login/login">
-					<Button
-						variant="contained"
-						size="small"
-						sx={{
-							float: 'right',
-							marginRight: 2,
-							marginTop: 0.5,
-							marginLeft: 2
-						}}
-					>
-						<h3 style={{
-							color: '#006400',
-						}}
-						>
-							로그인
-						</h3>
-					</Button>
-				</Link>
+				<Box>
+					<Hidden lgDown>
+						<Link to="/login/login">
+							<Button
+								variant="contained"
+								size="small"
+								sx={{
+									float: 'right',
+									marginRight: 2,
+									marginTop: 0.5,
+									marginLeft: 2
+								}}
+							>
+								<h3 style={{
+									color: '#006400',
+								}}
+								>
+									로그인
+								</h3>
+							</Button>
+						</Link>
+					</Hidden>
+					<Hidden lgUp>
+						<Link to="/login/login">
+							<Button
+								variant="contained"
+								size="small"
+								sx={{
+									float: 'right',
+									marginRight: 2,
+									marginTop: 0.5,
+									marginLeft: 2
+								}}
+							>
+								<h4 style={{
+									color: '#006400',
+								}}
+								>
+									로그인
+								</h4>
+							</Button>
+						</Link>
+					</Hidden>
+				</Box>
 			);
 		}
 	}
@@ -119,9 +144,16 @@ const TeamboardNavbar = ({ onMobileNavOpen, ...rest }) => {
 			{...rest}
 		>
 			<Toolbar>
-				<Link to="/app/dashboard">
-					<Logo height="50px" width="150px" />
-				</Link>
+				<Hidden lgDown>
+					<Link to="/app/dashboard">
+						<Logo height="50px" width="150px" />
+					</Link>
+				</Hidden>
+				<Hidden lgUp>
+					<Link to="/app/dashboard">
+						<Logo height="40px" width="120px" />
+					</Link>
+				</Hidden>
 				<Hidden lgDown>
 					<h3>&nbsp;&gt;&nbsp; 팀원 모집</h3>
 				</Hidden>

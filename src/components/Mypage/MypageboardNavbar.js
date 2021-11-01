@@ -22,9 +22,16 @@ const MypageboardNavbar = ({ onMobileNavOpen, ...rest }) => {
 			{...rest}
 		>
 			<Toolbar>
-				<Link to="/app/dashboard">
-					<Logo height="50px" width="150px" />
-				</Link>
+				<Hidden lgDown>
+					<Link to="/app/dashboard">
+						<Logo height="50px" width="150px" />
+					</Link>
+				</Hidden>
+				<Hidden lgUp>
+					<Link to="/app/dashboard">
+						<Logo height="40px" width="120px" />
+					</Link>
+				</Hidden>
 				<Hidden lgDown>
 					<h3>&nbsp;&gt;&nbsp; 마이페이지</h3>
 				</Hidden>

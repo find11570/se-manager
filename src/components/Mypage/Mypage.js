@@ -9,7 +9,6 @@ import {
 	Hidden,
 } from '@material-ui/core';
 import MypageTabs from 'src/components/Mypage/MypageTabs';
-import Modal2 from 'src/components/modal/Modal2';
 
 const data = JSON.parse(sessionStorage.getItem('user_data'));
 const Mypage = () => {
@@ -57,26 +56,32 @@ const Mypage = () => {
 								}}
 							>
 								<Hidden lgDown>
-									<Avatar
+									<Box
 										sx={{
-											cursor: 'pointer',
-											width: 80,
-											height: 80,
-											marginTop: 1.5,
-											marginBottom: 1.5
+											marginLeft: 5
 										}}
-									/>
-									<h3 style={{ marginLeft: 10, color: '#ffffff' }}>
-										{chartData.name}
-									</h3>
+									>
+										<Avatar
+											sx={{
+												cursor: 'pointer',
+												width: 80,
+												height: 80,
+												marginTop: 1.5,
+												marginBottom: 1.5
+											}}
+										/>
+										<h3 style={{ marginLeft: 20, color: '#ffffff' }}>
+											{chartData.name}
+										</h3>
+									</Box>
 								</Hidden>
 								<Hidden lgUp>
 									<Box
 										sx={{
-											marginLeft: 3
+											marginLeft: 1
 										}}
 									>
-										<h3
+										<h2
 											style={{
 												marginRight: 15,
 												color: '#ffffff',
@@ -84,49 +89,58 @@ const Mypage = () => {
 											}}
 										>
 											{chartData.name}
-										</h3>
+										</h2>
 									</Box>
 								</Hidden>
 							</Box>
-							<Box
-								sx={{
-									display: 'inline-block',
-									marginLeft: 2
-								}}
-							>
-								<h4 style={{ marginLeft: 10, color: '#ffffff' }}>
-									{chartData.number}
-								</h4>
-								<h4 style={{ marginLeft: 10, color: '#ffffff' }}>
-									{chartData.position}
-								</h4>
-								<h4 style={{ marginLeft: 10, color: '#ffffff' }}>
-									{chartData.github}
-								</h4>
-								<h4 style={{ marginLeft: 10, color: '#ffffff' }}>
-									{chartData.blog}
-								</h4>
-							</Box>
-							<Box
-								sx={{
-									display: 'inline-block',
-									marginLeft: 2
-								}}
-							>
-								<h4 style={{ marginLeft: 10, color: '#ffffff' }}>
-									{chartData.content}
-								</h4>
-							</Box>
-							<Box
-								sx={{
-									display: 'inline-block',
-									float: 'right'
-								}}
-							>
-								<Hidden lgDown>
-									<Modal2 />
-								</Hidden>
-							</Box>
+							<Hidden lgDown>
+								<Box
+									sx={{
+										display: 'inline-block',
+										marginLeft: 5
+									}}
+								>
+									<h3 style={{ marginLeft: 10, color: '#ffffff' }}>
+										학번:&nbsp;{chartData.number}
+									</h3>
+									<h3 style={{ marginLeft: 10, color: '#ffffff' }}>
+										포지션:&nbsp;{chartData.position}
+									</h3>
+								</Box>
+								<Box
+									sx={{
+										display: 'inline-block',
+										marginLeft: 5
+									}}
+								>
+									<h3 style={{ marginLeft: 10, color: '#ffffff' }}>
+										Github:&nbsp;{chartData.github}
+									</h3>
+									<h3 style={{ marginLeft: 10, color: '#ffffff' }}>
+										Blog:&nbsp;{chartData.blog}
+									</h3>
+									<h3 style={{ marginLeft: 10, color: '#ffffff' }}>
+										자기소개:&nbsp;{chartData.content}
+									</h3>
+								</Box>
+							</Hidden>
+							<Hidden lgUp>
+								<h3 style={{ marginLeft: 10, color: '#ffffff' }}>
+									학번:&nbsp;{chartData.number}
+								</h3>
+								<h3 style={{ marginLeft: 10, color: '#ffffff' }}>
+									포지션:&nbsp;{chartData.position}
+								</h3>
+								<h3 style={{ marginLeft: 10, color: '#ffffff' }}>
+									Github:&nbsp;{chartData.github}
+								</h3>
+								<h3 style={{ marginLeft: 10, color: '#ffffff' }}>
+									Blog:&nbsp;{chartData.blog}
+								</h3>
+								<h3 style={{ marginLeft: 10, color: '#ffffff' }}>
+									자기소개:&nbsp;{chartData.content}
+								</h3>
+							</Hidden>
 						</CardContent>
 						<CardContent
 							sx={{

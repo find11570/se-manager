@@ -27,6 +27,7 @@ const ProjectDetail = () => {
 		see: 50,
 		good: 100,
 	});
+	
 	const comment = [
 		{
 			id: 1,

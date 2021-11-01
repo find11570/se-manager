@@ -9,7 +9,8 @@ import {
 	Box,
 	Grid,
 	Card,
-	CardContent
+	CardContent,
+	Hidden
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
@@ -33,7 +34,11 @@ function TabPanel(props) {
 			{...other}
 		>
 			{value === index && (
-				<Box p={3}>
+				<Box
+					sx={{
+						paddingTop: 2
+					}}
+				>
 					<Typography component="span">{children}</Typography>
 				</Box>
 			)}
@@ -95,7 +100,7 @@ export default function MypageTabs() {
 			<TabPanel value={Data.type} index={0}>
 				<Grid
 					container
-					spacing={3}
+					spacing={2}
 				>
 					<Grid
 						item
@@ -108,8 +113,8 @@ export default function MypageTabs() {
 							<Card
 								sx={{
 									boxShadow: 5,
-									width: 200,
-									height: 250
+									width: 220,
+									height: 220
 								}}
 							>
 								<CardContent>
@@ -162,8 +167,8 @@ export default function MypageTabs() {
 							<Card
 								sx={{
 									boxShadow: 5,
-									width: 200,
-									height: 250
+									width: 220,
+									height: 220
 								}}
 							>
 								<CardContent>
@@ -216,8 +221,8 @@ export default function MypageTabs() {
 							<Card
 								sx={{
 									boxShadow: 5,
-									width: 200,
-									height: 250
+									width: 220,
+									height: 220
 								}}
 							>
 								<CardContent>
@@ -270,8 +275,8 @@ export default function MypageTabs() {
 							<Card
 								sx={{
 									boxShadow: 5,
-									width: 200,
-									height: 250
+									width: 220,
+									height: 220
 								}}
 							>
 								<CardContent>
@@ -324,8 +329,8 @@ export default function MypageTabs() {
 							<Card
 								sx={{
 									boxShadow: 5,
-									width: 200,
-									height: 250
+									width: 220,
+									height: 220
 								}}
 							>
 								<CardContent>
@@ -378,8 +383,8 @@ export default function MypageTabs() {
 							<Card
 								sx={{
 									boxShadow: 5,
-									width: 200,
-									height: 250
+									width: 220,
+									height: 220
 								}}
 							>
 								<CardContent>
@@ -428,17 +433,32 @@ export default function MypageTabs() {
 						sm={12}
 						xs={12}
 					>
-						<Box
-							sx={{
-								justifyContent: 'center',
-								alignItems: 'center',
-								display: 'flex'
-							}}
-						>
-							<Stack spacing={2}>
-								<Pagination count={10} showFirstButton showLastButton />
-							</Stack>
-						</Box>
+						<Hidden lgUp>
+							<Box
+								sx={{
+									justifyContent: 'center',
+									alignItems: 'center',
+									display: 'flex'
+								}}
+							>
+								<Stack spacing={2}>
+									<Pagination count={10} size="small" showFirstButton showLastButton />
+								</Stack>
+							</Box>
+						</Hidden>
+						<Hidden lgDown>
+							<Box
+								sx={{
+									justifyContent: 'center',
+									alignItems: 'center',
+									display: 'flex'
+								}}
+							>
+								<Stack spacing={2}>
+									<Pagination count={10} showFirstButton showLastButton />
+								</Stack>
+							</Box>
+						</Hidden>
 					</Grid>
 				</Grid>
 			</TabPanel>
@@ -458,8 +478,8 @@ export default function MypageTabs() {
 							<Card
 								sx={{
 									boxShadow: 5,
-									width: 200,
-									height: 250
+									width: 220,
+									height: 220
 								}}
 							>
 								<CardContent>
@@ -512,8 +532,8 @@ export default function MypageTabs() {
 							<Card
 								sx={{
 									boxShadow: 5,
-									width: 200,
-									height: 250
+									width: 220,
+									height: 220
 								}}
 							>
 								<CardContent>
@@ -566,8 +586,8 @@ export default function MypageTabs() {
 							<Card
 								sx={{
 									boxShadow: 5,
-									width: 200,
-									height: 250
+									width: 220,
+									height: 220
 								}}
 							>
 								<CardContent>
@@ -620,8 +640,8 @@ export default function MypageTabs() {
 							<Card
 								sx={{
 									boxShadow: 5,
-									width: 200,
-									height: 250
+									width: 220,
+									height: 220
 								}}
 							>
 								<CardContent>
@@ -674,8 +694,8 @@ export default function MypageTabs() {
 							<Card
 								sx={{
 									boxShadow: 5,
-									width: 200,
-									height: 250
+									width: 220,
+									height: 220
 								}}
 							>
 								<CardContent>
@@ -724,17 +744,32 @@ export default function MypageTabs() {
 						sm={12}
 						xs={12}
 					>
-						<Box
-							sx={{
-								justifyContent: 'center',
-								alignItems: 'center',
-								display: 'flex'
-							}}
-						>
-							<Stack spacing={2}>
-								<Pagination count={10} showFirstButton showLastButton />
-							</Stack>
-						</Box>
+						<Hidden lgUp>
+							<Box
+								sx={{
+									justifyContent: 'center',
+									alignItems: 'center',
+									display: 'flex'
+								}}
+							>
+								<Stack spacing={2}>
+									<Pagination count={10} size="small" showFirstButton showLastButton />
+								</Stack>
+							</Box>
+						</Hidden>
+						<Hidden lgDown>
+							<Box
+								sx={{
+									justifyContent: 'center',
+									alignItems: 'center',
+									display: 'flex'
+								}}
+							>
+								<Stack spacing={2}>
+									<Pagination count={10} showFirstButton showLastButton />
+								</Stack>
+							</Box>
+						</Hidden>
 					</Grid>
 				</Grid>
 			</TabPanel>
