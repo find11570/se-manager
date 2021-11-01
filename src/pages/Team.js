@@ -233,7 +233,7 @@ const Team = () => {
 							xs={2}
 						>
 							<Hidden lgDown>
-								<Link to="/app/project">
+								<Link to="/se/team">
 									<Button
 										variant="contained"
 										color="success"
@@ -249,7 +249,7 @@ const Team = () => {
 								</Link>
 							</Hidden>
 							<Hidden lgUp>
-								<Link to="/app/project">
+								<Link to="/se/team">
 									<Box
 										sx={{
 											paddingTop: 1,

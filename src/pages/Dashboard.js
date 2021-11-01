@@ -349,20 +349,43 @@ const Dashboard = () => {
 							sm={2}
 							xs={2}
 						>
-							<Link to="/app/project">
-								<Button
-									variant="contained"
-									color="success"
-									size="large"
-								>
-									<h4 style={{
-										color: '#ffffff',
-									}}
+							<Hidden lgDown>
+								<Link to="/app/project">
+									<Button
+										variant="contained"
+										color="success"
+										size="large"
 									>
-										검색
-									</h4>
-								</Button>
-							</Link>
+										<h4 style={{
+											color: '#ffffff',
+										}}
+										>
+											검색
+										</h4>
+									</Button>
+								</Link>
+							</Hidden>
+							<Hidden lgUp>
+								<Link to="/app/project">
+									<Box
+										sx={{
+											paddingTop: 1,
+										}}
+									>
+										<Button
+											variant="contained"
+											color="success"
+										>
+											<h4 style={{
+												color: '#ffffff',
+											}}
+											>
+												검색
+											</h4>
+										</Button>
+									</Box>
+								</Link>
+							</Hidden>
 						</Grid>
 					</Grid>
 					<Box
@@ -386,7 +409,6 @@ const Dashboard = () => {
 								md={3}
 								sm={5}
 								xs={12}
-								p={5}
 							>
 								<Link to="/app/project">
 									<Card
@@ -426,7 +448,6 @@ const Dashboard = () => {
 								md={3}
 								sm={5}
 								xs={12}
-								p={5}
 							>
 								<Link to="/app/project">
 									<Card
@@ -465,7 +486,6 @@ const Dashboard = () => {
 								md={3}
 								sm={5}
 								xs={12}
-								p={5}
 							>
 								<Link to="/app/project">
 									<Card
@@ -505,7 +525,6 @@ const Dashboard = () => {
 								md={3}
 								sm={5}
 								xs={12}
-								p={5}
 							>
 								<Link to="/app/project">
 									<Card
@@ -544,7 +563,6 @@ const Dashboard = () => {
 								md={3}
 								sm={5}
 								xs={12}
-								p={5}
 							>
 								<Link to="/app/project">
 									<Card
@@ -584,7 +602,6 @@ const Dashboard = () => {
 								md={3}
 								sm={5}
 								xs={12}
-								p={5}
 							>
 								<Link to="/app/project">
 									<Card
@@ -623,7 +640,6 @@ const Dashboard = () => {
 								md={3}
 								sm={5}
 								xs={12}
-								p={5}
 							>
 								<Link to="/app/project">
 									<Card
@@ -663,7 +679,6 @@ const Dashboard = () => {
 								md={3}
 								sm={5}
 								xs={12}
-								p={5}
 							>
 								<Link to="/app/project">
 									<Card
@@ -702,7 +717,6 @@ const Dashboard = () => {
 								md={3}
 								sm={5}
 								xs={12}
-								p={5}
 							>
 								<Link to="/app/project">
 									<Card
@@ -742,7 +756,6 @@ const Dashboard = () => {
 								md={3}
 								sm={5}
 								xs={12}
-								p={5}
 							>
 								<Link to="/app/project">
 									<Card
@@ -781,7 +794,6 @@ const Dashboard = () => {
 								md={3}
 								sm={5}
 								xs={12}
-								p={5}
 							>
 								<Link to="/app/project">
 									<Card
@@ -821,7 +833,6 @@ const Dashboard = () => {
 								md={3}
 								sm={5}
 								xs={12}
-								p={5}
 							>
 								<Link to="/app/project">
 									<Card
