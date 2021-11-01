@@ -12,6 +12,27 @@ import {
 import MenuIcon from '@material-ui/icons/Menu';
 import { Link } from 'react-router-dom';
 import Logo from 'src/components/Logo';
+import axios from 'axios';
+
+const api = 'https://se-disk.herokuapp.com/api';
+
+const logout = () => {
+	const url = '/auth/logout';
+	const target = '/app/dashboard';
+	const token = sessionStorage.getItem('user_token');
+	axios
+		.get(api + url, {
+			headers: {
+				Authorization: `Bearer ${token}`
+			}
+		})
+		.then((response) => {
+			console.log(response);
+			sessionStorage.clear();
+			window.location.href = target;
+		})
+		.catch((err) => console.log(err));
+};
 
 const DashboardNavbar = ({ onMobileNavOpen, ...rest }) => {
 	const [notifications] = useState([]);
@@ -95,6 +116,9 @@ const DashboardNavbar = ({ onMobileNavOpen, ...rest }) => {
 								marginRight: 2,
 								marginTop: 0.5,
 								marginLeft: 2
+							}}
+							onClick={() => {
+								logout()
 							}}
 						>
 							<h3 style={{

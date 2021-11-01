@@ -10,7 +10,6 @@ import {
 	Button,
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
-import Modal2 from 'src/components/modal/Modal2';
 
 const TeamSpecific = () => {
 	const [chartData] = useState({
@@ -24,7 +23,6 @@ const TeamSpecific = () => {
 		currentpeople: '2',
 		content: '으아아아아아ㅏㅇ 나는 프로젝트하는 중이다..... 으아아아아아아아 배고파아아아아앙 키키키키키키키키 졸려어ㅓㅌ어어어어어라너미런아ㅣㅓㄹ민ㅇㄹ'
 	});
-
 	const List = chartData.tag.map((t) => (
 		<Box
 			key={t}
@@ -127,25 +125,6 @@ const TeamSpecific = () => {
 								</Hidden>
 								<Box>
 									<Hidden lgUp>
-										<Link to="/chat/chat">
-											<Button
-												variant="contained"
-												size="small"
-												sx={{
-													float: 'right',
-													marginRight: 2,
-													marginTop: 0.5,
-													marginLeft: 2
-												}}
-											>
-												<h3 style={{
-													color: '#006400',
-												}}
-												>
-													채팅하기
-												</h3>
-											</Button>
-										</Link>
 										<h4 style={{
 											color: '#ffffff',
 											float: 'right',
@@ -155,9 +134,6 @@ const TeamSpecific = () => {
 										>
 											{chartData.name}
 										</h4>
-									</Hidden>
-									<Hidden lgDown>
-										<Modal2 />
 									</Hidden>
 									<Hidden lgDown>
 										<h2 style={{
@@ -198,46 +174,84 @@ const TeamSpecific = () => {
 									{chartData.content}
 								</h3>
 							</Box>
-							<Link to="/se/team">
-								<Button
-									variant="contained"
-									size="medium"
-									color="success"
-									sx={{
-										float: 'right',
-										marginRight: 2,
-										marginTop: 0.5,
-										marginLeft: 2
-									}}
-								>
-									<h3 style={{
-										color: '#ffffff',
-									}}
+							<Hidden lgDown>
+								<Link to="/se/team">
+									<Button
+										variant="contained"
+										size="medium"
+										color="success"
+										sx={{
+											float: 'right',
+											marginRight: 2,
+											marginTop: 0.5,
+											marginLeft: 2
+										}}
 									>
-										마감하기
-									</h3>
-								</Button>
-							</Link>
-							<Link to="/se/teamSpecificQuestion">
-								<Button
-									variant="contained"
-									size="medium"
-									color="success"
-									sx={{
-										float: 'right',
-										marginRight: 2,
-										marginTop: 0.5,
-										marginLeft: 2
-									}}
-								>
-									<h3 style={{
-										color: '#ffffff',
-									}}
+										<h3 style={{
+											color: '#ffffff',
+										}}
+										>
+											마감하기
+										</h3>
+									</Button>
+								</Link>
+								<Link to="/se/teamSpecificQuestion">
+									<Button
+										variant="contained"
+										size="medium"
+										color="success"
+										sx={{
+											float: 'right',
+											marginRight: 2,
+											marginTop: 0.5,
+											marginLeft: 2
+										}}
 									>
-										신청하기
-									</h3>
-								</Button>
-							</Link>
+										<h3 style={{
+											color: '#ffffff',
+										}}
+										>
+											신청하기
+										</h3>
+									</Button>
+								</Link>
+							</Hidden>
+							<Hidden lgUp>
+								<Link to="/se/team">
+									<Button
+										variant="contained"
+										size="medium"
+										color="success"
+										sx={{
+											float: 'right',
+										}}
+									>
+										<h3 style={{
+											color: '#ffffff',
+										}}
+										>
+											마감하기
+										</h3>
+									</Button>
+								</Link>
+								<Link to="/se/teamSpecificQuestion">
+									<Button
+										variant="contained"
+										size="medium"
+										color="success"
+										sx={{
+											float: 'left',
+										}}
+									>
+										<h3 style={{
+											color: '#ffffff',
+										}}
+										>
+											신청하기
+										</h3>
+									</Button>
+								</Link>
+							</Hidden>
 							<Box
 								sx={{
 									minHeight: '100%',
@@ -252,46 +266,90 @@ const TeamSpecific = () => {
 							py: 2,
 						}}
 					/>
-					<Link to="/se/teamList">
-						<Button
-							variant="contained"
-							size="medium"
-							color="success"
-							sx={{
-								float: 'right',
-								marginRight: 2,
-								marginTop: 0.5,
-								marginLeft: 2
-							}}
-						>
-							<h3 style={{
-								color: '#ffffff',
-							}}
+					<Hidden lgDown>
+						<Link to="/se/teamList">
+							<Button
+								variant="contained"
+								size="medium"
+								color="success"
+								sx={{
+									float: 'right',
+									marginLeft: 2
+								}}
 							>
-								신청목록
-							</h3>
-						</Button>
-					</Link>
-					<Link to="/se/teamupdate">
-						<Button
-							variant="contained"
-							size="medium"
-							color="success"
-							sx={{
-								float: 'right',
-								marginRight: 2,
-								marginTop: 0.5,
-								marginLeft: 2
-							}}
-						>
-							<h3 style={{
-								color: '#ffffff',
-							}}
+								<h3 style={{
+									color: '#ffffff',
+								}}
+								>
+									신청목록
+								</h3>
+							</Button>
+						</Link>
+						<Link to="/se/teamupdate">
+							<Button
+								variant="contained"
+								size="medium"
+								color="success"
+								sx={{
+									float: 'left',
+									marginRight: 2,
+								}}
 							>
-								수정하기
-							</h3>
-						</Button>
-					</Link>
+								<h3 style={{
+									color: '#ffffff',
+								}}
+								>
+									수정하기
+								</h3>
+							</Button>
+						</Link>
+					</Hidden>
+					<Hidden lgUp>
+						<Link to="/se/teamList">
+							<Button
+								variant="contained"
+								size="medium"
+								color="success"
+								sx={{
+									float: 'right',
+									marginRight: 2,
+									marginTop: 0.5,
+								}}
+							>
+								<h3 style={{
+									color: '#ffffff',
+								}}
+								>
+									신청목록
+								</h3>
+							</Button>
+						</Link>
+						<Link to="/se/teamupdate">
+							<Button
+								variant="contained"
+								size="medium"
+								color="success"
+								sx={{
+									float: 'left',
+									marginTop: 0.5,
+									marginLeft: 2
+								}}
+							>
+								<h3 style={{
+									color: '#ffffff',
+								}}
+								>
+									수정하기
+								</h3>
+							</Button>
+						</Link>
+					</Hidden>
+					<Box
+						sx={{
+							minHeight: '100%',
+							py: 2,
+						}}
+					/>
 				</Grid>
 			</Box>
 		</>

@@ -59,7 +59,6 @@ const TeamRegister = () => {
 		content: '',
 		count: '',
 		selectDate: new Date(),
-		question: ''
 	});
 	const [stack, setstack] = useState([]);
 	const [subject, setsubject] = useState([]);
@@ -92,11 +91,6 @@ const TeamRegister = () => {
 	const handlecontentChange = (event) => {
 		setPostBody({
 			content: event.currentTarget.value,
-		});
-	};
-	const handlequestionChange = (event) => {
-		setPostBody({
-			question: event.currentTarget.value,
 		});
 	};
 	const handlecountChange = (event) => {
@@ -271,7 +265,6 @@ const TeamRegister = () => {
 									variant="outlined"
 									onChange={handlecountChange}
 								/>
-								<h3 style={{ display: 'inline-block', width: 20, marginTop: 15 }}>&nbsp;명</h3>
 								<Box
 									sx={{
 										minHeight: '100%',
@@ -393,60 +386,6 @@ const TeamRegister = () => {
 									sx={{
 										minHeight: '100%',
 										py: 2,
-									}}
-								/>
-								<Box
-									sx={{
-										backgroundColor: '#D3D3D3',
-										height: 2,
-										boxShadow: 5
-									}}
-								/>
-								<Box
-									sx={{
-										minHeight: '100%',
-										py: 2,
-									}}
-								/>
-								<h3 style={{ display: 'inline-block', width: 50, marginTop: 15 }}>질문</h3>
-								<Box
-									sx={{
-										minHeight: '100%',
-										py: 1,
-									}}
-								/>
-								<TextField
-									fullWidth
-									sx={{
-										flex: '1',
-										flexDirection: 'row',
-										boxShadow: 5,
-										borderBottomRightRadius: 5,
-										borderBottomLeftRadius: 5,
-										borderTopRightRadius: 5,
-										borderTopLeftRadius: 5,
-										backgroundColor: 'primary.smoothgreen',
-									}}
-									InputProps={{
-										startAdornment: (
-											<InputAdornment position="start">
-												<SvgIcon
-													fontSize="small"
-													color="action"
-												/>
-											</InputAdornment>
-										)
-									}}
-									multiline
-									rows={4}
-									placeholder="추가 질문을 입력해주세요"
-									variant="outlined"
-									onChange={handlequestionChange}
-								/>
-								<Box
-									sx={{
-										minHeight: '100%',
-										py: 3,
 									}}
 								/>
 								<Link to="/se/teamSpecific">

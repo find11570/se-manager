@@ -61,7 +61,6 @@ const TeamUpdate = () => {
 		title: '창의 융합 종합 설계 1 프로젝트 인원 모집',
 		Maxpeople: '4',
 		content: '으아아아아아ㅏㅇ 나는 프로젝트하는 중이다..... 으아아아아아아아 배고파아아아아앙 키키키키키키키키 졸려어ㅓㅌ어어어어어라너미런아ㅣㅓㄹ민ㅇㄹ',
-		question: '너무졸린심경을 표현하시오'
 	});
 	const [stack, setstack] = useState([]);
 	const [subject, setsubject] = useState([]);
@@ -94,11 +93,6 @@ const TeamUpdate = () => {
 	const handlecontentChange = (event) => {
 		setchartData({
 			content: event.currentTarget.value,
-		});
-	};
-	const handlequestionChange = (event) => {
-		setchartData({
-			question: event.currentTarget.value,
 		});
 	};
 	const handlecountChange = (event) => {
@@ -217,8 +211,9 @@ const TeamUpdate = () => {
 										borderBottomLeftRadius: 5,
 										borderTopRightRadius: 5,
 										borderTopLeftRadius: 5,
-										height: 300
 									}}
+									multiline
+									rows={4}
 									InputProps={{
 										startAdornment: (
 											<InputAdornment position="start">
@@ -274,7 +269,6 @@ const TeamUpdate = () => {
 									variant="outlined"
 									onChange={handlecountChange}
 								/>
-								<h3 style={{ display: 'inline-block', width: 20, marginTop: 15 }}>&nbsp;명</h3>
 								<Box
 									sx={{
 										minHeight: '100%',
@@ -400,56 +394,8 @@ const TeamUpdate = () => {
 								/>
 								<Box
 									sx={{
-										backgroundColor: '#D3D3D3',
-										height: 2,
-										boxShadow: 5
-									}}
-								/>
-								<Box
-									sx={{
 										minHeight: '100%',
 										py: 2,
-									}}
-								/>
-								<h3 style={{ display: 'inline-block', width: 50, marginTop: 15 }}>질문</h3>
-								<Box
-									sx={{
-										minHeight: '100%',
-										py: 1,
-									}}
-								/>
-								<TextField
-									fullWidth
-									sx={{
-										flex: '1',
-										flexDirection: 'row',
-										boxShadow: 5,
-										borderBottomRightRadius: 5,
-										borderBottomLeftRadius: 5,
-										borderTopRightRadius: 5,
-										borderTopLeftRadius: 5,
-										backgroundColor: 'primary.smoothgreen',
-										height: 300,
-									}}
-									InputProps={{
-										startAdornment: (
-											<InputAdornment position="start">
-												<SvgIcon
-													fontSize="small"
-													color="action"
-												/>
-											</InputAdornment>
-										)
-									}}
-									value={chartData.question}
-									placeholder="추가 질문을 입력해주세요"
-									variant="outlined"
-									onChange={handlequestionChange}
-								/>
-								<Box
-									sx={{
-										minHeight: '100%',
-										py: 3,
 									}}
 								/>
 								<Link to="/se/teamSpecific">

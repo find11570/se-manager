@@ -19,6 +19,8 @@ import ListItemText from '@mui/material/ListItemText';
 import Select from '@mui/material/Select';
 import Checkbox from '@mui/material/Checkbox';
 import { Link } from 'react-router-dom';
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -230,20 +232,43 @@ const Team = () => {
 							sm={2}
 							xs={2}
 						>
-							<Link to="/app/project">
-								<Button
-									variant="contained"
-									color="success"
-									size="large"
-								>
-									<h4 style={{
-										color: '#ffffff',
-									}}
+							<Hidden lgDown>
+								<Link to="/app/project">
+									<Button
+										variant="contained"
+										color="success"
+										size="large"
 									>
-										검색
-									</h4>
-								</Button>
-							</Link>
+										<h4 style={{
+											color: '#ffffff',
+										}}
+										>
+											검색
+										</h4>
+									</Button>
+								</Link>
+							</Hidden>
+							<Hidden lgUp>
+								<Link to="/app/project">
+									<Box
+										sx={{
+											paddingTop: 1,
+										}}
+									>
+										<Button
+											variant="contained"
+											color="success"
+										>
+											<h4 style={{
+												color: '#ffffff',
+											}}
+											>
+												검색
+											</h4>
+										</Button>
+									</Box>
+								</Link>
+							</Hidden>
 						</Grid>
 					</Grid>
 					<Box
@@ -254,7 +279,7 @@ const Team = () => {
 					/>
 					<Grid
 						container
-						spacing={5}
+						spacing={3}
 					>
 						<Grid
 							item
@@ -292,6 +317,40 @@ const Team = () => {
 						>
 							<TeamRead />
 						</Grid>
+						<Grid
+						item
+						lg={10}
+						md={10}
+						sm={10}
+						xs={10}
+					>
+						<Hidden lgUp>
+							<Box
+								sx={{
+									justifyContent: 'center',
+									alignItems: 'center',
+									display: 'flex'
+								}}
+							>
+								<Stack spacing={2}>
+									<Pagination count={10} size="small" showFirstButton showLastButton />
+								</Stack>
+							</Box>
+						</Hidden>
+						<Hidden lgDown>
+							<Box
+								sx={{
+									justifyContent: 'center',
+									alignItems: 'center',
+									display: 'flex'
+								}}
+							>
+								<Stack spacing={2}>
+									<Pagination count={10} showFirstButton showLastButton />
+								</Stack>
+							</Box>
+						</Hidden>
+					</Grid>
 					</Grid>
 				</Container>
 			</Box>

@@ -12,7 +12,27 @@ import {
 import MenuIcon from '@material-ui/icons/Menu';
 import { Link } from 'react-router-dom';
 import Logo from 'src/components/Logo';
+import axios from 'axios';
 
+const api = 'https://se-disk.herokuapp.com/api';
+
+const logout = () => {
+	const url = '/auth/logout';
+	const target = '/app/dashboard';
+	const token = sessionStorage.getItem('user_token');
+	axios
+		.get(api + url, {
+			headers: {
+				Authorization: `Bearer ${token}`
+			}
+		})
+		.then((response) => {
+			console.log(response);
+			sessionStorage.clear();
+			window.location.href = target;
+		})
+		.catch((err) => console.log(err));
+};
 const TeamboardNavbar = ({ onMobileNavOpen, ...rest }) => {
 	const [notifications] = useState([]);
 	const isLogin = () => {
@@ -29,7 +49,7 @@ const TeamboardNavbar = ({ onMobileNavOpen, ...rest }) => {
 			return (
 				<Box>
 					<Hidden lgUp>
-						<Link to="/app/ProjectRegister">
+						<Link to="/se/teamRegister">
 							<Button
 								variant="contained"
 								size="small"
@@ -48,7 +68,7 @@ const TeamboardNavbar = ({ onMobileNavOpen, ...rest }) => {
 						</Link>
 					</Hidden>
 					<Hidden lgDown>
-						<Link to="/app/ProjectRegister">
+						<Link to="/se/teamRegister">
 							<Button
 								variant="contained"
 								size="small"
@@ -86,6 +106,26 @@ const TeamboardNavbar = ({ onMobileNavOpen, ...rest }) => {
 								</h3>
 							</Button>
 						</Link>
+						<Button
+							variant="contained"
+							size="small"
+							sx={{
+								float: 'right',
+								marginRight: 2,
+								marginTop: 0.5,
+								marginLeft: 2
+							}}
+							onClick={() => {
+								logout()
+							}}
+						>
+							<h3 style={{
+								color: '#006400',
+							}}
+							>
+								로그아웃
+							</h3>
+						</Button>
 					</Hidden>
 				</Box>
 			);
