@@ -20,6 +20,9 @@ import ListItemText from '@mui/material/ListItemText';
 import Select from '@mui/material/Select';
 import Checkbox from '@mui/material/Checkbox';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+
+const api = 'https://se-disk.herokuapp.com/api';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -80,12 +83,15 @@ const categorys = [
 	'자연어처리',
 	'영상처리'
 ];
+const data = JSON.parse(sessionStorage.getItem('user_data'));
 const ProjectRegister = () => {
 	const [postBody, setPostBody] = useState({
 		title: '',
 		content: '',
+		image: '',
+		members: []
 	});
-	const [member, setmember] = useState([]);
+
 	const [stack, setstack] = useState([]);
 	const [subject, setsubject] = useState([]);
 	const [professor, setprofessor] = useState([]);
@@ -98,7 +104,6 @@ const ProjectRegister = () => {
 		setcategory(
 			typeof value === 'string' ? value.split(',') : value,
 		);
-		console.log(category);
 	};
 	const handlesubjectChange = (event) => {
 		const {
@@ -135,20 +140,26 @@ const ProjectRegister = () => {
 	const handletitleChange = (event) => {
 		setPostBody({
 			title: event.currentTarget.value,
+			content: postBody.content,
+			image: postBody.image,
+			members: postBody.members
 		});
 	};
 	const handlecontentChange = (event) => {
 		setPostBody({
+			title: postBody.title,
+			image: postBody.image,
+			members: postBody.members,
 			content: event.currentTarget.value,
 		});
 	};
 	const handlememberChange = (event) => {
-		const {
-			target: { value },
-		} = event;
-		setmember(
-			typeof value === 'string' ? value.split(',') : value,
-		);
+		setPostBody({
+			title: postBody.title,
+			image: postBody.image,
+			content: postBody.content,
+			members: event.currentTarget.value
+		});
 	};
 	return (
 		<>
@@ -224,16 +235,14 @@ const ProjectRegister = () => {
 											borderBottomLeftRadius: 10,
 											borderTopRightRadius: 10,
 											borderTopLeftRadius: 10,
-											boxShadow: 5,
-											width: 140,
-											height: 140,
+											boxShadow: 5
 										}}
 									>
 										<CardContent>
 											<Avatar
 												sx={{
 													cursor: 'pointer',
-													width: 100,
+													width: 150,
 													height: 100,
 												}}
 											/>
@@ -247,7 +256,6 @@ const ProjectRegister = () => {
 									}}
 								/>
 								<h3>프로젝트 제목</h3>
-								{postBody.name}
 								<Box
 									sx={{
 										minHeight: '100%',
@@ -255,7 +263,7 @@ const ProjectRegister = () => {
 									}}
 								/>
 								<TextField
-									fullWidth
+									halfwidth="true"
 									sx={{
 										flex: '1',
 										flexDirection: 'row',
@@ -332,7 +340,7 @@ const ProjectRegister = () => {
 									}}
 								/>
 								<TextField
-									fullWidth
+									halfwidth="true"
 									sx={{
 										flex: '1',
 										flexDirection: 'row',
@@ -353,7 +361,7 @@ const ProjectRegister = () => {
 											</InputAdornment>
 										)
 									}}
-									placeholder="ex) id1,id2,id3"
+									placeholder="아이디를 입력해주세요"
 									variant="outlined"
 									onChange={handlememberChange}
 								/>
@@ -593,6 +601,20 @@ const ProjectRegister = () => {
 										variant="contained"
 										color="success"
 										onClick={() => {
+											const reqObject = {
+												project_title: postBody.title,
+												project_content: postBody.content,
+												project_category: category.join(),
+												project_leader: data.user_id,
+												// project_image: postBody.image,
+												project_image: "null",
+												project_subject: subject[0],
+												project_subject_year: parseInt(year[0], 10),
+												project_professor: 1,
+												project_members: postBody.members.split(', ').map(function (item) { return parseInt(item, 10) })
+											};
+											console.log(reqObject);
+											axios.post('https://se-disk.herokuapp.com/api/project', reqObject);
 											alert('생성되었습니다.');
 										}}
 									>
