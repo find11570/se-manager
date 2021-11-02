@@ -98,6 +98,7 @@ const ProjectRegister = () => {
 		setcategory(
 			typeof value === 'string' ? value.split(',') : value,
 		);
+		console.log(category);
 	};
 	const handlesubjectChange = (event) => {
 		const {

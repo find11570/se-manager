@@ -195,7 +195,7 @@ const TeamSpecific = () => {
 										</h3>
 									</Button>
 								</Link>
-								<Link to="/se/teamSpecificQuestion">
+								<Link to="/se/team">
 									<Button
 										variant="contained"
 										size="medium"
