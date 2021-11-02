@@ -17,25 +17,32 @@ const url = '/project';
 
 const ProjectCard = (props) => {
 	const [page, setPage] = useState(1);
+	const [count, setcount] = useState(1);
 
 	const handlePageChange = (event, value) => {
 		setPage(value);
 		const front = () => axios.get(api + url + '?pageNum='+ value + '&pageCount=8');
-		const getFarms = async () => {
+		const getdata = async () => {
 			const data = await front();
 			setarray(data.data.projects.rows);
 		};
-		getFarms();
+		getdata();
 	};
 
 	const back = () => axios.get(api + url + '?pageNum=1 + &pageCount=8');
+	const countnumber = () => axios.get(api + '/project-count');
 
 	useEffect(() => {
-		const getFarms = async () => {
+		const getdata = async () => {
 			const data = await back();
 			setarray(data.data.projects.rows);
 		};
-		getFarms();
+		const getcount = async() => {
+			const data = await countnumber();
+			setcount(Math.ceil(data.data.projectCnt/8));
+		}
+		getdata();
+		getcount();
 	}, []);
 
 	const [array, setarray] = useState([]);
@@ -135,7 +142,7 @@ const ProjectCard = (props) => {
 					}}
 				>
 					<Stack spacing={2}>
-						<Pagination count={10} page={page} onChange={handlePageChange} showFirstButton showLastButton />
+						<Pagination count={count} page={page} onChange={handlePageChange} showFirstButton showLastButton />
 					</Stack>
 				</Box>
 			</Grid>
