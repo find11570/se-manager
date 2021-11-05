@@ -56,7 +56,7 @@ const ProjectCard = (props) => {
 				>
 					{
 						array.map(row => (
-							<ProjectCardContent id = {row.project_id} title={row.project_title} image={row.project_image} hit={row.project_hit} like={row.project_like} members={row.project_members} />
+							<ProjectCardContent id = {row.project_id} title={row.project_title} image={row.project_image} hit={row.project_hit} like={row.project_like} members={row.project_members}/>
 						))
 					}
 				</Grid>
