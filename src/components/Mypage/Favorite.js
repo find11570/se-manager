@@ -13,37 +13,44 @@ import Stack from '@mui/material/Stack';
 import axios from 'axios';
 
 const api = 'https://se-disk.herokuapp.com/api';
-const url = '/project';
+const url = '/user';
+const people = JSON.parse(sessionStorage.getItem('user_data'));
+const token = sessionStorage.getItem('user_token');
 
-const ProjectCard = (props) => {
+const Favorite = (props) => {
 	const [page, setPage] = useState(0);
-	const [count, setcount] = useState(1);
 
 	const handlePageChange = (event, value) => {
 		setPage(value);
-		const front = () => axios.get(api + url + '?pageNum=' + value + '&pageCount=8');
-		const getdata = async () => {
+		const front = () => axios.get(api + url + '/' + people.user_id + '/like-projects?pageNum=' + value + '&pageCount=8',
+			{
+				headers: {
+					authorization: `Bearer ${token}`
+				}
+			}
+		);
+		const getFarms = async () => {
 			const data = await front();
 			setarray(data.data.projects);
-			console.log(data.data.projects);
 		};
-		getdata();
+		getFarms();
 	};
 
-	const back = () => axios.get(api + url + '?pageNum=1 + &pageCount=8');
-	const countnumber = () => axios.get(api + '/project-count');
+	const back = () => axios.get(api + url + '/' + people.user_id + '/like-projects?pageNum=' + page + '&pageCount=8',
+		{
+			headers: {
+				authorization: `Bearer ${token}`
+			}
+		}
+	);
 
 	useEffect(() => {
-		const getdata = async () => {
+		const getFarms = async () => {
 			const data = await back();
 			setarray(data.data.projects);
+			console.log(data);
 		};
-		const getcount = async () => {
-			const data = await countnumber();
-			setcount(Math.ceil(data.data.projectCnt / 8));
-		}
-		getdata();
-		getcount();
+		getFarms();
 	}, []);
 
 	const [array, setarray] = useState([]);
@@ -51,11 +58,7 @@ const ProjectCard = (props) => {
 	function mapping() {
 		back
 		return (
-			<Box
-				sx={{
-					marginRight: '15%'
-				}}
-			>
+			<Box>
 				<Grid
 					container
 					spacing={3}
@@ -69,14 +72,13 @@ const ProjectCard = (props) => {
 								md={4}
 								sm={6}
 								xs={12}
-								p={5}
 							>
 								<Link to="/app/projectDetail">
 									<Card
 										sx={{
 											boxShadow: 5,
-											width: 250,
-											height: 250
+											width: 220,
+											height: 220
 										}}
 									>
 										<CardContent>
@@ -147,7 +149,7 @@ const ProjectCard = (props) => {
 					}}
 				>
 					<Stack spacing={2}>
-						<Pagination count={count} page={page} onChange={handlePageChange} showFirstButton showLastButton />
+						<Pagination count={10} page={page} onChange={handlePageChange} showFirstButton showLastButton />
 					</Stack>
 				</Box>
 			</Grid>
@@ -155,4 +157,4 @@ const ProjectCard = (props) => {
 	);
 };
 
-export default ProjectCard;
+export default Favorite;

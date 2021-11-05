@@ -70,7 +70,7 @@ const Mypage = () => {
 												marginBottom: 1.5
 											}}
 										/>
-										<h3 style={{ marginLeft: 20, color: '#ffffff' }}>
+										<h3 style={{ color: '#ffffff' }}>
 											{chartData.name}
 										</h3>
 									</Box>

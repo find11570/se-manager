@@ -10,14 +10,9 @@ import {
 	Grid,
 	Card,
 	CardContent,
-	Hidden
 } from '@material-ui/core';
-import { Link } from 'react-router-dom';
-import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import Pagination from '@mui/material/Pagination';
-import Stack from '@mui/material/Stack';
 import MyCard from 'src/components/Mypage/MyCard';
+import Favorite from 'src/components/Mypage/Favorite';
 function TabPanel(props) {
 	const {
 		children,
@@ -70,23 +65,12 @@ const useStyles = makeStyles((theme) => ({
 export default function MypageTabs() {
 	const classes = useStyles();
 	const [Data, setData] = React.useState({
-		projectid: '1',
-		title: 'SE-Manager',
-		people: '진채연, 김현수, 황영민, 김지영',
-		see: '50',
-		good: '200',
-		picture: '/static/picture.PNG',
 		type: 0
 	});
 
 	const handleChange = (event, newValue) => {
 		setData({
 			type: newValue,
-			title: Data.title,
-			people: Data.people,
-			see: Data.see,
-			good: Data.good,
-			picture: Data.picture,
 		});
 	};
 
@@ -99,284 +83,10 @@ export default function MypageTabs() {
 				</Tabs>
 			</AppBar>
 			<TabPanel value={Data.type} index={0}>
-					<MyCard />
+				<MyCard />
 			</TabPanel>
 			<TabPanel value={Data.type} index={1}>
-				<Grid
-					container
-					spacing={3}
-				>
-					<Grid
-						item
-						lg={3}
-						md={4}
-						sm={6}
-						xs={12}
-					>
-						<Link to="/app/projectDetail">
-							<Card
-								sx={{
-									boxShadow: 5,
-									width: 220,
-									height: 220
-								}}
-							>
-								<CardContent>
-									<img
-										src={Data.picture}
-										alt="profile"
-										style={{
-											width: 180,
-											height: 100
-										}}
-									/>
-									<h4>{Data.title}</h4>
-									<h5>{Data.people}</h5>
-									<Box
-										sx={{
-											float: 'right'
-										}}
-									>
-										<RemoveRedEyeIcon
-											sx={{
-												display: 'inline-block',
-											}}
-										/>
-										<h5 style={{ display: 'inline-block', fontSize: 'small' }}>
-											&nbsp;
-											{Data.see}
-										</h5>
-										<FavoriteIcon
-											sx={{
-												display: 'inline-block',
-											}}
-										/>
-										<h5 style={{ display: 'inline-block', fontSize: 'small' }}>
-											&nbsp;
-											{Data.good}
-										</h5>
-									</Box>
-								</CardContent>
-							</Card>
-						</Link>
-					</Grid>
-					<Grid
-						item
-						lg={3}
-						md={4}
-						sm={6}
-						xs={12}
-					>
-						<Link to="/app/projectDetail">
-							<Card
-								sx={{
-									boxShadow: 5,
-									width: 220,
-									height: 220
-								}}
-							>
-								<CardContent>
-									<img
-										src={Data.picture}
-										alt="profile"
-										style={{
-											width: 180,
-											height: 100
-										}}
-									/>
-									<h4>{Data.title}</h4>
-									<h5>{Data.people}</h5>
-									<Box
-										sx={{
-											float: 'right'
-										}}
-									>
-										<RemoveRedEyeIcon
-											sx={{
-												display: 'inline-block',
-											}}
-										/>
-										<h5 style={{ display: 'inline-block', fontSize: 'small' }}>
-											&nbsp;
-											{Data.see}
-										</h5>
-										<FavoriteIcon
-											sx={{
-												display: 'inline-block',
-											}}
-										/>
-										<h5 style={{ display: 'inline-block', fontSize: 'small' }}>
-											&nbsp;
-											{Data.good}
-										</h5>
-									</Box>
-								</CardContent>
-							</Card>
-						</Link>
-					</Grid>
-					<Grid
-						item
-						lg={3}
-						md={4}
-						sm={6}
-						xs={12}
-					>
-						<Link to="/app/projectDetail">
-							<Card
-								sx={{
-									boxShadow: 5,
-									width: 220,
-									height: 220
-								}}
-							>
-								<CardContent>
-									<img
-										src={Data.picture}
-										alt="profile"
-										style={{
-											width: 180,
-											height: 100
-										}}
-									/>
-									<h4>{Data.title}</h4>
-									<h5>{Data.people}</h5>
-									<Box
-										sx={{
-											float: 'right'
-										}}
-									>
-										<RemoveRedEyeIcon
-											sx={{
-												display: 'inline-block',
-											}}
-										/>
-										<h5 style={{ display: 'inline-block', fontSize: 'small' }}>
-											&nbsp;
-											{Data.see}
-										</h5>
-										<FavoriteIcon
-											sx={{
-												display: 'inline-block',
-											}}
-										/>
-										<h5 style={{ display: 'inline-block', fontSize: 'small' }}>
-											&nbsp;
-											{Data.good}
-										</h5>
-									</Box>
-								</CardContent>
-							</Card>
-						</Link>
-					</Grid>
-					<Grid
-						item
-						lg={3}
-						md={4}
-						sm={6}
-						xs={12}
-					>
-						<Link to="/app/projectDetail">
-							<Card
-								sx={{
-									boxShadow: 5,
-									width: 220,
-									height: 220
-								}}
-							>
-								<CardContent>
-									<img
-										src={Data.picture}
-										alt="profile"
-										style={{
-											width: 180,
-											height: 100
-										}}
-									/>
-									<h4>{Data.title}</h4>
-									<h5>{Data.people}</h5>
-									<Box
-										sx={{
-											float: 'right'
-										}}
-									>
-										<RemoveRedEyeIcon
-											sx={{
-												display: 'inline-block',
-											}}
-										/>
-										<h5 style={{ display: 'inline-block', fontSize: 'small' }}>
-											&nbsp;
-											{Data.see}
-										</h5>
-										<FavoriteIcon
-											sx={{
-												display: 'inline-block',
-											}}
-										/>
-										<h5 style={{ display: 'inline-block', fontSize: 'small' }}>
-											&nbsp;
-											{Data.good}
-										</h5>
-									</Box>
-								</CardContent>
-							</Card>
-						</Link>
-					</Grid>
-					<Grid
-						item
-						lg={3}
-						md={4}
-						sm={6}
-						xs={12}
-					>
-						<Link to="/app/projectDetail">
-							<Card
-								sx={{
-									boxShadow: 5,
-									width: 220,
-									height: 220
-								}}
-							>
-								<CardContent>
-									<img
-										src={Data.picture}
-										alt="profile"
-										style={{
-											width: 180,
-											height: 100
-										}}
-									/>
-									<h4>{Data.title}</h4>
-									<h5>{Data.people}</h5>
-									<Box
-										sx={{
-											float: 'right'
-										}}
-									>
-										<RemoveRedEyeIcon
-											sx={{
-												display: 'inline-block',
-											}}
-										/>
-										<h5 style={{ display: 'inline-block', fontSize: 'small' }}>
-											&nbsp;
-											{Data.see}
-										</h5>
-										<FavoriteIcon
-											sx={{
-												display: 'inline-block',
-											}}
-										/>
-										<h5 style={{ display: 'inline-block', fontSize: 'small' }}>
-											&nbsp;
-											{Data.good}
-										</h5>
-									</Box>
-								</CardContent>
-							</Card>
-						</Link>
-					</Grid>
-				</Grid>
+				<Favorite />
 			</TabPanel>
 		</div>
 	);

@@ -13,14 +13,22 @@ import Stack from '@mui/material/Stack';
 import axios from 'axios';
 
 const api = 'https://se-disk.herokuapp.com/api';
-const url = '/project';
+const url = '/user';
+const people = JSON.parse(sessionStorage.getItem('user_data'));
+const token = sessionStorage.getItem('user_token');
 
 const ProjectCard = (props) => {
-	const [page, setPage] = useState(1);
+	const [page, setPage] = useState(0);
 
 	const handlePageChange = (event, value) => {
 		setPage(value);
-		const front = () => axios.get(api + url + '?pageNum=' + value + '&pageCount=8');
+		const front = () => axios.get(api + url + '/' + people.user_id + '/projects?pageNum=' + value + '&pageCount=8',
+			{
+				headers: {
+					authorization: `Bearer ${token}`
+				}
+			}
+		);
 		const getFarms = async () => {
 			const data = await front();
 			setarray(data.data.projects);
@@ -28,12 +36,19 @@ const ProjectCard = (props) => {
 		getFarms();
 	};
 
-	const back = () => axios.get(api + url + '?pageNum=1 + &pageCount=8');
+	const back = () => axios.get(api + url + '/' + people.user_id + '/projects?pageNum=' + page + '&pageCount=8',
+		{
+			headers: {
+				authorization: `Bearer ${token}`
+			}
+		}
+	);
 
 	useEffect(() => {
 		const getFarms = async () => {
 			const data = await back();
 			setarray(data.data.projects);
+			console.log(data);
 		};
 		getFarms();
 	}, []);
@@ -43,11 +58,7 @@ const ProjectCard = (props) => {
 	function mapping() {
 		back
 		return (
-			<Box
-				sx={{
-					marginRight: '15%'
-				}}
-			>
+			<Box>
 				<Grid
 					container
 					spacing={3}
@@ -55,6 +66,7 @@ const ProjectCard = (props) => {
 					{
 						array.map(row => (
 							<Grid
+								key={row.project_id}
 								item
 								lg={3}
 								md={4}
@@ -62,16 +74,16 @@ const ProjectCard = (props) => {
 								xs={12}
 							>
 								<Link to="/app/projectDetail">
-								<Card
-								sx={{
-									boxShadow: 5,
-									width: 220,
-									height: 220
-								}}
+									<Card
+										sx={{
+											boxShadow: 5,
+											width: 220,
+											height: 220
+										}}
 									>
 										<CardContent>
 											<img
-												src={'hello'}
+												src={row.project_image}
 												alt="profile"
 												style={{
 													width: 220,
@@ -81,7 +93,7 @@ const ProjectCard = (props) => {
 											<h3>{row.project_title}</h3>
 											{
 												row.project_members.map(member => (
-													<li style={{ listStyleType:'none', float: 'left'}} key={member.user_id}><h4>{member.user_name}&nbsp;</h4></li>
+													<li style={{ listStyleType: 'none', float: 'left' }} key={member.user_id}><h4>{member.user_name}&nbsp;</h4></li>
 												))
 											}
 											<Box
@@ -124,8 +136,8 @@ const ProjectCard = (props) => {
 			{mapping()}
 			<Grid
 				item
-				lg={10}
-				md={10}
+				lg={12}
+				md={12}
 				sm={12}
 				xs={12}
 			>
