@@ -23,7 +23,7 @@ const ProjectCard = (props) => {
 		const front = () => axios.get(api + url + '?pageNum=' + value + '&pageCount=8');
 		const getFarms = async () => {
 			const data = await front();
-			setarray(data.data.projects.rows);
+			setarray(data.data.projects);
 		};
 		getFarms();
 	};
@@ -33,7 +33,7 @@ const ProjectCard = (props) => {
 	useEffect(() => {
 		const getFarms = async () => {
 			const data = await back();
-			setarray(data.data.projects.rows);
+			setarray(data.data.projects);
 		};
 		getFarms();
 	}, []);
@@ -79,7 +79,11 @@ const ProjectCard = (props) => {
 												}}
 											/>
 											<h3>{row.project_title}</h3>
-											<h4>{'진채연, 김현수, 황영민, 김지영'}</h4>
+											{
+												row.project_members.map(member => (
+													<li style={{ listStyleType:'none', float: 'left'}} key={member.user_id}><h4>{member.user_name}&nbsp;</h4></li>
+												))
+											}
 											<Box
 												sx={{
 													float: 'right'
