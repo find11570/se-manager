@@ -433,7 +433,8 @@ const Dashboard = () => {
 													sx={{
 														width: 50,
 														height: 50,
-														paddingBottom: 1
+														paddingBottom: 1,
+														color: '#2e6411'
 													}}
 												/>
 												<h3>웹사이트</h3>
@@ -471,7 +472,8 @@ const Dashboard = () => {
 													sx={{
 														width: 50,
 														height: 50,
-														paddingBottom: 1
+														paddingBottom: 1,
+														color: '#2e6411'
 													}}
 												/>
 												<h3>모바일앱</h3>
@@ -510,7 +512,8 @@ const Dashboard = () => {
 													sx={{
 														width: 50,
 														height: 50,
-														paddingBottom: 1
+														paddingBottom: 1,
+														color: '#2e6411'
 													}}
 												/>
 												<h3>인공지능</h3>
@@ -548,7 +551,8 @@ const Dashboard = () => {
 													sx={{
 														width: 50,
 														height: 50,
-														paddingBottom: 1
+														paddingBottom: 1,
+														color: '#2e6411'
 													}}
 												/>
 												<h3>IoT</h3>
@@ -587,7 +591,8 @@ const Dashboard = () => {
 													sx={{
 														width: 50,
 														height: 50,
-														paddingBottom: 1
+														paddingBottom: 1,
+														color: '#2e6411'
 													}}
 												/>
 												<h3>블록체인</h3>
@@ -625,7 +630,8 @@ const Dashboard = () => {
 													sx={{
 														width: 50,
 														height: 50,
-														paddingBottom: 1
+														paddingBottom: 1,
+														color: '#2e6411'
 													}}
 												/>
 												<h3>보안</h3>
@@ -664,7 +670,8 @@ const Dashboard = () => {
 													sx={{
 														width: 50,
 														height: 50,
-														paddingBottom: 1
+														paddingBottom: 1,
+														color: '#2e6411'
 													}}
 												/>
 												<h3>VR/AR</h3>
@@ -702,7 +709,8 @@ const Dashboard = () => {
 													sx={{
 														width: 50,
 														height: 50,
-														paddingBottom: 1
+														paddingBottom: 1,
+														color: '#2e6411'
 													}}
 												/>
 												<h3>게임</h3>
@@ -741,7 +749,8 @@ const Dashboard = () => {
 													sx={{
 														width: 50,
 														height: 50,
-														paddingBottom: 1
+														paddingBottom: 1,
+														color: '#2e6411'
 													}}
 												/>
 												<h3>로봇</h3>
@@ -779,7 +788,8 @@ const Dashboard = () => {
 													sx={{
 														width: 50,
 														height: 50,
-														paddingBottom: 1
+														paddingBottom: 1,
+														color: '#2e6411'
 													}}
 												/>
 												<h3>자연어처리</h3>
@@ -818,7 +828,8 @@ const Dashboard = () => {
 													sx={{
 														width: 50,
 														height: 50,
-														paddingBottom: 1
+														paddingBottom: 1,
+														color: '#2e6411'
 													}}
 												/>
 												<h3>영상처리</h3>
@@ -856,7 +867,8 @@ const Dashboard = () => {
 													sx={{
 														width: 50,
 														height: 50,
-														paddingBottom: 1
+														paddingBottom: 1,
+														color: '#2e6411'
 													}}
 												/>
 												<h3>전체</h3>

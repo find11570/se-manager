@@ -9,7 +9,7 @@ const theme = createTheme({
 			paper: colors.common.white
 		},
 		primary: {
-			green: '#81C147',
+			green: '#2e6411',
 			contrastText: '#000000',
 			main: '#ffffff',
 			smoothgreen: '#F0F7EC',
