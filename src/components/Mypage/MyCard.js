@@ -48,7 +48,6 @@ const ProjectCard = (props) => {
 		const getFarms = async () => {
 			const data = await back();
 			setarray(data.data.projects);
-			console.log(data);
 		};
 		getFarms();
 	}, []);
