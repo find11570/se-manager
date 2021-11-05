@@ -45,7 +45,6 @@ const stacks = [
 const subjects = [
 	'창의융합종합설계1',
 	'창의융합종합설계2',
-	'일반 프로젝트'
 ];
 const professors = [
 	'김병만',
