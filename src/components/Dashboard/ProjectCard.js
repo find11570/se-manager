@@ -1,16 +1,12 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
-import FavoriteIcon from '@mui/icons-material/Favorite';
 import {
 	Box,
-	Card,
-	CardContent,
-	Grid
+	Grid,
 } from '@material-ui/core';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import axios from 'axios';
+import ProjectCardContent from 'src/components/Dashboard/ProjectCardContent';
 
 const api = 'https://se-disk.herokuapp.com/api';
 const url = '/project';
@@ -25,7 +21,6 @@ const ProjectCard = (props) => {
 		const getdata = async () => {
 			const data = await front();
 			setarray(data.data.projects);
-			console.log(data.data.projects);
 		};
 		getdata();
 	};
@@ -48,9 +43,8 @@ const ProjectCard = (props) => {
 
 	const [array, setarray] = useState([]);
 
-	function mapping() {
-		back
-		return (
+	return (
+		<>
 			<Box
 				sx={{
 					marginRight: '15%'
@@ -62,76 +56,11 @@ const ProjectCard = (props) => {
 				>
 					{
 						array.map(row => (
-							<Grid
-								key={row.project_id}
-								item
-								lg={3}
-								md={4}
-								sm={6}
-								xs={12}
-								p={5}
-							>
-								<Link to="/app/projectDetail">
-									<Card
-										sx={{
-											boxShadow: 5,
-											width: 250,
-											height: 250
-										}}
-									>
-										<CardContent>
-											<img
-												src={row.project_image}
-												alt="profile"
-												style={{
-													width: 220,
-													height: 120
-												}}
-											/>
-											<h3>{row.project_title}</h3>
-											{
-												row.project_members.map(member => (
-													<li style={{ listStyleType: 'none', float: 'left' }} key={member.user_id}><h4>{member.user_name}&nbsp;</h4></li>
-												))
-											}
-											<Box
-												sx={{
-													float: 'right'
-												}}
-											>
-												<RemoveRedEyeIcon
-													sx={{
-														display: 'inline-block',
-													}}
-												/>
-												<h4 style={{ display: 'inline-block' }}>
-													&nbsp;
-													{row.project_hit}
-												</h4>
-												<FavoriteIcon
-													sx={{
-														display: 'inline-block',
-													}}
-												/>
-												<h4 style={{ display: 'inline-block' }}>
-													&nbsp;
-													{row.project_like}
-												</h4>
-											</Box>
-										</CardContent>
-									</Card>
-								</Link>
-							</Grid>
+							<ProjectCardContent id = {row.project_id} title={row.project_title} image={row.project_image} hit={row.project_hit} like={row.project_like} members={row.project_members} />
 						))
 					}
 				</Grid>
-			</Box>
-		);
-	}
-
-	return (
-		<>
-			{mapping()}
+			</Box >
 			<Grid
 				item
 				lg={10}

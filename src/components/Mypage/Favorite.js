@@ -11,6 +11,7 @@ import {
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import axios from 'axios';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 const api = 'https://se-disk.herokuapp.com/api';
 const url = '/user';
@@ -18,11 +19,12 @@ const people = JSON.parse(sessionStorage.getItem('user_data'));
 const token = sessionStorage.getItem('user_token');
 
 const Favorite = (props) => {
-	const [page, setPage] = useState(0);
-
+	const [page, setPage] = useState(1);
+	const [count, setcount] = useState(1);
+	const [bookmark, setBookmark] = useState(false);
 	const handlePageChange = (event, value) => {
 		setPage(value);
-		const front = () => axios.get(api + url + '/' + people.user_id + '/like-projects?pageNum=' + value + '&pageCount=8',
+		const front = () => axios.get(api + url + '/' + people.user_id + '/like-projects?pageNum=' + (value-1) + '&pageCount=8',
 			{
 				headers: {
 					authorization: `Bearer ${token}`
@@ -36,7 +38,7 @@ const Favorite = (props) => {
 		getFarms();
 	};
 
-	const back = () => axios.get(api + url + '/' + people.user_id + '/like-projects?pageNum=' + page + '&pageCount=8',
+	const back = () => axios.get(api + url + '/' + people.user_id + '/like-projects?pageNum=' + (page-1) + '&pageCount=8',
 		{
 			headers: {
 				authorization: `Bearer ${token}`
@@ -48,10 +50,13 @@ const Favorite = (props) => {
 		const getFarms = async () => {
 			const data = await back();
 			setarray(data.data.projects);
+			setcount(Math.ceil(data.data.count / 8));
 		};
 		getFarms();
 	}, []);
-
+	const handleBookmark = () => {
+		setBookmark(!bookmark);
+	};
 	const [array, setarray] = useState([]);
 
 	function mapping() {
@@ -72,56 +77,73 @@ const Favorite = (props) => {
 								sm={6}
 								xs={12}
 							>
-								<Link to="/app/projectDetail">
-									<Card
-										sx={{
-											boxShadow: 5,
-											width: 220,
-											height: 220
-										}}
-									>
-										<CardContent>
-											<img
-												src={row.project_image}
-												alt="profile"
-												style={{
-													width: 220,
-													height: 120
-												}}
-											/>
-											<h3>{row.project_title}</h3>
-											{
-												row.project_members.map(member => (
-													<li style={{ listStyleType: 'none', float: 'left' }} key={member.user_id}><h4>{member.user_name}&nbsp;</h4></li>
-												))
-											}
-											<Box
-												sx={{
-													float: 'right'
-												}}
-											>
-												<RemoveRedEyeIcon
-													sx={{
-														display: 'inline-block',
+																<Card
+									sx={{
+										boxShadow: 5,
+										width: 250,
+										height: 250
+									}}
+								>
+									<CardContent>
+										<Link to="/app/projectDetail">
+											<Box>
+												<img
+													src={row.project_image}
+													alt="profile"
+													style={{
+														width: 220,
+														height: 120
 													}}
 												/>
-												<h4 style={{ display: 'inline-block' }}>
-													&nbsp;
-													{row.project_hit}
-												</h4>
+												<h3>{row.project_title}</h3>
+												{
+													row.project_members.map(member => (
+														<li style={{ listStyleType: 'none', float: 'left' }} key={member.user_id}><h4>{member.user_name}&nbsp;</h4></li>
+													))
+												}
+											</Box>
+										</Link>
+										<Box
+											sx={{
+												marginTop: 3,
+												float: 'right'
+											}}
+											onClick={handleBookmark}
+										>
+											<RemoveRedEyeIcon
+												sx={{
+													display: 'inline-block',
+													marginLeft: 2
+												}}
+											/>
+											<h4 style={{ display: 'inline-block' }}>
+												&nbsp;
+												{row.project_hit}
+											</h4>
+											{bookmark ? (
 												<FavoriteIcon
 													sx={{
 														display: 'inline-block',
+														marginLeft: 2,
+														color: 'red'
 													}}
 												/>
-												<h4 style={{ display: 'inline-block' }}>
-													&nbsp;
-													{row.project_like}
-												</h4>
-											</Box>
-										</CardContent>
-									</Card>
-								</Link>
+											) : (
+												<FavoriteBorderIcon
+													sx={{
+														display: 'inline-block',
+														marginLeft: 2,
+														color: 'red'
+													}}
+												/>
+											)}
+											<h4 style={{ display: 'inline-block' }}>
+												&nbsp;
+												{row.project_like}
+											</h4>
+										</Box>
+									</CardContent>
+								</Card>
 							</Grid>
 						))
 					}
@@ -148,7 +170,7 @@ const Favorite = (props) => {
 					}}
 				>
 					<Stack spacing={2}>
-						<Pagination count={10} page={page} onChange={handlePageChange} showFirstButton showLastButton />
+						<Pagination count={count} page={page} onChange={handlePageChange} showFirstButton showLastButton />
 					</Stack>
 				</Box>
 			</Grid>
