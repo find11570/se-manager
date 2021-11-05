@@ -38,7 +38,7 @@ const ProjectCard = (props) => {
 		getFarms();
 	};
 
-	const back = () => axios.get(api + url + '/' + people.user_id + '/projects?pageNum=' + (page-1) + '&pageCount=8',
+	const back = () => axios.get(api + url + '/' + people.user_id + '/projects?pageNum=1&pageCount=8',
 		{
 			headers: {
 				authorization: `Bearer ${token}`
@@ -52,6 +52,7 @@ const ProjectCard = (props) => {
 		const getFarms = async () => {
 			const data = await back();
 			setarray(data.data.projects);
+			console.log(data);
 			setcount(Math.ceil(data.data.count / 8));
 		};
 		getFarms();

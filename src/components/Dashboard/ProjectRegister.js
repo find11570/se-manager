@@ -88,8 +88,7 @@ const ProjectRegister = () => {
 	const [postBody, setPostBody] = useState({
 		title: '',
 		content: '',
-		image: '',
-		members: []
+		image: '/static/picture.PNG',
 	});
 
 	const [stack, setstack] = useState([]);
@@ -97,6 +96,7 @@ const ProjectRegister = () => {
 	const [professor, setprofessor] = useState([]);
 	const [year, setyear] = useState([]);
 	const [category, setcategory] = useState([]);
+	const [members, setmembers] = useState([]);
 	const handlecategoryChange = (event) => {
 		const {
 			target: { value },
@@ -154,12 +154,12 @@ const ProjectRegister = () => {
 		});
 	};
 	const handlememberChange = (event) => {
-		setPostBody({
-			title: postBody.title,
-			image: postBody.image,
-			content: postBody.content,
-			members: event.currentTarget.value
-		});
+		const {
+			target: { value },
+		} = event;
+		setmembers(
+			typeof value === 'string' ? value.split(',') : value,
+		);
 	};
 	return (
 		<>
@@ -596,22 +596,22 @@ const ProjectRegister = () => {
 										py: 2,
 									}}
 								/>
-								<Link to="/app/ProjectDetail">
+								<Link to="/app/dashboard">
 									<Button
 										variant="contained"
 										color="success"
 										onClick={() => {
 											const reqObject = {
 												project_title: postBody.title,
-												project_content: postBody.content,
+												// project_content: postBody.content,
 												project_category: category.join(),
 												project_leader: data.user_id,
 												// project_image: postBody.image,
-												project_image: "null",
+												project_image: 'hello',
 												project_subject: subject[0],
 												project_subject_year: parseInt(year[0], 10),
 												project_professor: 1,
-												project_members: postBody.members.split(', ').map(function (item) { return parseInt(item, 10) })
+												project_members: members,
 											};
 											console.log(reqObject);
 											axios.post('https://se-disk.herokuapp.com/api/project', reqObject);
