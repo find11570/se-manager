@@ -17,17 +17,27 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import SimpleTabs from 'src/components/Dashboard/SimpleTabs';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { date } from 'yup';
 
 const api = 'https://se-disk.herokuapp.com/api';
 const url = '/project';
+const people = JSON.parse(sessionStorage.getItem('user_data'));
 
 const ProjectDetail = (props) => {
 	const project_id = location.href.split('/')[location.href.split('/').length - 1].split('.')[0];
 	const [data, setData] = useState([]);
+	const [state, setstate] = useState(false);
 	useEffect(() => {
 		axios.get(api + url + '/' + project_id).then((response) => {
 			setData(response.data.project);
+			if (sessionStorage.getItem('user_token')) {
+				if (response.data.project.length != 0) {
+					response.data.project.project_members.map((m) => {
+						if (m.user_id === people.user_id) {
+							setstate(true);
+						}
+					});
+				}
+			};
 		});
 	}, []);
 
@@ -242,7 +252,7 @@ const ProjectDetail = (props) => {
 								backgroundColor: '#ffffff'
 							}}
 						>
-							<SimpleTabs contents={data.project_introduction} members={data.project_members}/>
+							<SimpleTabs contents={data.project_introduction} members={data.project_members} />
 							<Box
 								sx={{
 									minHeight: '100%',
@@ -257,28 +267,36 @@ const ProjectDetail = (props) => {
 							py: 2
 						}}
 					/>
-					<Link
-						to={{
-							pathname: `/app/projectUpdate/${project_id}`,
-							state: { index: project_id }
-						}}
-					>
-						<Button
-							variant="contained"
-							color="success"
-							sx={{
-								float: 'right'
+					{state ? (
+						<Link
+							to={{
+								pathname: `/app/projectUpdate/${project_id}`,
+								state: { index: project_id }
 							}}
 						>
-							<h3
-								style={{
-									color: '#ffffff'
+							<Button
+								variant="contained"
+								color="success"
+								sx={{
+									float: 'right'
 								}}
 							>
-								수정하기
-							</h3>
-						</Button>
-					</Link>
+								<h3
+									style={{
+										color: '#ffffff'
+									}}
+								>
+									수정하기
+								</h3>
+							</Button>
+						</Link>
+					) : (
+						<Box
+							sx={{
+								minHeight: '100%',
+							}}
+						/>
+					)}
 					<Box
 						sx={{
 							minHeight: '100%',

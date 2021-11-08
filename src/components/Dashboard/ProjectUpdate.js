@@ -107,8 +107,17 @@ const ProjectUpdate = () => {
 			}
 		}).then((response) => {
 			const mem = response.data.project.project_members;
-			const memResult = mem?.map((member) => member.user_id);
-			setmembers(memResult.join(', '));
+			const memberList = [];
+			mem.map(v => {
+				axios.get(api + '/user/'+v.user_id, {
+					headers: {
+						authorization: `Bearer ${token}`
+					}
+				}).then((response) => {
+					memberList.push(response.data.user.user_login_id);
+				});
+			});
+			setmembers(memberList);
 			setPostBody({
 				title: response.data.project.project_title,
 				content: response.data.project.project_introduction,
@@ -407,7 +416,6 @@ const ProjectUpdate = () => {
 										)
 									}}
 									value={members}
-									placeholder="이메일을 입력해주세요"
 									variant="outlined"
 									onChange={handlememberChange}
 								/>
@@ -673,7 +681,7 @@ const ProjectUpdate = () => {
 											};
 											axios.post(
 												'https://se-disk.herokuapp.com/api/project/' +
-												project_id, 
+												project_id,
 												reqObject,
 												{
 													headers: {

@@ -131,10 +131,10 @@ const ProjectRegister = () => {
 	};
 	const handlestackChange = (event) => {
 		setPostBody({
-			title: event.currentTarget.value,
+			title: postBody.title,
 			content: postBody.content,
 			image: postBody.image,
-			stack: postBody.stack
+			stack: event.currentTarget.value
 		});
 	};
 	const handletitleChange = (event) => {
