@@ -17,7 +17,7 @@ const ProjectCard = (props) => {
 
 	const handlePageChange = (event, value) => {
 		setPage(value);
-		const front = () => axios.get(api + url + '?pageNum=' + value + '&pageCount=8');
+		const front = () => axios.get(api + url + '?pageNum=' + value + '&pageCount=6');
 		const getdata = async () => {
 			const data = await front();
 			setarray(data.data.projects);
@@ -25,7 +25,7 @@ const ProjectCard = (props) => {
 		getdata();
 	};
 
-	const back = () => axios.get(api + url + '?pageNum=1 + &pageCount=8');
+	const back = () => axios.get(api + url + '?pageNum=1 + &pageCount=6');
 	const countnumber = () => axios.get(api + '/project-count');
 
 	useEffect(() => {
@@ -35,7 +35,7 @@ const ProjectCard = (props) => {
 		};
 		const getcount = async () => {
 			const data = await countnumber();
-			setcount(Math.ceil(data.data.projectCnt / 8));
+			setcount(Math.ceil(data.data.projectCnt / 6));
 		}
 		getdata();
 		getcount();

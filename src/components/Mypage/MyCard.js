@@ -19,7 +19,7 @@ const MyCard = (props) => {
 
 	const handlePageChange = (event, value) => {
 		setPage(value);
-		const front = () => axios.get(api + url + '/' + people.user_id + '/projects?pageNum=' + (value-1) + '&pageCount=8',
+		const front = () => axios.get(api + url + '/' + people.user_id + '/projects?pageNum=' + (value-1) + '&pageCount=6',
 			{
 				headers: {
 					authorization: `Bearer ${token}`
@@ -33,7 +33,7 @@ const MyCard = (props) => {
 		getFarms();
 	};
 
-	const back = () => axios.get(api + url + '/' + people.user_id + '/projects?pageNum=1&pageCount=8',
+	const back = () => axios.get(api + url + '/' + people.user_id + '/projects?pageNum=1&pageCount=6',
 		{
 			headers: {
 				authorization: `Bearer ${token}`
@@ -45,7 +45,7 @@ const MyCard = (props) => {
 		const getdata = async () => {
 			const data = await back();
 			setarray(data.data.projects);
-			setcount(Math.ceil(data.data.count / 8));
+			setcount(Math.ceil(data.data.count / 6));
 		};
 		getdata();
 	}, []);
@@ -54,11 +54,7 @@ const MyCard = (props) => {
 
 	return (
 		<>
-			<Box
-				sx={{
-					marginRight: '15%'
-				}}
-			>
+			<Box>
 				<Grid
 					container
 					spacing={3}

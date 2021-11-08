@@ -86,7 +86,7 @@ const ProjectCardContent = (props) => {
 			<Grid
 				key={id}
 				item
-				lg={3}
+				lg={4}
 				md={4}
 				sm={6}
 				xs={12}
@@ -95,8 +95,6 @@ const ProjectCardContent = (props) => {
 				<Card
 					sx={{
 						boxShadow: 5,
-						width: 250,
-						height: 280
 					}}
 					onClick={() => handlehit(id)}
 				>
@@ -107,13 +105,17 @@ const ProjectCardContent = (props) => {
 								state: { index: id },
 							}}
 						>
-							<Box>
+							<Box
+								sx={{
+									marginBottom: 3
+								}}
+							>
 								<img
 									src={image}
 									alt="profile"
 									style={{
-										width: 220,
-										height: 120
+										width: '100%',
+										height: '15%'
 									}}
 								/>
 								<h3>{title}</h3>
@@ -126,7 +128,6 @@ const ProjectCardContent = (props) => {
 						</Link>
 						<Box
 							sx={{
-								marginTop: 3,
 								float: 'right'
 							}}
 						>
@@ -167,6 +168,11 @@ const ProjectCardContent = (props) => {
 								{likes}
 							</h4>
 						</Box>
+						<Box
+							sx={{
+								p: 2
+							}}
+						/>
 					</CardContent>
 				</Card>
 			</Grid>

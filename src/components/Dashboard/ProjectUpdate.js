@@ -97,10 +97,11 @@ const ProjectUpdate = () => {
 	const [category, setcategory] = useState([]);
 	const [members, setmembers] = useState([]);
 	const [leader, setleader] = useState();
+	const [p_list, setp_list] = useState([]);
 
 	const project_id = location.href.split('/')[location.href.split('/').length - 1].split('.')[0];
 	useEffect(() => {
-		axios.get(api + url + '/' + project_id , {
+		axios.get(api + url + '/' + project_id, {
 			headers: {
 				authorization: `Bearer ${token}`
 			}
@@ -120,9 +121,21 @@ const ProjectUpdate = () => {
 			const subject = [];
 			subject.push(response.data.project.project_subject);
 			setsubject(subject);
-			const professor = [];
-			professor.push(response.data.project.project_professor);
-			setprofessor(professor);
+			axios.get(api + '/user/professors', {
+				headers: {
+					authorization: `Bearer ${token}`,
+				}
+			})
+				.then((response2) => {
+					setp_list(response2.data.professors);
+					const p = [];
+					p_list.map((idx) => {
+						if (idx.user_id == professor)
+							return p.push(idx.user_name);
+					});
+					setprofessor(p);
+				});
+
 			const year = [];
 			year.push(response.data.project.project_subject_year);
 			setyear(year);
@@ -630,44 +643,57 @@ const ProjectUpdate = () => {
 										py: 2,
 									}}
 								/>
-								<Link to=
-									{{
+								<Link
+									to={{
 										pathname: `/app/projectDetail/${project_id}`,
-										state: { index: project_id },
+										state: { index: project_id }
 									}}
 								>
 									<Button
 										variant="contained"
 										color="success"
 										onClick={() => {
+											const intM = [];
 											const m = members.split(', ');
 											m.map(function (v) {
-												return parseInt(v, 10);
+												return intM.push(parseInt(v, 10));
+											});
+
+											const professor_id = [];
+											p_list.map((idx) => {
+												if (idx.user_name == professor)
+													return professor_id.push(idx.user_id);
 											});
 
 											const reqObject = {
 												project_title: postBody.title,
 												project_leader: leader,
-												project_image: '/static/picture.PNG',
+												project_image: postBody.image,
 												project_subject: subject[0],
+												project_tags: stack,
 												project_subject_year: parseInt(year[0], 10),
-												project_professor: 5,
+												project_professor: parseInt(professor_id.join()),
 												project_category: category.join(),
 												project_introduction: postBody.content,
-												project_members: m
+												project_members: intM
 											};
-											console.log(reqObject);
-											axios.post('https://se-disk.herokuapp.com/api/project/' + project_id, reqObject, {
-												headers: {
-													authorization: `Bearer ${token}`
+											axios.post(
+												'https://se-disk.herokuapp.com/api/project/' +
+												project_id, 
+												reqObject,
+												{
+													headers: {
+														authorization: `Bearer ${token}`
+													}
 												}
-											});
+											);
 											alert('수정되었습니다.');
 										}}
 									>
-										<h3 style={{
-											color: '#ffffff',
-										}}
+										<h3
+											style={{
+												color: '#ffffff'
+											}}
 										>
 											수정하기
 										</h3>
@@ -684,9 +710,10 @@ const ProjectUpdate = () => {
 											alert('삭제되었습니다.');
 										}}
 									>
-										<h3 style={{
-											color: '#ffffff',
-										}}
+										<h3
+											style={{
+												color: '#ffffff'
+											}}
 										>
 											삭제하기
 										</h3>
