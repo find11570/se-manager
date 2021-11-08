@@ -25,32 +25,37 @@ const ProjectCardContent = (props) => {
 	const front = () => axios.get(api + url + '/' + id);
 
 	const handleBookmark = async (id) => {
-		if (bookmark === false) {
-			await axios.get(api + url + '/like?projectId=' + id, {
-				headers: {
-					authorization: `Bearer ${token}`
+		if (sessionStorage.getItem('user_token')) {
+			if (bookmark === false) {
+				await axios.get(api + url + '/like?projectId=' + id, {
+					headers: {
+						authorization: `Bearer ${token}`
+					}
 				}
-			}
-			);
-			const getdata = async () => {
-				const data = await front();
-				setlikes(data.data.project.project_like);
-			};
-			getdata();
-		} else {
-			await axios.get(api + url + '/unlike?projectId=' + id, {
-				headers: {
-					authorization: `Bearer ${token}`
+				);
+				const getdata = async () => {
+					const data = await front();
+					setlikes(data.data.project.project_like);
+				};
+				getdata();
+			} else {
+				await axios.get(api + url + '/unlike?projectId=' + id, {
+					headers: {
+						authorization: `Bearer ${token}`
+					}
 				}
+				);
+				const getdata = async () => {
+					const data = await front();
+					setlikes(data.data.project.project_like);
+				};
+				getdata();
 			}
-			);
-			const getdata = async () => {
-				const data = await front();
-				setlikes(data.data.project.project_like);
-			};
-			getdata();
+			setBookmark(!bookmark);
 		}
-		setBookmark(!bookmark);
+		else {
+			alert('로그인이 필요합니다');
+		}
 	};
 	const handlehit = async (id) => {
 		await axios.get(api + url + '/' + id + '/hit')

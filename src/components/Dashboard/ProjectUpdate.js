@@ -1,6 +1,6 @@
 import 'date-fns';
 import { Helmet } from 'react-helmet';
-import { useState, React } from 'react';
+import { useState, React, useEffect } from 'react';
 import {
 	Box,
 	Card,
@@ -19,6 +19,10 @@ import ListItemText from '@mui/material/ListItemText';
 import Select from '@mui/material/Select';
 import Checkbox from '@mui/material/Checkbox';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+
+const api = 'https://se-disk.herokuapp.com/api';
+const url = '/project';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -81,17 +85,49 @@ const categorys = [
 ];
 const ProjectUpdate = () => {
 	const [postBody, setPostBody] = useState({
-		id: '2',
-		content: '나는 키오스크야',
-		title: 'SE-Manager',
-		member: '진채연, 김현수, 황영민, 김지영',
-		picture: '/static/picture.PNG'
+		title: undefined,
+		content: undefined,
+		image: undefined
 	});
 	const [stack, setstack] = useState([]);
 	const [subject, setsubject] = useState([]);
 	const [professor, setprofessor] = useState([]);
 	const [year, setyear] = useState([]);
 	const [category, setcategory] = useState([]);
+	const [members, setmembers] = useState([]);
+	const [leader, setleader] = useState();
+
+	const project_id = location.href.split('/')[location.href.split('/').length - 1].split('.')[0];
+	useEffect(() => {
+		axios.get(api + url + '/' + project_id).then((response) => {
+			const mem = response.data.project.project_members;
+			const memResult = mem?.map((member) => member.user_id);
+			setmembers(memResult.join(', '));
+			setPostBody({
+				title: response.data.project.project_title,
+				content: response.data.project.project_introduction,
+				image: response.data.project.project_image,
+			});
+			setleader(response.data.project.project_leader);
+			// const stack = [];
+			// stack.push(response.data.project.project_stack);
+			// setstack(stack);
+			const subject = [];
+			subject.push(response.data.project.project_subject);
+			setsubject(subject);
+			const professor = [];
+			professor.push(response.data.project.project_professor);
+			setprofessor(professor);
+			const year = [];
+			year.push(response.data.project.project_subject_year);
+			setyear(year);
+			const category = [];
+			category.push(response.data.project.project_category);
+			setcategory(category);
+		});
+	}, []);
+
+	console.log(members);
 	const handlecategoryChange = (event) => {
 		const {
 			target: { value },
@@ -134,18 +170,25 @@ const ProjectUpdate = () => {
 	};
 	const handletitleChange = (event) => {
 		setPostBody({
+			content: postBody.content,
 			title: event.currentTarget.value,
+			picture: postBody.picture
 		});
 	};
 	const handlecontentChange = (event) => {
 		setPostBody({
 			content: event.currentTarget.value,
+			title: postBody.title,
+			picture: postBody.picture
 		});
 	};
 	const handlememberChange = (event) => {
-		setPostBody({
-			member: event.currentTarget.value,
-		});
+		const {
+			target: { value },
+		} = event;
+		setmembers(
+			typeof value === 'string' ? value.split(',') : value,
+		);
 	};
 	return (
 		<>
@@ -347,7 +390,7 @@ const ProjectUpdate = () => {
 											</InputAdornment>
 										)
 									}}
-									value={postBody.member}
+									value={members}
 									placeholder="이메일을 입력해주세요"
 									variant="outlined"
 									onChange={handlememberChange}
@@ -583,11 +626,34 @@ const ProjectUpdate = () => {
 										py: 2,
 									}}
 								/>
-								<Link to="/app/ProjectDetail">
+								<Link to=
+									{{
+										pathname: `/app/projectDetail/${project_id}`,
+										state: { index: project_id },
+									}}
+								>
 									<Button
 										variant="contained"
 										color="success"
 										onClick={() => {
+											const m = members.split(', ');
+											m.map(function (v) {
+												return parseInt(v, 10);
+											});
+
+											const reqObject = {
+												project_title: postBody.title,
+												project_leader: leader,
+												project_image: 'hello',
+												project_subject: subject[0],
+												project_subject_year: parseInt(year[0], 10),
+												project_professor: 5,
+												project_category: category.join(),
+												project_introduction: postBody.content,
+												project_members: m
+											};
+											console.log(reqObject);
+											axios.post('https://se-disk.herokuapp.com/api/project/' + project_id, reqObject);
 											alert('수정되었습니다.');
 										}}
 									>
