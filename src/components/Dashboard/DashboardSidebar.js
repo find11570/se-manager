@@ -47,7 +47,6 @@ const DashboardSidebar = ({ onMobileClose, openMobile }) => {
 	}, [location.pathname]);
 	const logout = async () => {
 		let logout_response = await Api.getLogout();
-		console.log(logout_response);
 		if (logout_response.data.sucess) {
 			sessionStorage.clear();
 			window.location.href = '';

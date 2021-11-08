@@ -113,7 +113,6 @@ const SignUpRegister = () => {
 	};
 	const emailAuth = async () => {
 		let response = await Api.getEmail(postBody.email);
-		console.log(response);
 		if (response.data.sucess) {
 			if (!response.data.doubleCheck) {
 				alert('등록된 아이디의 이메일입니다');
@@ -127,13 +126,10 @@ const SignUpRegister = () => {
 	};
 	// 이메일 인증 확인
 	const checkEmailAuth = async () => {
-		console.log(postBody.checkemail, emailCode);
 		var check = { auth: false, msg: '', err: '' };
 		if (postBody.checkemail) {
 			if (emailCode !== null) {
-				console.log(emailCode);
 				let response = await Api.postEmail(emailCode, postBody.checkemail);
-				console.log(response);
 				check.auth = await response.isAuth;
 				if (check.auth === true) {
 					check.msg = '인증되었습니다';
@@ -184,7 +180,6 @@ const SignUpRegister = () => {
 		let isEmailAuth = await checkEmailAuth();
 		const isDuplicatePw = checkPw();
 		let isDuplicateId = await checkId();
-		console.log(postBody);
 		if (postBody.checked === false) {
 			alert('약관동의에 체크해주세요');
 			return false;
@@ -219,7 +214,6 @@ const SignUpRegister = () => {
 			user_school_num: postBody.number
 		};
 		let response = await Api.postUser(user_data);
-		console.log(response);
 		if (response.success) {
 			const target = '/login/login';
 			window.location.href = target;
@@ -234,7 +228,6 @@ const SignUpRegister = () => {
 	const checkId = async () => {
 		var check = false;
 		let response = await Api.getDoubleCheckId(postBody.id);
-		console.log(response);
 		if (response.data.sucess) {
 			check = response.data.isDouble;
 			return check;

@@ -17,7 +17,6 @@ import Api from '../../Api/Api';
 const logout = async () => {
 	const target = '/app/dashboard';
 	let logout_response = await Api.getLogout();
-	console.log(logout_response);
 	if (logout_response.data.sucess) {
 		sessionStorage.clear();
 		window.location.href = target;

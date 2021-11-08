@@ -38,7 +38,6 @@ const Login = () => {
 			return false;
 		}
 		let response = await Api.postLogin(postBody.id, postBody.pw);
-		console.log(response);
 		if (response.sucess === true) {
 			alert('로그인 성공');
 			const target = '/app/dashboard';

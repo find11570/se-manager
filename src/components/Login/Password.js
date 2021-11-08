@@ -56,7 +56,6 @@ const Password = () => {
 	// 이메일 인증 버튼 onClick함수
 	const emailAuth = async () => {
 		let response = await Api.getResetPasswordEmail(postBody.email);
-		console.log(response);
 		if (response.data.sucess) {
 			emailCode = response.data.emailId.emailId;
 			alert('이메일이 전송되었습니다');
@@ -70,7 +69,6 @@ const Password = () => {
 		if (postBody.checkemail) {
 			if (emailCode !== null) {
 				let response = await Api.postEmail(emailCode, postBody.checkemail);
-				console.log(response);
 				check.auth = await response.isAuth;
 				if (check.auth === true) {
 					check.msg = '인증되었습니다';
@@ -103,7 +101,6 @@ const Password = () => {
 	};
 	const doubleCheckId = async () => {
 		let response = await Api.getDoubleCheckId(postBody.login_id);
-		console.log(response);
 		return await response.data.isDouble;
 	};
 	const updatePassword = async () => {
@@ -129,11 +126,9 @@ const Password = () => {
 			return false;
 		}
 		let response = await Api.postPassword(postBody.login_id, postBody.pw);
-		console.log(response);
 		if (response.sucess === true) {
 			if (sessionStorage.getItem('user_token')) {
 				let logout_response = await Api.getLogout();
-				console.log(logout_response);
 				if (logout_response.data.sucess) {
 					sessionStorage.clear();
 				}

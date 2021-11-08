@@ -23,6 +23,7 @@ import axios from 'axios';
 
 const api = 'https://se-disk.herokuapp.com/api';
 const url = '/project';
+const token = sessionStorage.getItem('user_token');
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -99,7 +100,11 @@ const ProjectUpdate = () => {
 
 	const project_id = location.href.split('/')[location.href.split('/').length - 1].split('.')[0];
 	useEffect(() => {
-		axios.get(api + url + '/' + project_id).then((response) => {
+		axios.get(api + url + '/' + project_id , {
+			headers: {
+				authorization: `Bearer ${token}`
+			}
+		}).then((response) => {
 			const mem = response.data.project.project_members;
 			const memResult = mem?.map((member) => member.user_id);
 			setmembers(memResult.join(', '));
@@ -127,7 +132,6 @@ const ProjectUpdate = () => {
 		});
 	}, []);
 
-	console.log(members);
 	const handlecategoryChange = (event) => {
 		const {
 			target: { value },
@@ -644,7 +648,7 @@ const ProjectUpdate = () => {
 											const reqObject = {
 												project_title: postBody.title,
 												project_leader: leader,
-												project_image: 'hello',
+												project_image: '/static/picture.PNG',
 												project_subject: subject[0],
 												project_subject_year: parseInt(year[0], 10),
 												project_professor: 5,
@@ -653,7 +657,11 @@ const ProjectUpdate = () => {
 												project_members: m
 											};
 											console.log(reqObject);
-											axios.post('https://se-disk.herokuapp.com/api/project/' + project_id, reqObject);
+											axios.post('https://se-disk.herokuapp.com/api/project/' + project_id, reqObject, {
+												headers: {
+													authorization: `Bearer ${token}`
+												}
+											});
 											alert('수정되었습니다.');
 										}}
 									>

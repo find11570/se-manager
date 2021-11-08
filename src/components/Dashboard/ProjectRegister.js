@@ -23,6 +23,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 const api = 'https://se-disk.herokuapp.com/api';
+const token = sessionStorage.getItem('user_token');
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -607,14 +608,17 @@ const ProjectRegister = () => {
 												project_category: category.join(),
 												project_leader: data.user_id,
 												// project_image: postBody.image,
-												project_image: 'hello',
+												project_image: '/static/picture.PNG',
 												project_subject: subject[0],
 												project_subject_year: parseInt(year[0], 10),
 												project_professor: 1,
 												project_members: members,
 											};
-											console.log(reqObject);
-											axios.post('https://se-disk.herokuapp.com/api/project', reqObject);
+											axios.post('https://se-disk.herokuapp.com/api/project', reqObject, {
+												headers: {
+													authorization: `Bearer ${token}`
+												}
+											});
 											alert('생성되었습니다.');
 										}}
 									>

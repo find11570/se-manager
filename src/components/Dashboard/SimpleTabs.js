@@ -11,7 +11,7 @@ import FileViewer from 'src/components/Dashboard/FileViewer';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Video from 'src/components/Dashboard/Video';
-
+import { useState, useEffect } from 'react';
 function TabPanel(props) {
 	const {
 		children,
@@ -57,12 +57,15 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export default function SimpleTabs() {
+export default function SimpleTabs(props) {
 	const classes = useStyles();
-	const [value, setValue] = React.useState({
+	const [value, setValue] = useState({
 		type: 0,
-		content: '나는 키오스크야'
+		content: '',
 	});
+	const {
+		contents, members
+	} = props;
 
 	const handleChange = (event, newValue) => {
 		setValue({
@@ -104,7 +107,7 @@ export default function SimpleTabs() {
 				>
 					<CardContent>
 						<h3>
-							{value.content}
+							{contents}
 						</h3>
 					</CardContent>
 				</Card>
@@ -125,7 +128,7 @@ export default function SimpleTabs() {
 				<Video />
 			</TabPanel>
 			<TabPanel value={value.type} index={6}>
-				<TeamProfile />
+				<TeamProfile members={members}/>
 			</TabPanel>
 		</div>
 	);

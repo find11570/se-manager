@@ -32,17 +32,10 @@ const ProjectDetail = (props) => {
 	}, []);
 
 	const mem = data.project_members;
-	console.log(mem);
 	const memResult = mem?.map((member) => member.user_name + ' ');
 
 	const [chartData] = useState({
-		id: '1',
-		name: ['박건우', '이준영', '이창희', '최의준'],
-		title: '무인 판매점 키오스크 SW',
 		tag: ['창융1', '리액트', 'Node.js', 'AWS', '김선명교수님', '2021'],
-		picture: '/static/picture.PNG',
-		see: 50,
-		good: 100
 	});
 
 	const comment = [
@@ -95,7 +88,6 @@ const ProjectDetail = (props) => {
 		setPostBody({
 			content: event.currentTarget.value
 		});
-		console.log(project_id);
 	};
 	const List = chartData.tag.map((t) => (
 		<Box
@@ -250,7 +242,7 @@ const ProjectDetail = (props) => {
 								backgroundColor: '#ffffff'
 							}}
 						>
-							<SimpleTabs />
+							<SimpleTabs contents={data.project_introduction} members={data.project_members}/>
 							<Box
 								sx={{
 									minHeight: '100%',

@@ -64,7 +64,6 @@ const SignUpUpdate = () => {
 			postBody.blog,
 			postBody.position
 		);
-		console.log(response);
 
 		if (response.sucess === true) {
 			const target = 'page';
@@ -84,7 +83,6 @@ const SignUpUpdate = () => {
 	};
 	const delete_user = async () => {
 		let response = await Api.deleteUser(postBody.id);
-		console.log(response);
 	};
 
 	const input_thumbnail = () => {
