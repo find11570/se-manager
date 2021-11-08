@@ -88,9 +88,9 @@ const ProjectUpdate = () => {
 	const [postBody, setPostBody] = useState({
 		title: undefined,
 		content: undefined,
-		image: undefined
+		image: undefined,
+		stack: undefined,
 	});
-	const [stack, setstack] = useState([]);
 	const [subject, setsubject] = useState([]);
 	const [professor, setprofessor] = useState([]);
 	const [year, setyear] = useState([]);
@@ -115,9 +115,6 @@ const ProjectUpdate = () => {
 				image: response.data.project.project_image,
 			});
 			setleader(response.data.project.project_leader);
-			// const stack = [];
-			// stack.push(response.data.project.project_stack);
-			// setstack(stack);
 			const subject = [];
 			subject.push(response.data.project.project_subject);
 			setsubject(subject);
@@ -178,25 +175,27 @@ const ProjectUpdate = () => {
 		);
 	};
 	const handlestackChange = (event) => {
-		const {
-			target: { value },
-		} = event;
-		setstack(
-			typeof value === 'string' ? value.split(',') : value,
-		);
+		setPostBody({
+			content: postBody.content,
+			title: postBody.title,
+			picture: postBody.picture,
+			stack: event.currentTarget.value,
+		});
 	};
 	const handletitleChange = (event) => {
 		setPostBody({
 			content: postBody.content,
 			title: event.currentTarget.value,
-			picture: postBody.picture
+			picture: postBody.picture,
+			stack: postBody.stack
 		});
 	};
 	const handlecontentChange = (event) => {
 		setPostBody({
 			content: event.currentTarget.value,
 			title: postBody.title,
-			picture: postBody.picture
+			picture: postBody.picture,
+			stack: postBody.stack
 		});
 	};
 	const handlememberChange = (event) => {
@@ -418,6 +417,46 @@ const ProjectUpdate = () => {
 										py: 2,
 									}}
 								/>
+								<h3>기술 스택</h3>
+								<Box
+									sx={{
+										minHeight: '100%',
+										py: 0.5,
+									}}
+								/>
+								<TextField
+									halfwidth="true"
+									sx={{
+										flex: '1',
+										flexDirection: 'row',
+										boxShadow: 5,
+										borderBottomRightRadius: 5,
+										borderBottomLeftRadius: 5,
+										borderTopRightRadius: 5,
+										borderTopLeftRadius: 5,
+										backgroundColor: 'primary.smoothgreen',
+									}}
+									InputProps={{
+										startAdornment: (
+											<InputAdornment position="start">
+												<SvgIcon
+													fontSize="small"
+													color="action"
+												/>
+											</InputAdornment>
+										)
+									}}
+									placeholder="기술스택을 검색하세요."
+									value={postBody.stack}
+									variant="outlined"
+									onChange={handlestackChange}
+								/>
+								<Box
+									sx={{
+										minHeight: '100%',
+										py: 2,
+									}}
+								/>
 								<h3>프로젝트 과목</h3>
 								<Box
 									sx={{
@@ -451,51 +490,6 @@ const ProjectUpdate = () => {
 														},
 													}}
 													checked={subject.indexOf(s) > -1}
-												/>
-												<ListItemText primary={s} />
-											</MenuItem>
-										))}
-									</Select>
-								</FormControl>
-								<Box
-									sx={{
-										minHeight: '100%',
-										py: 2,
-									}}
-								/>
-								<h3>기술 스택</h3>
-								<Box
-									sx={{
-										minHeight: '100%',
-										py: 0.5,
-									}}
-								/>
-								<FormControl
-									sx={{
-										width: 200
-									}}
-								>
-									<InputLabel id="기술스택">&nbsp; 기술스택</InputLabel>
-									<Select
-										labelId="기술스택"
-										id="기술스택"
-										multiple
-										value={stack}
-										onChange={handlestackChange}
-										input={<OutlinedInput label="기술스택" />}
-										renderValue={(selected) => selected.join(', ')}
-										MenuProps={MenuProps}
-									>
-										{stacks.map((s) => (
-											<MenuItem key={s} value={s}>
-												<Checkbox
-													sx={{
-														color: 'primary.darkgreen',
-														'&.Mui-checked': {
-															color: 'primary.darkgreen',
-														},
-													}}
-													checked={stack.indexOf(s) > -1}
 												/>
 												<ListItemText primary={s} />
 											</MenuItem>

@@ -90,9 +90,8 @@ const ProjectRegister = () => {
 		title: '',
 		content: '',
 		image: '/static/picture.PNG',
+		stack: '',
 	});
-
-	const [stack, setstack] = useState([]);
 	const [subject, setsubject] = useState([]);
 	const [professor, setprofessor] = useState([]);
 	const [year, setyear] = useState([]);
@@ -131,26 +130,26 @@ const ProjectRegister = () => {
 		);
 	};
 	const handlestackChange = (event) => {
-		const {
-			target: { value },
-		} = event;
-		setstack(
-			typeof value === 'string' ? value.split(',') : value,
-		);
+		setPostBody({
+			title: event.currentTarget.value,
+			content: postBody.content,
+			image: postBody.image,
+			stack: postBody.stack
+		});
 	};
 	const handletitleChange = (event) => {
 		setPostBody({
 			title: event.currentTarget.value,
 			content: postBody.content,
 			image: postBody.image,
-			members: postBody.members
+			stack: postBody.stack
 		});
 	};
 	const handlecontentChange = (event) => {
 		setPostBody({
 			title: postBody.title,
 			image: postBody.image,
-			members: postBody.members,
+			stack: postBody.stack,
 			content: event.currentTarget.value,
 		});
 	};
@@ -372,6 +371,45 @@ const ProjectRegister = () => {
 										py: 2,
 									}}
 								/>
+								<h3>기술 스택</h3>
+								<Box
+									sx={{
+										minHeight: '100%',
+										py: 0.5,
+									}}
+								/>
+								<TextField
+									halfwidth="true"
+									sx={{
+										flex: '1',
+										flexDirection: 'row',
+										boxShadow: 5,
+										borderBottomRightRadius: 5,
+										borderBottomLeftRadius: 5,
+										borderTopRightRadius: 5,
+										borderTopLeftRadius: 5,
+										backgroundColor: 'primary.smoothgreen',
+									}}
+									InputProps={{
+										startAdornment: (
+											<InputAdornment position="start">
+												<SvgIcon
+													fontSize="small"
+													color="action"
+												/>
+											</InputAdornment>
+										)
+									}}
+									placeholder="기술스택을 입력하세요"
+									variant="outlined"
+									onChange={handlestackChange}
+								/>
+								<Box
+									sx={{
+										minHeight: '100%',
+										py: 2,
+									}}
+								/>
 								<h3>프로젝트 과목</h3>
 								<Box
 									sx={{
@@ -405,51 +443,6 @@ const ProjectRegister = () => {
 														},
 													}}
 													checked={subject.indexOf(s) > -1}
-												/>
-												<ListItemText primary={s} />
-											</MenuItem>
-										))}
-									</Select>
-								</FormControl>
-								<Box
-									sx={{
-										minHeight: '100%',
-										py: 2,
-									}}
-								/>
-								<h3>기술 스택</h3>
-								<Box
-									sx={{
-										minHeight: '100%',
-										py: 0.5,
-									}}
-								/>
-								<FormControl
-									sx={{
-										width: 200
-									}}
-								>
-									<InputLabel id="기술스택">&nbsp; 기술스택</InputLabel>
-									<Select
-										labelId="기술스택"
-										id="기술스택"
-										multiple
-										value={stack}
-										onChange={handlestackChange}
-										input={<OutlinedInput label="기술스택" />}
-										renderValue={(selected) => selected.join(', ')}
-										MenuProps={MenuProps}
-									>
-										{stacks.map((s) => (
-											<MenuItem key={s} value={s}>
-												<Checkbox
-													sx={{
-														color: 'primary.darkgreen',
-														'&.Mui-checked': {
-															color: 'primary.darkgreen',
-														},
-													}}
-													checked={stack.indexOf(s) > -1}
 												/>
 												<ListItemText primary={s} />
 											</MenuItem>

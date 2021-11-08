@@ -58,6 +58,7 @@ const TeamProfile = (props) => {
 								<Box
 									sx={{
 										height: 140,
+										maxwidth: 300,
 										position: 'relative',
 									}}
 								>

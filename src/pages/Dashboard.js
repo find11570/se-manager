@@ -80,7 +80,7 @@ const years = [
 ];
 const Dashboard = () => {
 	const [postBody, setPostBody] = useState({
-		name: ''
+		name: '',
 	});
 	const [stack, setstack] = useState([]);
 	const [subject, setsubject] = useState([]);
@@ -123,6 +123,7 @@ const Dashboard = () => {
 			typeof value === 'string' ? value.split(',') : value,
 		);
 	};
+
 	return (
 		<>
 			<Helmet>
