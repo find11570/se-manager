@@ -12,11 +12,9 @@ import {
 	SvgIcon
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import Api from '../../Api/Api';
 
 const data = JSON.parse(sessionStorage.getItem('user_data'));
-
-const api = 'https://se-disk.herokuapp.com/api';
 
 const SignUpUpdate = () => {
 	const [postBody, setpostBody] = useState({
@@ -57,55 +55,36 @@ const SignUpUpdate = () => {
 			position: event.target.value
 		}));
 	};
-	const update_user = () => {
-		const url = '/user/';
-		const user_id = postBody.id;
-		const token = sessionStorage.getItem('user_token');
-		console.log({
-			user_image: postBody.image,
-			user_introduction: postBody.content,
-			user_github: postBody.github,
-			user_blog: postBody.blog,
-			user_position: postBody.position
-		});
-		console.log(token);
-		axios
-			.post(
-				api + url + user_id,
-				{
-					user_image: postBody.image,
-					user_introduction: postBody.content,
-					user_github: postBody.github,
-					user_blog: postBody.blog,
-					user_position: postBody.position
-				},
-				{
-					headers: { Authorization: `Bearer ${token}` }
-				}
-			)
-			.then((response) => {
-				console.log(response);
-				var user_data = JSON.parse(sessionStorage.getItem('user_data'));
-				user_data.user_image = 'hello';
-				user_data.user_introduction = postBody.content;
-				user_data.user_github = postBody.github;
-				user_data.user_blog = postBody.blog;
-				user_data.user_position = postBody.position;
-				sessionStorage.removeItem('user_data');
-				sessionStorage.setItem('user_data', JSON.stringify(user_data));
-				console.log(sessionStorage.getItem('user_data'));
-				const target = 'page';
-				window.location.href = target;
-			})
-			.catch((err) => console.log(err));
+	const update_user = async () => {
+		let response = await Api.postUpdateUser(
+			postBody.id,
+			postBody.image,
+			postBody.content,
+			postBody.github,
+			postBody.blog,
+			postBody.position
+		);
+		console.log(response);
+
+		if (response.sucess === true) {
+			const target = 'page';
+			var user_data = JSON.parse(sessionStorage.getItem('user_data'));
+			user_data.user_image = 'blank';
+			user_data.user_introduction = postBody.content;
+			user_data.user_github = postBody.github;
+			user_data.user_blog = postBody.blog;
+			user_data.user_position = postBody.position;
+			sessionStorage.removeItem('user_data');
+			sessionStorage.setItem('user_data', JSON.stringify(user_data));
+			alert('수정 성공');
+			window.location.href = target;
+		} else {
+			alert('수정 실패');
+		}
 	};
-	const delete_user = () => {
-		const url = '/user/';
-		const user_id = postBody.id;
-		axios
-			.delete(api + url + user_id)
-			.then((response) => console.log(response))
-			.catch((err) => console.log(err));
+	const delete_user = async () => {
+		let response = await Api.deleteUser(postBody.id);
+		console.log(response);
 	};
 
 	const input_thumbnail = () => {

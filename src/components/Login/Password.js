@@ -11,15 +11,15 @@ import {
 	Button,
 	Hidden
 } from '@material-ui/core';
-import axios from 'axios';
+import Api from '../../Api/Api';
 
-const api = 'https://se-disk.herokuapp.com/api';
 var emailCode = null;
 
 const Password = () => {
 	const [postBody, setPostBody] = useState({
 		email: '',
 		checkemail: '',
+		login_id: '',
 		pw: '',
 		checkpw: ''
 	});
@@ -33,6 +33,12 @@ const Password = () => {
 		setPostBody((prev) => ({
 			...prev,
 			checkemail: event.target.value
+		}));
+	};
+	const handleLoginIdChange = (event) => {
+		setPostBody((prev) => ({
+			...prev,
+			login_id: event.target.value
 		}));
 	};
 	const handlepwChange = (event) => {
@@ -49,12 +55,10 @@ const Password = () => {
 	};
 	// 이메일 인증 버튼 onClick함수
 	const emailAuth = async () => {
-		const email = postBody.email;
-		const url = '/auth/email';
-		console.log(api + url);
-		const post = await axios.get(api + url, { params: { email: email } });
-		if (post.data.emailId) {
-			emailCode = post.data.emailId;
+		let response = await Api.getResetPasswordEmail(postBody.email);
+		console.log(response);
+		if (response.data.sucess) {
+			emailCode = response.data.emailId.emailId;
 			alert('이메일이 전송되었습니다');
 		} else {
 			alert('이메일 전송에 실패했습니다');
@@ -65,12 +69,9 @@ const Password = () => {
 		var check = { auth: false, msg: '', err: '' };
 		if (postBody.checkemail) {
 			if (emailCode !== null) {
-				const url = '/auth/email';
-				const post = await axios.post(api + url, {
-					emailId: emailCode,
-					authStr: postBody.checkemail
-				});
-				check.auth = post.data.isAuth;
+				let response = await Api.postEmail(emailCode, postBody.checkemail);
+				console.log(response);
+				check.auth = await response.isAuth;
 				if (check.auth === true) {
 					check.msg = '인증되었습니다';
 					alert(check.msg);
@@ -92,41 +93,27 @@ const Password = () => {
 		return postBody.pw === postBody.checkpw;
 	};
 	const emptyCheck = () => {
-		if (postBody.email === '' || postBody.pw === '') {
+		if (
+			postBody.email === '' ||
+			postBody.pw === '' ||
+			postBody.login_id === ''
+		) {
 			return false;
 		}
 	};
-
-	const logout = () => {
-		if (sessionStorage.getItem('user_token')) {
-		const url = '/auth/logout';
-		const target = '/app/dashboard';
-		const token = sessionStorage.getItem('user_token');
-		axios
-			.get(api + url, {
-				headers: {
-					Authorization: `Bearer ${token}`
-				}
-			})
-			.then((response) => {
-				console.log(response);
-				sessionStorage.clear();
-				window.location.href = target;
-			})
-			.catch((err) => console.log(err));
-		} else{
-			const target = '/app/dashboard';
-			window.location.href = target;
-		}
+	const doubleCheckId = async () => {
+		let response = await Api.getDoubleCheckId(postBody.login_id);
+		console.log(response);
+		return await response.data.isDouble;
 	};
-
 	const updatePassword = async () => {
 		const isEmpty = emptyCheck();
-		const isEmailAuth = await checkEmailAuth();
+		let isEmailAuth = await checkEmailAuth();
 		const isDuplicatePw = checkPw();
+		let isDoubleCheckId = await doubleCheckId();
 		const target = '/app/dashboard';
 		if (isEmpty === false) {
-			alert('필수항목란을 채워주세요(이메일, 비밀번호)');
+			alert('필수항목란을 채워주세요(이메일, 아이디, 변경할 비밀번호)');
 			return false;
 		}
 		if (isEmailAuth.auth === false) {
@@ -137,22 +124,20 @@ const Password = () => {
 			alert('비밀번호가 일치하지 않습니다');
 			return false;
 		}
-		const url = '/auth/password';
-		const token = sessionStorage.getItem('user_token');
-		const post = await axios.post(
-			api + url,
-			{ changePassword: postBody.pw },
-			{
-				headers: {
-					Authorization: `Bearer ${token}`
+		if (isDoubleCheckId === false) {
+			alert('존재하지 않는 아이디 입니다');
+			return false;
+		}
+		let response = await Api.postPassword(postBody.login_id, postBody.pw);
+		console.log(response);
+		if (response.sucess === true) {
+			if (sessionStorage.getItem('user_token')) {
+				let logout_response = await Api.getLogout();
+				console.log(logout_response);
+				if (logout_response.data.sucess) {
+					sessionStorage.clear();
 				}
 			}
-		);
-		console.log(post.data);
-		console.log(post.status);
-		if (post.data.sucess === true) {
-			{logout()}
-			alert('비밀번호가 변경되었습니다');
 			window.location.href = target;
 		} else {
 			alert('비밀번호 변경 실패');
@@ -331,6 +316,7 @@ const Password = () => {
 												</InputAdornment>
 											)
 										}}
+										type="password"
 										variant="outlined"
 										onChange={handlecheckemailChange}
 									/>
@@ -375,6 +361,7 @@ const Password = () => {
 												</InputAdornment>
 											)
 										}}
+										type="password"
 										variant="outlined"
 										onChange={handlecheckemailChange}
 									/>
@@ -416,6 +403,48 @@ const Password = () => {
 										py: 2
 									}}
 								/>
+								<h3>아이디 입력</h3>
+								<Box
+									sx={{
+										minHeight: '100%',
+										py: 0.5
+									}}
+								/>
+								<TextField
+									fullWidth
+									sx={{
+										flex: '1',
+										flexDirection: 'row',
+										boxShadow: 5,
+										borderBottomRightRadius: 5,
+										borderBottomLeftRadius: 5,
+										borderTopRightRadius: 5,
+										borderTopLeftRadius: 5,
+										backgroundColor: 'primary.smoothgreen'
+									}}
+									InputProps={{
+										startAdornment: (
+											<InputAdornment position="start">
+												<SvgIcon fontSize="small" color="action" />
+											</InputAdornment>
+										)
+									}}
+									placeholder="아이디를 입력해주세요"
+									variant="outlined"
+									onChange={handleLoginIdChange}
+								/>
+								<Box
+									sx={{
+										minHeight: '100%',
+										py: 0.5
+									}}
+								/>
+								<Box
+									sx={{
+										minHeight: '100%',
+										py: 2
+									}}
+								/>
 								<h3>변경할 비밀번호</h3>
 								<Box
 									sx={{
@@ -442,6 +471,7 @@ const Password = () => {
 											</InputAdornment>
 										)
 									}}
+									type="password"
 									placeholder="영어 대/소문자,특수문자"
 									variant="outlined"
 									onChange={handlepwChange}
@@ -478,6 +508,7 @@ const Password = () => {
 											</InputAdornment>
 										)
 									}}
+									type="password"
 									placeholder="영어 대/소문자,특수문자"
 									variant="outlined"
 									onChange={handlecheckpwChange}

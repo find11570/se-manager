@@ -603,7 +603,7 @@ const ProjectRegister = () => {
 										onClick={() => {
 											const reqObject = {
 												project_title: postBody.title,
-												// project_content: postBody.content,
+												project_introduction: postBody.content,
 												project_category: category.join(),
 												project_leader: data.user_id,
 												// project_image: postBody.image,

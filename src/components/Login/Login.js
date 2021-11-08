@@ -11,9 +11,7 @@ import {
 	Button
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
-
-const api = 'https://se-disk.herokuapp.com/api';
+import Api from '../../Api/Api';
 
 const Login = () => {
 	const [postBody, setPostBody] = useState({
@@ -34,29 +32,27 @@ const Login = () => {
 		}));
 	};
 	const handleLogin = async () => {
-		console.log(postBody);
-		const url = '/auth/login';
-		console.log(api + url);
-		await axios.post(api + url, {
-			user_login_id: postBody.id,
-			user_password: postBody.pw
-		})
-			.then((response) => {
-				console.log(response.data);
-				if (response.data.sucess === true) {
-					alert('로그인 성공');
-					const target = '/app/dashboard';
-					sessionStorage.setItem(
-						'user_data',
-						JSON.stringify(response.data.user)
-					);
-					sessionStorage.setItem('user_token', response.data.token);
-					window.location.href = target;
-				} else {
-					alert('로그인 실패');
-				}
-			})
-			.catch((err) => console.log(err));
+		const isEmpty = emptyCheck();
+		if (isEmpty === false) {
+			alert('아이디, 비밀번호를 입력하세요');
+			return false;
+		}
+		let response = await Api.postLogin(postBody.id, postBody.pw);
+		console.log(response);
+		if (response.sucess === true) {
+			alert('로그인 성공');
+			const target = '/app/dashboard';
+			sessionStorage.setItem('user_data', JSON.stringify(response.user));
+			sessionStorage.setItem('user_token', response.token);
+			window.location.href = target;
+		} else {
+			alert('로그인 실패');
+		}
+	};
+	const emptyCheck = () => {
+		if (postBody.id === '' || postBody.pw === '') {
+			return false;
+		}
 	};
 	return (
 		<>

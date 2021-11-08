@@ -1,34 +1,9 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import {
-	Box,
-	Drawer,
-	List,
-	Button
-} from '@material-ui/core';
+import { Box, Drawer, List } from '@material-ui/core';
 import NavItem from 'src/components/NavItem';
-import axios from 'axios';
-
-const api = 'https://se-disk.herokuapp.com/api';
-
-const logout = () => {
-	const url = '/auth/logout';
-	const target = '/app/dashboard';
-	const token = sessionStorage.getItem('user_token');
-	axios
-		.get(api + url, {
-			headers: {
-				Authorization: `Bearer ${token}`
-			}
-		})
-		.then((response) => {
-			console.log(response);
-			sessionStorage.clear();
-			window.location.href = target;
-		})
-		.catch((err) => console.log(err));
-};
+import Api from '../../Api/Api';
 
 const isLogin = () => {
 	if (sessionStorage.getItem('user_token')) {
@@ -36,47 +11,19 @@ const isLogin = () => {
 			{
 				href: '/mypage/page',
 				title: '마이페이지'
-			}
-		);
-	} else {
-		return (
+			},
 			{
-				href: '/login/login',
-				title: '로그인 및 회원가입'
+				href: '/app/dashboard',
+				title: '로그아웃'
 			}
 		);
-	}
-}
-
-const Logout = () => {
-	if (sessionStorage.getItem('user_token')) {
-		return (
-			<Button
-				variant="contained"
-				size="small"
-				sx={{
-					float: 'right',
-					marginRight: 2,
-					marginBottom: 0.5,
-					marginLeft: 2
-				}}
-				onClick={() => {
-					logout()
-				}}
-			>
-				<h3 style={{
-					color: '#006400',
-				}}
-				>
-					로그아웃
-				</h3>
-			</Button>
-		)
 	} else {
-		return false
+		return {
+			href: '/login/login',
+			title: '로그인 및 회원가입'
+		};
 	}
-}
-
+};
 
 const items = [
 	isLogin(),
@@ -87,7 +34,7 @@ const items = [
 	{
 		href: '/se/team',
 		title: '팀원 모집'
-	},
+	}
 ];
 
 const DashboardSidebar = ({ onMobileClose, openMobile }) => {
@@ -98,7 +45,14 @@ const DashboardSidebar = ({ onMobileClose, openMobile }) => {
 			onMobileClose();
 		}
 	}, [location.pathname]);
-
+	const logout = async () => {
+		let logout_response = await Api.getLogout();
+		console.log(logout_response);
+		if (logout_response.data.sucess) {
+			sessionStorage.clear();
+			window.location.href = '';
+		}
+	};
 	const content = (
 		<Box
 			sx={{
@@ -114,6 +68,11 @@ const DashboardSidebar = ({ onMobileClose, openMobile }) => {
 							href={item.href}
 							key={item.title}
 							title={item.title}
+							onClick={function () {
+								if (item.title === '로그아웃') {
+									logout();
+								}
+							}}
 						/>
 					))}
 				</List>
@@ -136,7 +95,6 @@ const DashboardSidebar = ({ onMobileClose, openMobile }) => {
 				}}
 			>
 				{content}
-				{Logout()}
 			</Drawer>
 		</>
 	);

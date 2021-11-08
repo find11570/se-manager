@@ -17,9 +17,8 @@ import {
 	Hidden,
 	Avatar
 } from '@material-ui/core';
-import axios from 'axios';
+import Api from '../../Api/Api';
 
-const api = 'https://se-disk.herokuapp.com/api';
 var emailCode = null;
 const SignUpRegister = () => {
 	const [postBody, setPostBody] = useState({
@@ -112,39 +111,45 @@ const SignUpRegister = () => {
 			position: event.target.value
 		}));
 	};
-	// 이메일 인증 버튼 onClick함수
-	const emailAuth = () => {
-		const email = postBody.email;
-		const url = '/auth/email';
-		console.log(api + url);
-		axios.get(api + url, { params: { email: email } })
-			.then((response) => {
+	const emailAuth = async () => {
+		let response = await Api.getEmail(postBody.email);
+		console.log(response);
+		if (response.data.sucess) {
+			if (!response.data.doubleCheck) {
+				alert('등록된 아이디의 이메일입니다');
+			} else {
 				emailCode = response.data.emailId;
-				alert('이메일이 전송되었습니다');
-			})
-			.catch((err) => {
-				console.log(err);
-			});
+				alert('이메일이 전송되었습니다.');
+			}
+		} else {
+			alert('이메일 전송에 실패했습니다');
+		}
 	};
 	// 이메일 인증 확인
-	const checkEmailAuth = () => {
-		const url = '/auth/email';
-		var check = false;
-		axios
-			.post(api + url, {
-				emailId: emailCode,
-				authStr: postBody.checkemail
-			})
-			.then((response) => {
-				check = response.data.isAuth;
-				if (check === true) {
-					alert('인증되었습니다');
+	const checkEmailAuth = async () => {
+		console.log(postBody.checkemail, emailCode);
+		var check = { auth: false, msg: '', err: '' };
+		if (postBody.checkemail) {
+			if (emailCode !== null) {
+				console.log(emailCode);
+				let response = await Api.postEmail(emailCode, postBody.checkemail);
+				console.log(response);
+				check.auth = await response.isAuth;
+				if (check.auth === true) {
+					check.msg = '인증되었습니다';
+					alert(check.msg);
 				} else {
-					alert('인증에 실패하였습니다');
+					check.err = '인증에 실패하였습니다';
 				}
 				return check;
-			})
-			.catch((err) => console.log(err));
+			} else {
+				check.err = '인증번호 전송 후 진행해주세요';
+				return check;
+			}
+		} else {
+			check.err = '이메일 인증번호를 입력해주세요';
+			return check;
+		}
 	};
 	const input_thumbnail = () => {
 		const input_image = document.getElementById('file');
@@ -174,70 +179,75 @@ const SignUpRegister = () => {
 		);
 		thumbnail.removeChild(image_container_id);
 	};
-	const join = () => {
+	const join = async () => {
+		const isEmpty = emptyCheck();
+		let isEmailAuth = await checkEmailAuth();
+		const isDuplicatePw = checkPw();
+		let isDuplicateId = await checkId();
 		console.log(postBody);
 		if (postBody.checked === false) {
 			alert('약관동의에 체크해주세요');
 			return false;
 		}
-		if (checkPw() === false) {
+		if (isDuplicatePw === false) {
 			alert('비밀번호가 일치하지 않습니다');
 			return false;
 		}
-		if (emptyCheck() === false) {
+		if (isEmpty === false) {
 			alert('필수항목란을 채워주세요(학번, 이메일, 아이디, 비밀번호, 이름)');
 			return false;
 		}
-		if (checkEmailAuth() === false) {
-			alert('이메일 인증번호가 맞지 않습니다');
+		if (isEmailAuth.auth === false) {
+			alert(isEmailAuth.err);
 			return false;
 		}
-		if (checkId() === true) {
+		if (isDuplicateId === true) {
 			alert('중복된 아이디 입니다');
 			return false;
 		}
-		console.log('조인 끝');
-		const url = '/user';
-		console.log(api + url);
-		axios
-			.post(api + url, {
-				user_login_id: postBody.id,
-				user_email: postBody.email,
-				user_password: postBody.pw,
-				user_type: postBody.type,
-				user_name: postBody.name,
-				user_image: 'hello',
-				user_introduction: postBody.content,
-				user_github: postBody.github,
-				user_blog: postBody.blog,
-				user_position: postBody.position,
-				user_school_num: postBody.number
-
-			})
-			.then((response) => window.location.href = '/login/login')
-			.catch((err) => console.log(err));
+		let user_data = {
+			user_login_id: postBody.id,
+			user_email: postBody.email,
+			user_password: postBody.pw,
+			user_type: postBody.type,
+			user_name: postBody.name,
+			user_image: 'hello',
+			user_introduction: postBody.content,
+			user_github: postBody.github,
+			user_blog: postBody.blog,
+			user_position: postBody.position,
+			user_school_num: postBody.number
+		};
+		let response = await Api.postUser(user_data);
+		console.log(response);
+		if (response.success) {
+			const target = '/login/login';
+			window.location.href = target;
+			alert('회원가입 성공');
+		} else {
+			alert('회원가입 실패');
+		}
 	};
 	const checkPw = function () {
 		return postBody.pw === postBody.checkpw;
 	};
-	const checkId = () => {
-		const id = postBody.id;
-		const url = '/auth/doubleId';
-		const check = false;
-		axios
-			.get(api + url, { params: { loginId: id } })
-			.then((response) => {
-				check = response.data.isDouble;
-				console.log(check);
-				return check;
-			})
-			.catch((err) => {
-				console.log(err);
-			});
+	const checkId = async () => {
+		var check = false;
+		let response = await Api.getDoubleCheckId(postBody.id);
+		console.log(response);
+		if (response.data.sucess) {
+			check = response.data.isDouble;
+			return check;
+		}
+		return check;
 	};
 	const emptyCheck = () => {
 		if (
-			postBody.number === '' || postBody.email === '' || postBody.id === '' || postBody.pw === '' || postBody.name === ''
+			postBody.number === '' ||
+			postBody.email === '' ||
+			postBody.id === '' ||
+			postBody.pw === '' ||
+			postBody.name === ''
 		) {
 			return false;
 		}

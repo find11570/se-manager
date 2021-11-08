@@ -5,7 +5,7 @@ import {
 	CardContent,
 	Grid,
 } from '@material-ui/core';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -23,7 +23,26 @@ const ProjectCardContent = (props) => {
 	const [bookmark, setBookmark] = useState(false);
 
 	const front = () => axios.get(api + url + '/' + id);
+	const back = () => axios.get(api + url + '/isLike?projectId=' + id,
+		{
+			headers: {
+				authorization: `Bearer ${token}`
+			}
+		}
+	);
 
+	useEffect(() => {
+		if (sessionStorage.getItem('user_token')) {
+			const getdata = async () => {
+				const data = await back();
+				setBookmark(data.data.isLike)
+			};
+			getdata();
+		}
+		else {
+			setBookmark(false);
+		}
+	}, []);
 	const handleBookmark = async (id) => {
 		if (sessionStorage.getItem('user_token')) {
 			if (bookmark === false) {
@@ -77,7 +96,7 @@ const ProjectCardContent = (props) => {
 					sx={{
 						boxShadow: 5,
 						width: 250,
-						height: 250
+						height: 280
 					}}
 					onClick={() => handlehit(id)}
 				>

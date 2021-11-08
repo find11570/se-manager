@@ -23,7 +23,7 @@ const api = 'https://se-disk.herokuapp.com/api';
 const url = '/project';
 
 const ProjectDetail = (props) => {
-	const project_id = location.href.split('/')[(location.href.split('/').length - 1)].split('.')[0];
+	const project_id = location.href.split('/')[location.href.split('/').length - 1].split('.')[0];
 	const [data, setData] = useState([]);
 	useEffect(() => {
 		axios.get(api + url + '/' + project_id).then((response) => {
@@ -42,7 +42,7 @@ const ProjectDetail = (props) => {
 		tag: ['창융1', '리액트', 'Node.js', 'AWS', '김선명교수님', '2021'],
 		picture: '/static/picture.PNG',
 		see: 50,
-		good: 100,
+		good: 100
 	});
 
 	const comment = [
@@ -93,7 +93,7 @@ const ProjectDetail = (props) => {
 
 	const handleTextChange = (event) => {
 		setPostBody({
-			content: event.currentTarget.value,
+			content: event.currentTarget.value
 		});
 		console.log(project_id);
 	};
@@ -265,7 +265,12 @@ const ProjectDetail = (props) => {
 							py: 2
 						}}
 					/>
-					<Link to="/app/ProjectUpdate">
+					<Link
+						to={{
+							pathname: `/app/projectUpdate/${project_id}`,
+							state: { index: project_id }
+						}}
+					>
 						<Button
 							variant="contained"
 							color="success"

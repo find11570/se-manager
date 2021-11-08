@@ -12,26 +12,16 @@ import {
 import MenuIcon from '@material-ui/icons/Menu';
 import { Link } from 'react-router-dom';
 import Logo from 'src/components/Logo';
-import axios from 'axios';
+import Api from '../../Api/Api';
 
-const api = 'https://se-disk.herokuapp.com/api';
-
-const logout = () => {
-	const url = '/auth/logout';
+const logout = async () => {
 	const target = '/app/dashboard';
-	const token = sessionStorage.getItem('user_token');
-	axios
-		.get(api + url, {
-			headers: {
-				Authorization: `Bearer ${token}`
-			}
-		})
-		.then((response) => {
-			console.log(response);
-			sessionStorage.clear();
-			window.location.href = target;
-		})
-		.catch((err) => console.log(err));
+	let logout_response = await Api.getLogout();
+	console.log(logout_response);
+	if (logout_response.data.sucess) {
+		sessionStorage.clear();
+		window.location.href = target;
+	}
 };
 
 const DashboardNavbar = ({ onMobileNavOpen, ...rest }) => {
@@ -42,7 +32,7 @@ const DashboardNavbar = ({ onMobileNavOpen, ...rest }) => {
 		} else {
 			return false;
 		}
-	}
+	};
 
 	function check() {
 		if (isLogin()) {
@@ -60,9 +50,10 @@ const DashboardNavbar = ({ onMobileNavOpen, ...rest }) => {
 									marginLeft: 2
 								}}
 							>
-								<h4 style={{
-									color: '#006400',
-								}}
+								<h4
+									style={{
+										color: '#006400'
+									}}
 								>
 									글생성
 								</h4>
@@ -81,9 +72,10 @@ const DashboardNavbar = ({ onMobileNavOpen, ...rest }) => {
 									marginLeft: 2
 								}}
 							>
-								<h3 style={{
-									color: '#006400',
-								}}
+								<h3
+									style={{
+										color: '#006400'
+									}}
 								>
 									프로젝트 생성
 								</h3>
@@ -100,9 +92,10 @@ const DashboardNavbar = ({ onMobileNavOpen, ...rest }) => {
 									marginLeft: 2
 								}}
 							>
-								<h3 style={{
-									color: '#006400',
-								}}
+								<h3
+									style={{
+										color: '#006400'
+									}}
 								>
 									마이페이지
 								</h3>
@@ -118,12 +111,13 @@ const DashboardNavbar = ({ onMobileNavOpen, ...rest }) => {
 								marginLeft: 2
 							}}
 							onClick={() => {
-								logout()
+								logout();
 							}}
 						>
-							<h3 style={{
-								color: '#006400',
-							}}
+							<h3
+								style={{
+									color: '#006400'
+								}}
 							>
 								로그아웃
 							</h3>
@@ -146,9 +140,10 @@ const DashboardNavbar = ({ onMobileNavOpen, ...rest }) => {
 									marginLeft: 2
 								}}
 							>
-								<h3 style={{
-									color: '#006400',
-								}}
+								<h3
+									style={{
+										color: '#006400'
+									}}
 								>
 									로그인
 								</h3>
@@ -167,9 +162,10 @@ const DashboardNavbar = ({ onMobileNavOpen, ...rest }) => {
 									marginLeft: 2
 								}}
 							>
-								<h4 style={{
-									color: '#006400',
-								}}
+								<h4
+									style={{
+										color: '#006400'
+									}}
 								>
 									로그인
 								</h4>
@@ -181,10 +177,7 @@ const DashboardNavbar = ({ onMobileNavOpen, ...rest }) => {
 		}
 	}
 	return (
-		<AppBar
-			elevation={0}
-			{...rest}
-		>
+		<AppBar elevation={0} {...rest}>
 			<Toolbar>
 				<Hidden lgDown>
 					<Link to="/app/dashboard">
@@ -211,10 +204,7 @@ const DashboardNavbar = ({ onMobileNavOpen, ...rest }) => {
 						/>
 					</IconButton>
 				</Hidden>
-				<IconButton
-					color="inherit"
-					onClick={onMobileNavOpen}
-				>
+				<IconButton color="inherit" onClick={onMobileNavOpen}>
 					<MenuIcon />
 				</IconButton>
 			</Toolbar>

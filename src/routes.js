@@ -30,7 +30,7 @@ const routes = [
 			{ path: 'project', element: <Project /> },
 			{ path: 'projectDetail/:id', element: <ProjectDetail /> },
 			{ path: 'ProjectRegister', element: <ProjectRegister /> },
-			{ path: 'ProjectUpdate', element: <ProjectUpdate /> }
+			{ path: 'ProjectUpdate/:id', element: <ProjectUpdate /> }
 		]
 	},
 	{
