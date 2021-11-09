@@ -1,6 +1,6 @@
 import 'date-fns';
 import { Helmet } from 'react-helmet';
-import { useState, React } from 'react';
+import { useState, React, useEffect } from 'react';
 import {
 	Box,
 	Card,
@@ -10,7 +10,7 @@ import {
 	InputAdornment,
 	SvgIcon,
 	Button,
-	Avatar
+	Avatar,
 } from '@material-ui/core';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
@@ -23,6 +23,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 const api = 'https://se-disk.herokuapp.com/api';
+const url = '/project';
 const token = sessionStorage.getItem('user_token');
 
 const ITEM_HEIGHT = 48;
@@ -35,68 +36,62 @@ const MenuProps = {
 		},
 	},
 };
-const stacks = [
-	'React',
-	'Java',
-	'C++',
-	'C',
-	'Mysql',
-	'MongoDB',
-	'Python',
-	'자연어처리',
-	'영상처리',
-	'딥러닝',
-];
-const subjects = [
-	'창의융합종합설계1',
-	'창의융합종합설계2',
-	'일반 프로젝트'
-];
-const professors = [
-	'김병만',
-	'김시관',
-	'김선명',
-	'김성렬',
-	'신윤식',
-	'오득환',
-	'이현아',
-	'이해연',
-	'이종열',
-];
-const years = [
-	'2016',
-	'2017',
-	'2018',
-	'2019',
-	'2020',
-	'2021',
-];
-const categorys = [
-	'웹사이트',
-	'모바일앱',
-	'인공지능',
-	'IoT',
-	'블록체인',
-	'보안',
-	'VR/AR',
-	'게임',
-	'로봇',
-	'자연어처리',
-	'영상처리'
-];
+
 const data = JSON.parse(sessionStorage.getItem('user_data'));
 const ProjectRegister = () => {
 	const [postBody, setPostBody] = useState({
 		title: '',
 		content: '',
 		image: '/static/picture.PNG',
-		stack: '',
 	});
 	const [subject, setsubject] = useState([]);
 	const [professor, setprofessor] = useState([]);
 	const [year, setyear] = useState([]);
 	const [category, setcategory] = useState([]);
 	const [members, setmembers] = useState([]);
+	const [years, setyears] = useState([]);
+	const [subjects, setsubjects] = useState([]);
+	const [professors, setprofessors] = useState([]);
+	const [stacks, setstacks] = useState([]);
+	const [stack, setstack] = useState([]);
+	const [categorys, setcategorys] = useState([]);
+	const [p_list, setp_list] = useState([]);
+	useEffect(() => {
+		const List = [];
+		axios.get(api + url + '/subject-years').then((response) => {
+			setyears(response.data.years);
+		});
+		axios.get(api + url + '/subjects').then((response) => {
+			setsubjects(response.data.subjects);
+		});
+		axios.get(api + '/user/professors').then((response) => {
+			const data = response.data.professors;
+			data.map(v => {
+				List.push(v.user_name);
+			})
+			setprofessors(List);
+		});
+		axios.get(api + url + '/categorys').then((response) => {
+			setcategorys(response.data.categorys);
+		});
+		axios.get(api + url + '/tags').then((response) => {
+			setstacks(response.data.tags);
+		});
+		axios.get(api + '/user/professors', {
+			headers: {
+				authorization: `Bearer ${token}`,
+			}
+		})
+			.then((response2) => {
+				setp_list(response2.data.professors);
+				const p = [];
+				p_list.map((idx) => {
+					if (idx.user_id == professor)
+						return p.push(idx.user_name);
+				});
+				setprofessor(p);
+			});
+	}, []);
 	const handlecategoryChange = (event) => {
 		const {
 			target: { value },
@@ -130,26 +125,24 @@ const ProjectRegister = () => {
 		);
 	};
 	const handlestackChange = (event) => {
-		setPostBody({
-			title: postBody.title,
-			content: postBody.content,
-			image: postBody.image,
-			stack: event.currentTarget.value
-		});
+		const {
+			target: { value },
+		} = event;
+		setstack(
+			typeof value === 'string' ? value.split(',') : value,
+		);
 	};
 	const handletitleChange = (event) => {
 		setPostBody({
 			title: event.currentTarget.value,
 			content: postBody.content,
 			image: postBody.image,
-			stack: postBody.stack
 		});
 	};
 	const handlecontentChange = (event) => {
 		setPostBody({
 			title: postBody.title,
 			image: postBody.image,
-			stack: postBody.stack,
 			content: event.currentTarget.value,
 		});
 	};
@@ -378,32 +371,38 @@ const ProjectRegister = () => {
 										py: 0.5,
 									}}
 								/>
-								<TextField
-									halfwidth="true"
+								<FormControl
 									sx={{
-										flex: '1',
-										flexDirection: 'row',
-										boxShadow: 5,
-										borderBottomRightRadius: 5,
-										borderBottomLeftRadius: 5,
-										borderTopRightRadius: 5,
-										borderTopLeftRadius: 5,
-										backgroundColor: 'primary.smoothgreen',
+										width: 200
 									}}
-									InputProps={{
-										startAdornment: (
-											<InputAdornment position="start">
-												<SvgIcon
-													fontSize="small"
-													color="action"
+								>
+									<InputLabel id="기술스택">&nbsp; 기술스택</InputLabel>
+									<Select
+										labelId="기술스택"
+										id="기술스택"
+										multiple
+										value={stack}
+										onChange={handlestackChange}
+										input={<OutlinedInput label="기술스택" />}
+										renderValue={(selected) => selected.join(', ')}
+										MenuProps={MenuProps}
+									>
+										{stacks.map((s) => (
+											<MenuItem key={s} value={s}>
+												<Checkbox
+													sx={{
+														color: 'primary.darkgreen',
+														'&.Mui-checked': {
+															color: 'primary.darkgreen'
+														}
+													}}
+													checked={stack.indexOf(s) > -1}
 												/>
-											</InputAdornment>
-										)
-									}}
-									placeholder="기술스택을 입력하세요"
-									variant="outlined"
-									onChange={handlestackChange}
-								/>
+												<ListItemText primary={s} />
+											</MenuItem>
+										))}
+									</Select>
+								</FormControl>
 								<Box
 									sx={{
 										minHeight: '100%',
@@ -595,23 +594,39 @@ const ProjectRegister = () => {
 										variant="contained"
 										color="success"
 										onClick={() => {
+											console.log(stack);
+											const intM = [];
+											members.map(function (v) {
+												return intM.push(parseInt(v, 10));
+											});
+
+											const p_id = [];
+											p_list.map((idx) => {
+												if (idx.user_name == professor)
+													return p_id.push(idx.user_id);
+											});
+											setprofessor(p_id);
+											var category_arr = JSON.parse(category);
+											var stack_arr = JSON.parse(stack)
 											const reqObject = {
 												project_title: postBody.title,
 												project_introduction: postBody.content,
-												project_category: category.join(),
+												project_category: category_arr,
 												project_leader: data.user_id,
 												// project_image: postBody.image,
 												project_image: '/static/picture.PNG',
 												project_subject: subject[0],
 												project_subject_year: parseInt(year[0], 10),
-												project_professor: 1,
-												project_members: members,
+												project_professor: p_id[0],
+												project_members: intM,
+												project_tags: stack_arr
 											};
 											axios.post('https://se-disk.herokuapp.com/api/project', reqObject, {
 												headers: {
 													authorization: `Bearer ${token}`
 												}
 											});
+											console.log(reqObject);
 											alert('생성되었습니다.');
 										}}
 									>

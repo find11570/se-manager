@@ -35,55 +35,7 @@ const MenuProps = {
 		},
 	},
 };
-const stacks = [
-	'React',
-	'Java',
-	'C++',
-	'C',
-	'Mysql',
-	'MongoDB',
-	'Python',
-	'자연어처리',
-	'영상처리',
-	'딥러닝',
-];
-const subjects = [
-	'창의융합종합설계1',
-	'창의융합종합설계2',
-	'일반 프로젝트'
-];
-const professors = [
-	'김병만',
-	'김시관',
-	'김선명',
-	'김성렬',
-	'신윤식',
-	'오득환',
-	'이현아',
-	'이해연',
-	'이종열',
-];
-const years = [
-	'2016',
-	'2017',
-	'2018',
-	'2019',
-	'2020',
-	'2021',
-];
-const categorys = [
-	'웹사이트',
-	'모바일앱',
-	'인공지능',
-	'IoT',
-	'블록체인',
-	'보안',
-	'VR/AR',
-	'게임',
-	'로봇',
-	'자연어처리',
-	'영상처리'
-];
+
 const ProjectUpdate = () => {
 	const [postBody, setPostBody] = useState({
 		title: undefined,
@@ -98,6 +50,30 @@ const ProjectUpdate = () => {
 	const [members, setmembers] = useState([]);
 	const [leader, setleader] = useState();
 	const [p_list, setp_list] = useState([]);
+	const [years, setyears] = useState([]);
+	const [subjects, setsubjects] = useState([]);
+	const [professors, setprofessors] = useState([]);
+	const [stacks, setstacks] = useState([]);
+	const [categorys, setcategorys] = useState([]);
+	useEffect(() => {
+		const List = [];
+		axios.get(api + url + '/subject-years').then((response) => {
+			setyears(response.data.years);
+		});
+		axios.get(api + url + '/subjects').then((response) => {
+			setsubjects(response.data.subjects);
+		});
+		axios.get(api + '/user/professors').then((response) => {
+			const data = response.data.professors;
+			data.map(v => {
+				List.push(v.user_name);
+			})
+			setprofessors(List);
+		});
+		axios.get(api + url + '/categorys').then((response) => {
+			setcategorys(response.data.categorys);
+		});
+	}, []);
 
 	const project_id = location.href.split('/')[location.href.split('/').length - 1].split('.')[0];
 	useEffect(() => {
@@ -109,7 +85,7 @@ const ProjectUpdate = () => {
 			const mem = response.data.project.project_members;
 			const memberList = [];
 			mem.map(v => {
-				axios.get(api + '/user/'+v.user_id, {
+				axios.get(api + '/user/' + v.user_id, {
 					headers: {
 						authorization: `Bearer ${token}`
 					}
@@ -660,13 +636,12 @@ const ProjectUpdate = () => {
 											m.map(function (v) {
 												return intM.push(parseInt(v, 10));
 											});
-
-											const professor_id = [];
+											const p_id = [];
 											p_list.map((idx) => {
 												if (idx.user_name == professor)
-													return professor_id.push(idx.user_id);
+													return p_id.push(idx.user_id);
 											});
-
+											setprofessor(p_id);
 											const reqObject = {
 												project_title: postBody.title,
 												project_leader: leader,

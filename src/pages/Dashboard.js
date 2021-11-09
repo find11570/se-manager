@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
 	Box,
 	Container,
@@ -32,7 +32,10 @@ import ThreeDRotationIcon from '@material-ui/icons/ThreeDRotation';
 import MovieCreationIcon from '@mui/icons-material/MovieCreation';
 import TextFormatIcon from '@mui/icons-material/TextFormat';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
+const api = 'https://se-disk.herokuapp.com/api';
+const url = '/project';
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -43,41 +46,7 @@ const MenuProps = {
 		},
 	},
 };
-const stacks = [
-	'React',
-	'Java',
-	'C++',
-	'C',
-	'Mysql',
-	'MongoDB',
-	'Python',
-	'자연어처리',
-	'영상처리',
-	'딥러닝',
-];
-const subjects = [
-	'창의융합종합설계1',
-	'창의융합종합설계2',
-];
-const professors = [
-	'김병만',
-	'김시관',
-	'김선명',
-	'김성렬',
-	'신윤식',
-	'오득환',
-	'이현아',
-	'이해연',
-	'이종열',
-];
-const years = [
-	'2016',
-	'2017',
-	'2018',
-	'2019',
-	'2020',
-	'2021',
-];
+
 const Dashboard = () => {
 	const [postBody, setPostBody] = useState({
 		name: '',
@@ -86,6 +55,30 @@ const Dashboard = () => {
 	const [subject, setsubject] = useState([]);
 	const [professor, setprofessor] = useState([]);
 	const [year, setyear] = useState([]);
+	const [years, setyears] = useState([]);
+	const [subjects, setsubjects] = useState([]);
+	const [professors, setprofessors] = useState([]);
+	const [stacks, setstacks] = useState([]);
+    useEffect(() => {
+		const List = [];
+        axios.get(api + url + '/subject-years').then((response) => {
+            setyears(response.data.years);
+        });
+		axios.get(api + url + '/subjects').then((response) => {
+            setsubjects(response.data.subjects);
+        });
+		axios.get(api + url + '/tags').then((response) => {
+            setstacks(response.data.tags);
+        });
+		axios.get(api +'/user/professors').then((response) => {
+			const data = response.data.professors;
+			data.map(v => {
+				List.push(v.user_name);
+			})
+            setprofessors(List);
+        });
+    }, []);
+
 	const handleTextChange = (event) => {
 		setPostBody({
 			name: event.currentTarget.value,

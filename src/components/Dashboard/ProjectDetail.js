@@ -21,14 +21,35 @@ import axios from 'axios';
 const api = 'https://se-disk.herokuapp.com/api';
 const url = '/project';
 const people = JSON.parse(sessionStorage.getItem('user_data'));
-
+const token = sessionStorage.getItem('user_token');
 const ProjectDetail = (props) => {
 	const project_id = location.href.split('/')[location.href.split('/').length - 1].split('.')[0];
 	const [data, setData] = useState([]);
 	const [state, setstate] = useState(false);
+	const [tag, settag] = useState([]);
 	useEffect(() => {
+		const list = [];
 		axios.get(api + url + '/' + project_id).then((response) => {
 			setData(response.data.project);
+			const year = response.data.project.project_subject_year;
+			list.push(year);
+			const p_name = response.data.project.project_professor.user_name;
+			list.push(p_name);
+			const subject = response.data.project.project_subject;
+			list.push(subject);
+			const t = response.data.project.project_tags;
+			if(t){
+				t.map(v => {
+					list.push(v);
+				})
+			}
+			// const c = response.data.project.project_category;
+			// if(c){
+			// 	c.map(v => {
+			// 		list.push(v);
+			// 	})
+			// }
+            settag(list);
 			if (sessionStorage.getItem('user_token')) {
 				if (response.data.project.length != 0) {
 					response.data.project.project_members.map((m) => {
@@ -43,10 +64,6 @@ const ProjectDetail = (props) => {
 
 	const mem = data.project_members;
 	const memResult = mem?.map((member) => member.user_name + ' ');
-
-	const [chartData] = useState({
-		tag: ['창융1', '리액트', 'Node.js', 'AWS', '김선명교수님', '2021'],
-	});
 
 	const comment = [
 		{
@@ -99,7 +116,7 @@ const ProjectDetail = (props) => {
 			content: event.currentTarget.value
 		});
 	};
-	const List = chartData.tag.map((t) => (
+	const List = tag.map((t) => (
 		<Box
 			key={t}
 			value={t}

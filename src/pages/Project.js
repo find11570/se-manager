@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
 	Box,
 	Container,
@@ -19,7 +19,10 @@ import Select from '@mui/material/Select';
 import Checkbox from '@mui/material/Checkbox';
 import { Link } from 'react-router-dom';
 import ProjectCard from 'src/components/Dashboard/ProjectCard';
+import axios from 'axios';
 
+const api = 'https://se-disk.herokuapp.com/api';
+const url = '/project';
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -30,59 +33,13 @@ const MenuProps = {
 		},
 	},
 };
-const stacks = [
-	'React',
-	'Java',
-	'C++',
-	'C',
-	'Mysql',
-	'MongoDB',
-	'Python',
-	'자연어처리',
-	'영상처리',
-	'딥러닝',
-];
-const subjects = [
-	'창의융합종합설계1',
-	'창의융합종합설계2',
-];
-const professors = [
-	'김병만',
-	'김시관',
-	'김선명',
-	'김성렬',
-	'신윤식',
-	'오득환',
-	'이현아',
-	'이해연',
-	'이종열',
-];
-const years = [
-	'2016',
-	'2017',
-	'2018',
-	'2019',
-	'2020',
-	'2021',
-];
+
 const menus = [
 	'최신순',
 	'좋아요순',
 	'조회순',
-];
-const categorys = [
-	'웹사이트',
-	'모바일앱',
-	'인공지능',
-	'IoT',
-	'블록체인',
-	'보안',
-	'VR/AR',
-	'게임',
-	'로봇',
-	'자연어처리',
-	'영상처리'
-];
+ ];
+
 const Project = () => {
 	const [postBody, setPostBody] = useState({
 		name: ''
@@ -101,7 +58,33 @@ const Project = () => {
 	const [year, setyear] = useState([]);
 	const [menu, setmenu] = useState([]);
 	const [category, setcategory] = useState([]);
-
+	const [years, setyears] = useState([]);
+	const [subjects, setsubjects] = useState([]);
+	const [professors, setprofessors] = useState([]);
+	const [stacks, setstacks] = useState([]);
+	const [categorys, setcategorys] = useState([]);
+    useEffect(() => {
+		const List = [];
+        axios.get(api + url + '/subject-years').then((response) => {
+            setyears(response.data.years);
+        });
+		axios.get(api + url + '/subjects').then((response) => {
+            setsubjects(response.data.subjects);
+        });
+		axios.get(api + url + '/tags').then((response) => {
+            setstacks(response.data.tags);
+        });
+		axios.get(api +'/user/professors').then((response) => {
+			const data = response.data.professors;
+			data.map(v => {
+				List.push(v.user_name);
+			})
+            setprofessors(List);
+        });
+		axios.get(api + url + '/categorys').then((response) => {
+            setcategorys(response.data.categorys);
+        });
+    }, []);
 	const handleTextChange = (event) => {
 		setPostBody({
 			name: event.currentTarget.value,
