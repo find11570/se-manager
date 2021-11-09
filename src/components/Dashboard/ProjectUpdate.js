@@ -48,12 +48,12 @@ const ProjectUpdate = () => {
 	const [year, setyear] = useState([]);
 	const [category, setcategory] = useState([]);
 	const [members, setmembers] = useState([]);
-	const [leader, setleader] = useState();
 	const [p_list, setp_list] = useState([]);
 	const [years, setyears] = useState([]);
 	const [subjects, setsubjects] = useState([]);
 	const [professors, setprofessors] = useState([]);
 	const [stacks, setstacks] = useState([]);
+	const [stack, setstack] = useState([]);
 	const [categorys, setcategorys] = useState([]);
 	useEffect(() => {
 		const List = [];
@@ -62,6 +62,9 @@ const ProjectUpdate = () => {
 		});
 		axios.get(api + url + '/subjects').then((response) => {
 			setsubjects(response.data.subjects);
+		});
+		axios.get(api + url + '/tags').then((response) => {
+			setstacks(response.data.tags);
 		});
 		axios.get(api + '/user/professors').then((response) => {
 			const data = response.data.professors;
@@ -84,14 +87,9 @@ const ProjectUpdate = () => {
 		}).then((response) => {
 			const mem = response.data.project.project_members;
 			const memberList = [];
+
 			mem.map(v => {
-				axios.get(api + '/user/' + v.user_id, {
-					headers: {
-						authorization: `Bearer ${token}`
-					}
-				}).then((response) => {
-					memberList.push(response.data.user.user_login_id);
-				});
+				memberList.push(v.user_id);
 			});
 			setmembers(memberList);
 			setPostBody({
@@ -99,31 +97,44 @@ const ProjectUpdate = () => {
 				content: response.data.project.project_introduction,
 				image: response.data.project.project_image,
 			});
-			setleader(response.data.project.project_leader);
-			const subject = [];
-			subject.push(response.data.project.project_subject);
-			setsubject(subject);
-			axios.get(api + '/user/professors', {
-				headers: {
-					authorization: `Bearer ${token}`,
-				}
-			})
-				.then((response2) => {
-					setp_list(response2.data.professors);
-					const p = [];
-					p_list.map((idx) => {
-						if (idx.user_id == professor)
-							return p.push(idx.user_name);
-					});
-					setprofessor(p);
-				});
+			if (response.data.project.project_tags != null) {
+				const tag = [];
+				tag.push(response.data.project.project_tags);
+				setstack(tag[0]);
+			}
+			if (response.data.project.project_subject != null) {
+				const subject = [];
+				subject.push(response.data.project.project_subject);
+				setsubject(subject);
+			}
 
-			const year = [];
-			year.push(response.data.project.project_subject_year);
-			setyear(year);
-			const category = [];
-			category.push(response.data.project.project_category);
-			setcategory(category);
+			if (response.data.project.project_professor != null) {
+				const professor_id = [];
+				professor_id.push(response.data.project.project_professor.user_id);
+				axios.get(api + '/user/professors', {
+					headers: {
+						authorization: `Bearer ${token}`,
+					}
+				})
+					.then((response2) => {
+						setp_list(response2.data.professors);
+						response2.data.professors.map((idx) => {
+							if (idx.user_id == professor_id) {
+								setprofessor([idx.user_name]);
+							}
+						});
+					});
+			}
+			if (response.data.project.project_subject_year != null) {
+				const year = [];
+				year.push(String(response.data.project.project_subject_year));
+				setyear(year);
+			}
+			if (response.data.project.project_categorys != null) {
+				const category = [];
+				category.push(response.data.project.project_categorys);
+				setcategory(category[0]);
+			}
 		});
 	}, []);
 
@@ -160,27 +171,25 @@ const ProjectUpdate = () => {
 		);
 	};
 	const handlestackChange = (event) => {
-		setPostBody({
-			content: postBody.content,
-			title: postBody.title,
-			picture: postBody.picture,
-			stack: event.currentTarget.value,
-		});
+		const {
+			target: { value },
+		} = event;
+		setstack(
+			typeof value === 'string' ? value.split(',') : value,
+		);
 	};
 	const handletitleChange = (event) => {
 		setPostBody({
 			content: postBody.content,
 			title: event.currentTarget.value,
-			picture: postBody.picture,
-			stack: postBody.stack
+			picture: postBody.picture
 		});
 	};
 	const handlecontentChange = (event) => {
 		setPostBody({
 			content: event.currentTarget.value,
 			title: postBody.title,
-			picture: postBody.picture,
-			stack: postBody.stack
+			picture: postBody.picture
 		});
 	};
 	const handlememberChange = (event) => {
@@ -312,7 +321,7 @@ const ProjectUpdate = () => {
 											</InputAdornment>
 										)
 									}}
-									value={postBody.title}
+									value={postBody.title || ''}
 									variant="outlined"
 									onChange={handletitleChange}
 								/>
@@ -408,33 +417,38 @@ const ProjectUpdate = () => {
 										py: 0.5,
 									}}
 								/>
-								<TextField
-									halfwidth="true"
+								<FormControl
 									sx={{
-										flex: '1',
-										flexDirection: 'row',
-										boxShadow: 5,
-										borderBottomRightRadius: 5,
-										borderBottomLeftRadius: 5,
-										borderTopRightRadius: 5,
-										borderTopLeftRadius: 5,
-										backgroundColor: 'primary.smoothgreen',
+										width: 200
 									}}
-									InputProps={{
-										startAdornment: (
-											<InputAdornment position="start">
-												<SvgIcon
-													fontSize="small"
-													color="action"
+								>
+									<InputLabel id="기술스택">&nbsp; 기술스택</InputLabel>
+									<Select
+										labelId="기술스택"
+										id="기술스택"
+										multiple
+										value={stack}
+										onChange={handlestackChange}
+										input={<OutlinedInput label="기술스택" />}
+										renderValue={(selected) => selected.join(', ')}
+										MenuProps={MenuProps}
+									>
+										{stacks.map((s) => (
+											<MenuItem key={s} value={s}>
+												<Checkbox
+													sx={{
+														color: 'primary.darkgreen',
+														'&.Mui-checked': {
+															color: 'primary.darkgreen'
+														}
+													}}
+													checked={stack.indexOf(s) > -1}
 												/>
-											</InputAdornment>
-										)
-									}}
-									placeholder="기술스택을 검색하세요."
-									value={postBody.stack}
-									variant="outlined"
-									onChange={handlestackChange}
-								/>
+												<ListItemText primary={s} />
+											</MenuItem>
+										))}
+									</Select>
+								</FormControl>
 								<Box
 									sx={{
 										minHeight: '100%',
@@ -585,7 +599,6 @@ const ProjectUpdate = () => {
 								<FormControl
 									sx={{
 										width: 200,
-										backgroundColor: 'primary.smoothgreen'
 									}}
 								>
 									<InputLabel id="카테고리">&nbsp; 카테고리</InputLabel>
@@ -632,8 +645,7 @@ const ProjectUpdate = () => {
 										color="success"
 										onClick={() => {
 											const intM = [];
-											const m = members.split(', ');
-											m.map(function (v) {
+											members.map(function (v) {
 												return intM.push(parseInt(v, 10));
 											});
 											const p_id = [];
@@ -644,15 +656,15 @@ const ProjectUpdate = () => {
 											setprofessor(p_id);
 											const reqObject = {
 												project_title: postBody.title,
-												project_leader: leader,
-												project_image: postBody.image,
-												project_subject: subject[0],
-												project_tags: stack,
-												project_subject_year: parseInt(year[0], 10),
-												project_professor: parseInt(professor_id.join()),
-												project_category: category.join(),
 												project_introduction: postBody.content,
-												project_members: intM
+												project_categorys: category,
+												// project_image: postBody.image,
+												project_image: '/static/picture.PNG',
+												project_subject: subject[0],
+												project_subject_year: year[0],
+												project_professor: p_id[0],
+												project_members: intM,
+												project_tags: stack
 											};
 											axios.post(
 												'https://se-disk.herokuapp.com/api/project/' +

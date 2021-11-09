@@ -19,7 +19,7 @@ const Favorite = (props) => {
 
 	const handlePageChange = (event, value) => {
 		setPage(value);
-		const front = () => axios.get(api + url + '/' + people.user_id + '/like-projects?pageNum=' + (value-1) + '&pageCount=6',
+		const front = () => axios.get(api + url + '/' + people.user_id + '/like-projects?pageNum=' + value + '&pageCount=6',
 			{
 				headers: {
 					authorization: `Bearer ${token}`
@@ -45,7 +45,7 @@ const Favorite = (props) => {
 		const getdata = async () => {
 			const data = await back();
 			setarray(data.data.projects);
-			setcount(Math.ceil(data.data.count / 6));
+			setcount(Math.ceil(data.data.projects.length/ 6));
 		};
 		getdata();
 	}, []);

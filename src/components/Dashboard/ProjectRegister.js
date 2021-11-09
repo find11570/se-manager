@@ -594,7 +594,6 @@ const ProjectRegister = () => {
 										variant="contained"
 										color="success"
 										onClick={() => {
-											console.log(stack);
 											const intM = [];
 											members.map(function (v) {
 												return intM.push(parseInt(v, 10));
@@ -606,27 +605,25 @@ const ProjectRegister = () => {
 													return p_id.push(idx.user_id);
 											});
 											setprofessor(p_id);
-											var category_arr = JSON.parse(category);
-											var stack_arr = JSON.parse(stack)
+						
 											const reqObject = {
 												project_title: postBody.title,
 												project_introduction: postBody.content,
-												project_category: category_arr,
+												project_categorys: category,
 												project_leader: data.user_id,
 												// project_image: postBody.image,
 												project_image: '/static/picture.PNG',
 												project_subject: subject[0],
-												project_subject_year: parseInt(year[0], 10),
+												project_subject_year: year[0],
 												project_professor: p_id[0],
 												project_members: intM,
-												project_tags: stack_arr
+												project_tags: stack
 											};
 											axios.post('https://se-disk.herokuapp.com/api/project', reqObject, {
 												headers: {
 													authorization: `Bearer ${token}`
 												}
 											});
-											console.log(reqObject);
 											alert('생성되었습니다.');
 										}}
 									>

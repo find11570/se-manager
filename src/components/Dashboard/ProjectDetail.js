@@ -43,12 +43,6 @@ const ProjectDetail = (props) => {
 					list.push(v);
 				})
 			}
-			// const c = response.data.project.project_category;
-			// if(c){
-			// 	c.map(v => {
-			// 		list.push(v);
-			// 	})
-			// }
             settag(list);
 			if (sessionStorage.getItem('user_token')) {
 				if (response.data.project.length != 0) {

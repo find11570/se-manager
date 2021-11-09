@@ -19,7 +19,7 @@ const MyCard = (props) => {
 
 	const handlePageChange = (event, value) => {
 		setPage(value);
-		const front = () => axios.get(api + url + '/' + people.user_id + '/projects?pageNum=' + (value-1) + '&pageCount=6',
+		const front = () => axios.get(api + url + '/' + people.user_id + '/projects?pageNum=' + value + '&pageCount=6',
 			{
 				headers: {
 					authorization: `Bearer ${token}`
