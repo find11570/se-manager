@@ -520,8 +520,8 @@ const Project = () => {
 								}}
 							/>
 						</Hidden>
+						<ProjectCard />
 					</Grid>
-					<ProjectCard />
 				</Container>
 			</Box>
 		</>

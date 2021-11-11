@@ -45,11 +45,7 @@ const ProjectCard = (props) => {
 
 	return (
 		<>
-			<Box
-				sx={{
-					marginRight: '15%'
-				}}
-			>
+			<Box>
 				<Grid
 					container
 					spacing={3}
