@@ -1,9 +1,18 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Box, Drawer, List } from '@material-ui/core';
+import { Box, Drawer, List, Button } from '@material-ui/core';
 import NavItem from 'src/components/NavItem';
 import Api from '../../Api/Api';
+
+const logout = async () => {
+	const target = '/app/dashboard';
+	let logout_response = await Api.getLogout();
+	if (logout_response.data.sucess) {
+		sessionStorage.clear();
+		window.location.href = target;
+	}
+};
 
 const isLogin = () => {
 	if (sessionStorage.getItem('user_token')) {
@@ -11,17 +20,15 @@ const isLogin = () => {
 			{
 				href: '/mypage/page',
 				title: '마이페이지'
-			},
-			{
-				href: '/app/dashboard',
-				title: '로그아웃'
 			}
 		);
 	} else {
-		return {
-			href: '/login/login',
-			title: '로그인 및 회원가입'
-		};
+		return (
+			{
+				href: '/login/login',
+				title: '로그인 및 회원가입'
+			}
+		);
 	}
 };
 
@@ -36,6 +43,28 @@ const items = [
 		title: '팀원 모집'
 	}
 ];
+
+const logoutbutton = () => {
+	if (sessionStorage.getItem('user_token')) {
+		return (
+			<Button
+				variant="contained"
+				color="success"
+				onClick={() => {
+					logout();
+				}}
+			>
+				<h3
+					style={{
+						color: '#ffffff'
+					}}
+				>
+					로그아웃
+				</h3>
+			</Button>
+		)
+	}
+}
 
 const DashboardSidebar = ({ onMobileClose, openMobile }) => {
 	const location = useLocation();
@@ -94,6 +123,7 @@ const DashboardSidebar = ({ onMobileClose, openMobile }) => {
 				}}
 			>
 				{content}
+				{logoutbutton()}
 			</Drawer>
 		</>
 	);

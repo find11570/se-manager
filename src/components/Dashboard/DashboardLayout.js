@@ -3,6 +3,9 @@ import { Outlet } from 'react-router-dom';
 import { experimentalStyled } from '@material-ui/core/styles';
 import DashboardNavbar from './DashboardNavbar';
 import DashboardSidebar from './DashboardSidebar';
+import {
+	Hidden
+} from '@material-ui/core';
 
 const DashboardLayoutRoot = experimentalStyled('div')(
 	({ theme }) => ({
