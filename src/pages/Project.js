@@ -308,7 +308,6 @@ const Project = () => {
 								<Button
 									variant="contained"
 									color="success"
-									size="large"
 								>
 									<h4 style={{
 										color: '#ffffff',
