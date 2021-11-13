@@ -32,89 +32,95 @@ import ThreeDRotationIcon from '@material-ui/icons/ThreeDRotation';
 import MovieCreationIcon from '@mui/icons-material/MovieCreation';
 import TextFormatIcon from '@mui/icons-material/TextFormat';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import Api from '../Api/Api';
 
-const api = 'https://se-disk.herokuapp.com/api';
-const url = '/project';
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
 	PaperProps: {
 		style: {
 			maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-			width: 250,
-		},
-	},
+			width: 250
+		}
+	}
 };
 
 const Dashboard = () => {
 	const [postBody, setPostBody] = useState({
-		name: '',
+		name: ''
 	});
 	const [stack, setstack] = useState([]);
 	const [subject, setsubject] = useState([]);
 	const [professor, setprofessor] = useState([]);
 	const [year, setyear] = useState([]);
+
+	// 드롭다운 메뉴 값
 	const [years, setyears] = useState([]);
 	const [subjects, setsubjects] = useState([]);
 	const [professors, setprofessors] = useState([]);
 	const [stacks, setstacks] = useState([]);
-    useEffect(() => {
-		const List = [];
-        axios.get(api + url + '/subject-years').then((response) => {
-            setyears(response.data.years);
-        });
-		axios.get(api + url + '/subjects').then((response) => {
-            setsubjects(response.data.subjects);
-        });
-		axios.get(api + url + '/tags').then((response) => {
-            setstacks(response.data.tags);
-        });
-		axios.get(api +'/user/professors').then((response) => {
-			const data = response.data.professors;
-			data.map(v => {
-				List.push(v.user_name);
-			})
-            setprofessors(List);
-        });
-    }, []);
 
+	// 드롭다운 메뉴 세팅
+	useEffect(async () => {
+		await getProfessors();
+		await getStacks();
+		await getYears();
+		await getSubjects();
+	}, []);
+
+	// 드롭다운 메뉴 로딩
+	const getYears = async () => {
+		let response = await Api.getYears();
+		const year_list = await response.data.years;
+		setyears(year_list);
+	};
+	const getSubjects = async () => {
+		let response = await Api.getSubjects();
+		const subject_list = await response.data.subjects;
+		setsubjects(subject_list);
+	};
+	const getStacks = async () => {
+		let response = await Api.getStacks();
+		const stack_list = await response.data.tags;
+		setstacks(stack_list);
+	};
+	const getProfessors = async () => {
+		let response = await Api.getProfessors();
+		var professor_list = response.data.professors.map(
+			({ user_name }) => user_name
+		);
+		setprofessors(professor_list);
+	};
+
+	// React Handle Function
 	const handleTextChange = (event) => {
 		setPostBody({
-			name: event.currentTarget.value,
+			name: event.currentTarget.value
 		});
 	};
 	const handlestackChange = (event) => {
 		const {
-			target: { value },
+			target: { value }
 		} = event;
-		setstack(
-			typeof value === 'string' ? value.split(',') : value,
-		);
+		setstack(typeof value === 'string' ? value.split(',') : value);
 	};
 	const handlesubjectChange = (event) => {
 		const {
-			target: { value },
+			target: { value }
 		} = event;
-		setsubject(
-			typeof value === 'string' ? value.split(',') : value,
-		);
+		setsubject(typeof value === 'string' ? value.split(',') : value);
 	};
 	const handleprofessorChange = (event) => {
 		const {
-			target: { value },
+			target: { value }
 		} = event;
-		setprofessor(
-			typeof value === 'string' ? value.split(',') : value,
-		);
+		setprofessor(typeof value === 'string' ? value.split(',') : value);
 	};
 	const handleyearChange = (event) => {
 		const {
-			target: { value },
+			target: { value }
 		} = event;
-		setyear(
-			typeof value === 'string' ? value.split(',') : value,
-		);
+		setyear(typeof value === 'string' ? value.split(',') : value);
 	};
 
 	return (
@@ -125,7 +131,7 @@ const Dashboard = () => {
 			<Box
 				sx={{
 					minHeight: '100%',
-					py: 5,
+					py: 5
 				}}
 			>
 				<Box
@@ -139,7 +145,7 @@ const Dashboard = () => {
 				<Box
 					sx={{
 						minHeight: '100%',
-						py: 1,
+						py: 1
 					}}
 				/>
 				<h2 style={{ marginLeft: 20 }}>프로젝트를 찾아보세요!</h2>
@@ -147,14 +153,14 @@ const Dashboard = () => {
 					<Box
 						sx={{
 							minHeight: '100%',
-							py: 1,
+							py: 1
 						}}
 					/>
 					<FormControl
 						sx={{
 							m: 1,
 							width: 200,
-							marginLeft: 2.5,
+							marginLeft: 2.5
 						}}
 					>
 						<InputLabel id="기술스택">&nbsp;기술스택</InputLabel>
@@ -174,8 +180,8 @@ const Dashboard = () => {
 										sx={{
 											color: 'primary.darkgreen',
 											'&.Mui-checked': {
-												color: 'primary.darkgreen',
-											},
+												color: 'primary.darkgreen'
+											}
 										}}
 										checked={stack.indexOf(s) > -1}
 									/>
@@ -209,8 +215,8 @@ const Dashboard = () => {
 										sx={{
 											color: 'primary.darkgreen',
 											'&.Mui-checked': {
-												color: 'primary.darkgreen',
-											},
+												color: 'primary.darkgreen'
+											}
 										}}
 										checked={subject.indexOf(s) > -1}
 									/>
@@ -223,7 +229,7 @@ const Dashboard = () => {
 						sx={{
 							m: 1,
 							width: 200,
-							marginLeft: 2.5,
+							marginLeft: 2.5
 						}}
 					>
 						<InputLabel id="년도">&nbsp;년도</InputLabel>
@@ -243,8 +249,8 @@ const Dashboard = () => {
 										sx={{
 											color: 'primary.darkgreen',
 											'&.Mui-checked': {
-												color: 'primary.darkgreen',
-											},
+												color: 'primary.darkgreen'
+											}
 										}}
 										checked={year.indexOf(s) > -1}
 									/>
@@ -278,8 +284,8 @@ const Dashboard = () => {
 										sx={{
 											color: 'primary.darkgreen',
 											'&.Mui-checked': {
-												color: 'primary.darkgreen',
-											},
+												color: 'primary.darkgreen'
+											}
 										}}
 										checked={professor.indexOf(s) > -1}
 									/>
@@ -292,22 +298,13 @@ const Dashboard = () => {
 				<Box
 					sx={{
 						minHeight: '100%',
-						py: 1,
+						py: 1
 					}}
 				/>
 				{postBody.name}
 				<Container maxWidth={false}>
-					<Grid
-						container
-						spacing={3}
-					>
-						<Grid
-							item
-							lg={9}
-							md={9}
-							sm={9}
-							xs={9}
-						>
+					<Grid container spacing={3}>
+						<Grid item lg={9} md={9} sm={9} xs={9}>
 							<TextField
 								fullWidth
 								sx={{
@@ -323,10 +320,7 @@ const Dashboard = () => {
 								InputProps={{
 									startAdornment: (
 										<InputAdornment position="start">
-											<SvgIcon
-												fontSize="small"
-												color="action"
-											/>
+											<SvgIcon fontSize="small" color="action" />
 										</InputAdornment>
 									)
 								}}
@@ -335,23 +329,14 @@ const Dashboard = () => {
 								onChange={handleTextChange}
 							/>
 						</Grid>
-						<Grid
-							item
-							lg={2}
-							md={2}
-							sm={2}
-							xs={2}
-						>
+						<Grid item lg={2} md={2} sm={2} xs={2}>
 							<Hidden lgDown>
 								<Link to="/app/project">
-									<Button
-										variant="contained"
-										color="success"
-										size="large"
-									>
-										<h4 style={{
-											color: '#ffffff',
-										}}
+									<Button variant="contained" color="success" size="large">
+										<h4
+											style={{
+												color: '#ffffff'
+											}}
 										>
 											검색
 										</h4>
@@ -362,16 +347,14 @@ const Dashboard = () => {
 								<Link to="/app/project">
 									<Box
 										sx={{
-											paddingTop: 1,
+											paddingTop: 1
 										}}
 									>
-										<Button
-											variant="contained"
-											color="success"
-										>
-											<h4 style={{
-												color: '#ffffff',
-											}}
+										<Button variant="contained" color="success">
+											<h4
+												style={{
+													color: '#ffffff'
+												}}
 											>
 												검색
 											</h4>
@@ -384,7 +367,7 @@ const Dashboard = () => {
 					<Box
 						sx={{
 							minHeight: '100%',
-							py: 2,
+							py: 2
 						}}
 					/>
 					<Box
@@ -392,17 +375,8 @@ const Dashboard = () => {
 							marginRight: '15%'
 						}}
 					>
-						<Grid
-							container
-							spacing={3}
-						>
-							<Grid
-								item
-								lg={2}
-								md={3}
-								sm={5}
-								xs={12}
-							>
+						<Grid container spacing={3}>
+							<Grid item lg={2} md={3} sm={5} xs={12}>
 								<Link to="/app/project">
 									<Card
 										sx={{
@@ -418,7 +392,7 @@ const Dashboard = () => {
 													display: 'flex',
 													justifyContent: 'center',
 													alignItems: 'center',
-													flexDirection: 'column',
+													flexDirection: 'column'
 												}}
 											>
 												<PublicIcon
@@ -436,13 +410,7 @@ const Dashboard = () => {
 									</Card>
 								</Link>
 							</Grid>
-							<Grid
-								item
-								lg={2}
-								md={3}
-								sm={5}
-								xs={12}
-							>
+							<Grid item lg={2} md={3} sm={5} xs={12}>
 								<Link to="/app/project">
 									<Card
 										sx={{
@@ -457,7 +425,7 @@ const Dashboard = () => {
 													display: 'flex',
 													justifyContent: 'center',
 													alignItems: 'center',
-													flexDirection: 'column',
+													flexDirection: 'column'
 												}}
 											>
 												<MobileScreenShareIcon
@@ -475,13 +443,7 @@ const Dashboard = () => {
 									</Card>
 								</Link>
 							</Grid>
-							<Grid
-								item
-								lg={2}
-								md={3}
-								sm={5}
-								xs={12}
-							>
+							<Grid item lg={2} md={3} sm={5} xs={12}>
 								<Link to="/app/project">
 									<Card
 										sx={{
@@ -497,7 +459,7 @@ const Dashboard = () => {
 													display: 'flex',
 													justifyContent: 'center',
 													alignItems: 'center',
-													flexDirection: 'column',
+													flexDirection: 'column'
 												}}
 											>
 												<MoodIcon
@@ -515,13 +477,7 @@ const Dashboard = () => {
 									</Card>
 								</Link>
 							</Grid>
-							<Grid
-								item
-								lg={2}
-								md={3}
-								sm={5}
-								xs={12}
-							>
+							<Grid item lg={2} md={3} sm={5} xs={12}>
 								<Link to="/app/project">
 									<Card
 										sx={{
@@ -536,7 +492,7 @@ const Dashboard = () => {
 													display: 'flex',
 													justifyContent: 'center',
 													alignItems: 'center',
-													flexDirection: 'column',
+													flexDirection: 'column'
 												}}
 											>
 												<SelectAllIcon
@@ -554,13 +510,7 @@ const Dashboard = () => {
 									</Card>
 								</Link>
 							</Grid>
-							<Grid
-								item
-								lg={2}
-								md={3}
-								sm={5}
-								xs={12}
-							>
+							<Grid item lg={2} md={3} sm={5} xs={12}>
 								<Link to="/app/project">
 									<Card
 										sx={{
@@ -576,7 +526,7 @@ const Dashboard = () => {
 													display: 'flex',
 													justifyContent: 'center',
 													alignItems: 'center',
-													flexDirection: 'column',
+													flexDirection: 'column'
 												}}
 											>
 												<LinkIcon
@@ -594,19 +544,13 @@ const Dashboard = () => {
 									</Card>
 								</Link>
 							</Grid>
-							<Grid
-								item
-								lg={2}
-								md={3}
-								sm={5}
-								xs={12}
-							>
+							<Grid item lg={2} md={3} sm={5} xs={12}>
 								<Link to="/app/project">
 									<Card
 										sx={{
 											boxShadow: 5,
 											justifyContent: 'center',
-											alignItems: 'center',
+											alignItems: 'center'
 										}}
 									>
 										<CardContent>
@@ -615,7 +559,7 @@ const Dashboard = () => {
 													display: 'flex',
 													justifyContent: 'center',
 													alignItems: 'center',
-													flexDirection: 'column',
+													flexDirection: 'column'
 												}}
 											>
 												<SecurityIcon
@@ -633,13 +577,7 @@ const Dashboard = () => {
 									</Card>
 								</Link>
 							</Grid>
-							<Grid
-								item
-								lg={2}
-								md={3}
-								sm={5}
-								xs={12}
-							>
+							<Grid item lg={2} md={3} sm={5} xs={12}>
 								<Link to="/app/project">
 									<Card
 										sx={{
@@ -655,7 +593,7 @@ const Dashboard = () => {
 													display: 'flex',
 													justifyContent: 'center',
 													alignItems: 'center',
-													flexDirection: 'column',
+													flexDirection: 'column'
 												}}
 											>
 												<ThreeDRotationIcon
@@ -673,13 +611,7 @@ const Dashboard = () => {
 									</Card>
 								</Link>
 							</Grid>
-							<Grid
-								item
-								lg={2}
-								md={3}
-								sm={5}
-								xs={12}
-							>
+							<Grid item lg={2} md={3} sm={5} xs={12}>
 								<Link to="/app/project">
 									<Card
 										sx={{
@@ -694,7 +626,7 @@ const Dashboard = () => {
 													display: 'flex',
 													justifyContent: 'center',
 													alignItems: 'center',
-													flexDirection: 'column',
+													flexDirection: 'column'
 												}}
 											>
 												<DesktopWindowsIcon
@@ -712,13 +644,7 @@ const Dashboard = () => {
 									</Card>
 								</Link>
 							</Grid>
-							<Grid
-								item
-								lg={2}
-								md={3}
-								sm={5}
-								xs={12}
-							>
+							<Grid item lg={2} md={3} sm={5} xs={12}>
 								<Link to="/app/project">
 									<Card
 										sx={{
@@ -734,7 +660,7 @@ const Dashboard = () => {
 													display: 'flex',
 													justifyContent: 'center',
 													alignItems: 'center',
-													flexDirection: 'column',
+													flexDirection: 'column'
 												}}
 											>
 												<AdbIcon
@@ -752,13 +678,7 @@ const Dashboard = () => {
 									</Card>
 								</Link>
 							</Grid>
-							<Grid
-								item
-								lg={2}
-								md={3}
-								sm={5}
-								xs={12}
-							>
+							<Grid item lg={2} md={3} sm={5} xs={12}>
 								<Link to="/app/project">
 									<Card
 										sx={{
@@ -773,7 +693,7 @@ const Dashboard = () => {
 													display: 'flex',
 													justifyContent: 'center',
 													alignItems: 'center',
-													flexDirection: 'column',
+													flexDirection: 'column'
 												}}
 											>
 												<TextFormatIcon
@@ -791,13 +711,7 @@ const Dashboard = () => {
 									</Card>
 								</Link>
 							</Grid>
-							<Grid
-								item
-								lg={2}
-								md={3}
-								sm={5}
-								xs={12}
-							>
+							<Grid item lg={2} md={3} sm={5} xs={12}>
 								<Link to="/app/project">
 									<Card
 										sx={{
@@ -813,7 +727,7 @@ const Dashboard = () => {
 													display: 'flex',
 													justifyContent: 'center',
 													alignItems: 'center',
-													flexDirection: 'column',
+													flexDirection: 'column'
 												}}
 											>
 												<MovieCreationIcon
@@ -831,13 +745,7 @@ const Dashboard = () => {
 									</Card>
 								</Link>
 							</Grid>
-							<Grid
-								item
-								lg={2}
-								md={3}
-								sm={5}
-								xs={12}
-							>
+							<Grid item lg={2} md={3} sm={5} xs={12}>
 								<Link to="/app/project">
 									<Card
 										sx={{
@@ -852,7 +760,7 @@ const Dashboard = () => {
 													display: 'flex',
 													justifyContent: 'center',
 													alignItems: 'center',
-													flexDirection: 'column',
+													flexDirection: 'column'
 												}}
 											>
 												<AddIcon

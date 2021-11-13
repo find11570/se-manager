@@ -6,11 +6,12 @@ import {
 	CardContent,
 	Grid,
 	Avatar,
-	Hidden,
+	Hidden
 } from '@material-ui/core';
 import MypageTabs from 'src/components/Mypage/MypageTabs';
 
 const data = JSON.parse(sessionStorage.getItem('user_data'));
+
 const Mypage = () => {
 	const [chartData] = useState({
 		id: data.user_id,
@@ -70,9 +71,7 @@ const Mypage = () => {
 												marginBottom: 1.5
 											}}
 										/>
-										<h3 style={{ color: '#ffffff' }}>
-											{chartData.name}
-										</h3>
+										<h3 style={{ color: '#ffffff' }}>{chartData.name}</h3>
 									</Box>
 								</Hidden>
 								<Hidden lgUp>

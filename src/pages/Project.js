@@ -19,126 +19,120 @@ import Select from '@mui/material/Select';
 import Checkbox from '@mui/material/Checkbox';
 import { Link } from 'react-router-dom';
 import ProjectCard from 'src/components/Dashboard/ProjectCard';
-import axios from 'axios';
+import Api from '../Api/Api';
 
-const api = 'https://se-disk.herokuapp.com/api';
-const url = '/project';
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
 	PaperProps: {
 		style: {
 			maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-			width: 250,
-		},
-	},
+			width: 250
+		}
+	}
 };
-
-const menus = [
-	'최신순',
-	'좋아요순',
-	'조회순',
- ];
 
 const Project = () => {
 	const [postBody, setPostBody] = useState({
 		name: ''
 	});
-	const [Data] = useState({
-		id: '1',
-		title: 'SE-Manager',
-		people: '진채연, 김현수, 황영민, 김지영',
-		see: '50',
-		good: '200',
-		picture: '/static/picture.PNG'
-	});
+
+	const [menu, setmenu] = useState([]);
 	const [stack, setstack] = useState([]);
 	const [subject, setsubject] = useState([]);
 	const [professor, setprofessor] = useState([]);
 	const [year, setyear] = useState([]);
-	const [menu, setmenu] = useState([]);
 	const [category, setcategory] = useState([]);
-	const [years, setyears] = useState([]);
+
+	// 드롭다운 메뉴 불러와서 저장
+	const [stacks, setstacks] = useState([]);
 	const [subjects, setsubjects] = useState([]);
 	const [professors, setprofessors] = useState([]);
-	const [stacks, setstacks] = useState([]);
+	const [years, setyears] = useState([]);
 	const [categorys, setcategorys] = useState([]);
-    useEffect(() => {
-		const List = [];
-        axios.get(api + url + '/subject-years').then((response) => {
-            setyears(response.data.years);
-        });
-		axios.get(api + url + '/subjects').then((response) => {
-            setsubjects(response.data.subjects);
-        });
-		axios.get(api + url + '/tags').then((response) => {
-            setstacks(response.data.tags);
-        });
-		axios.get(api +'/user/professors').then((response) => {
-			const data = response.data.professors;
-			data.map(v => {
-				List.push(v.user_name);
-			})
-            setprofessors(List);
-        });
-		axios.get(api + url + '/categorys').then((response) => {
-            setcategorys(response.data.categorys);
-        });
-    }, []);
+
+	// 드롭다운 메뉴 세팅
+	useEffect(async () => {
+		await getStacks();
+		await getSubjects();
+		await getProfessors();
+		await getYears();
+		await getCategorys();
+	}, []);
+
+	// // 드롭다운 메뉴 Api로 get
+	const getStacks = async () => {
+		let response = await Api.getStacks();
+		const stack_list = await response.data.tags;
+		setstacks(stack_list);
+	};
+	const getSubjects = async () => {
+		let response = await Api.getSubjects();
+		const subject_list = await response.data.subjects;
+		setsubjects(subject_list);
+	};
+	const getProfessors = async () => {
+		let response = await Api.getProfessors();
+		var professor_list = response.data.professors.map(
+			({ user_name }) => user_name
+		);
+		setprofessors(professor_list);
+	};
+	const getYears = async () => {
+		let response = await Api.getYears();
+		const year_list = await response.data.years;
+		setyears(year_list);
+	};
+	const getCategorys = async () => {
+		let response = await Api.getCategorys();
+		const category_list = await response.data.categorys;
+		setcategorys(category_list);
+	};
+
+	// React Handle Function
 	const handleTextChange = (event) => {
 		setPostBody({
-			name: event.currentTarget.value,
+			name: event.currentTarget.value
 		});
 	};
 	const handlestackChange = (event) => {
 		const {
-			target: { value },
+			target: { value }
 		} = event;
-		setstack(
-			typeof value === 'string' ? value.split(',') : value,
-		);
+		setstack(typeof value === 'string' ? value.split(',') : value);
 	};
 	const handlesubjectChange = (event) => {
 		const {
-			target: { value },
+			target: { value }
 		} = event;
-		setsubject(
-			typeof value === 'string' ? value.split(',') : value,
-		);
+		setsubject(typeof value === 'string' ? value.split(',') : value);
 	};
 	const handleprofessorChange = (event) => {
 		const {
-			target: { value },
+			target: { value }
 		} = event;
-		setprofessor(
-			typeof value === 'string' ? value.split(',') : value,
-		);
+		setprofessor(typeof value === 'string' ? value.split(',') : value);
 	};
 	const handleyearChange = (event) => {
 		const {
-			target: { value },
+			target: { value }
 		} = event;
-		setyear(
-			typeof value === 'string' ? value.split(',') : value,
-		);
+		setyear(typeof value === 'string' ? value.split(',') : value);
 	};
 	const handlemenuChange = (event) => {
 		const {
-			target: { value },
+			target: { value }
 		} = event;
-		setmenu(
-			typeof value === 'string' ? value.split(',') : value,
-		);
+		setmenu(typeof value === 'string' ? value.split(',') : value);
 		console.log(menu);
 	};
 	const handlecategoryChange = (event) => {
 		const {
-			target: { value },
+			target: { value }
 		} = event;
-		setcategory(
-			typeof value === 'string' ? value.split(',') : value,
-		);
+		setcategory(typeof value === 'string' ? value.split(',') : value);
 	};
+
 	return (
 		<>
 			<Helmet>
@@ -147,7 +141,7 @@ const Project = () => {
 			<Box
 				sx={{
 					minHeight: '100%',
-					py: 5,
+					py: 5
 				}}
 			>
 				<Box
@@ -161,16 +155,10 @@ const Project = () => {
 				<Box
 					sx={{
 						minHeight: '100%',
-						py: 1,
+						py: 1
 					}}
 				/>
-				<Grid
-					item
-					lg={10}
-					md={10}
-					sm={12}
-					xs={12}
-				>
+				<Grid item lg={10} md={10} sm={12} xs={12}>
 					<h2 style={{ marginLeft: 20, display: 'inline' }}>전체 프로젝트</h2>
 					<Hidden lgDown>
 						<FormControl
@@ -178,7 +166,7 @@ const Project = () => {
 								width: 200,
 								float: 'right',
 								marginBottom: 2,
-								marginRight: 2,
+								marginRight: 2
 							}}
 						>
 							<InputLabel id="카테고리">&nbsp;카테고리</InputLabel>
@@ -197,8 +185,8 @@ const Project = () => {
 											sx={{
 												color: 'primary.darkgreen',
 												'&.Mui-checked': {
-													color: 'primary.darkgreen',
-												},
+													color: 'primary.darkgreen'
+												}
 											}}
 											checked={category.indexOf(s) > -1}
 										/>
@@ -212,7 +200,7 @@ const Project = () => {
 						<Box
 							sx={{
 								minHeight: '100%',
-								py: 1,
+								py: 1
 							}}
 						/>
 						<FormControl
@@ -239,8 +227,8 @@ const Project = () => {
 											sx={{
 												color: 'primary.darkgreen',
 												'&.Mui-checked': {
-													color: 'primary.darkgreen',
-												},
+													color: 'primary.darkgreen'
+												}
 											}}
 											checked={category.indexOf(s) > -1}
 										/>
@@ -254,22 +242,13 @@ const Project = () => {
 				<Box
 					sx={{
 						minHeight: '100%',
-						py: 1,
+						py: 1
 					}}
 				/>
 				{postBody.name}
 				<Container maxWidth={false}>
-					<Grid
-						container
-						spacing={3}
-					>
-						<Grid
-							item
-							lg={9}
-							md={9}
-							sm={9}
-							xs={9}
-						>
+					<Grid container spacing={3}>
+						<Grid item lg={9} md={9} sm={9} xs={9}>
 							<TextField
 								fullWidth
 								sx={{
@@ -285,10 +264,7 @@ const Project = () => {
 								InputProps={{
 									startAdornment: (
 										<InputAdornment position="start">
-											<SvgIcon
-												fontSize="small"
-												color="action"
-											/>
+											<SvgIcon fontSize="small" color="action" />
 										</InputAdornment>
 									)
 								}}
@@ -297,21 +273,13 @@ const Project = () => {
 								onChange={handleTextChange}
 							/>
 						</Grid>
-						<Grid
-							item
-							lg={2}
-							md={2}
-							sm={2}
-							xs={2}
-						>
+						<Grid item lg={2} md={2} sm={2} xs={2}>
 							<Link to="/app/project">
-								<Button
-									variant="contained"
-									color="success"
-								>
-									<h4 style={{
-										color: '#ffffff',
-									}}
+								<Button variant="contained" color="success" size="large">
+									<h4
+										style={{
+											color: '#ffffff'
+										}}
 									>
 										검색
 									</h4>
@@ -322,33 +290,27 @@ const Project = () => {
 					<Box
 						sx={{
 							minHeight: '100%',
-							py: 2,
+							py: 2
 						}}
 					/>
 					<Box
 						sx={{
 							bgcolor: 'primary.darkgreen',
 							width: '100%',
-							height: 2,
+							height: 2
 						}}
 					/>
-					<Grid
-						item
-						lg={10}
-						md={10}
-						sm={12}
-						xs={12}
-					>
+					<Grid item lg={10} md={10} sm={12} xs={12}>
 						<Hidden lgDown>
 							<Box
 								sx={{
 									minHeight: '100%',
-									py: 2,
+									py: 2
 								}}
 							/>
 							<FormControl
 								sx={{
-									width: 200,
+									width: 200
 								}}
 							>
 								<InputLabel id="기술스택">&nbsp; 기술스택</InputLabel>
@@ -368,8 +330,8 @@ const Project = () => {
 												sx={{
 													color: 'primary.darkgreen',
 													'&.Mui-checked': {
-														color: 'primary.darkgreen',
-													},
+														color: 'primary.darkgreen'
+													}
 												}}
 												checked={stack.indexOf(s) > -1}
 											/>
@@ -402,8 +364,8 @@ const Project = () => {
 												sx={{
 													color: 'primary.darkgreen',
 													'&.Mui-checked': {
-														color: 'primary.darkgreen',
-													},
+														color: 'primary.darkgreen'
+													}
 												}}
 												checked={subject.indexOf(s) > -1}
 											/>
@@ -415,7 +377,7 @@ const Project = () => {
 							<FormControl
 								sx={{
 									width: 200,
-									marginLeft: 2.5,
+									marginLeft: 2.5
 								}}
 							>
 								<InputLabel id="년도">&nbsp; 년도</InputLabel>
@@ -435,8 +397,8 @@ const Project = () => {
 												sx={{
 													color: 'primary.darkgreen',
 													'&.Mui-checked': {
-														color: 'primary.darkgreen',
-													},
+														color: 'primary.darkgreen'
+													}
 												}}
 												checked={year.indexOf(s) > -1}
 											/>
@@ -469,8 +431,8 @@ const Project = () => {
 												sx={{
 													color: 'primary.darkgreen',
 													'&.Mui-checked': {
-														color: 'primary.darkgreen',
-													},
+														color: 'primary.darkgreen'
+													}
 												}}
 												checked={professor.indexOf(s) > -1}
 											/>
@@ -496,14 +458,14 @@ const Project = () => {
 									renderValue={(selected) => selected.join(', ')}
 									MenuProps={MenuProps}
 								>
-									{menus.map((s) => (
+									{Api.getMenus().map((s) => (
 										<MenuItem key={s} value={s}>
 											<Checkbox
 												sx={{
 													color: 'primary.darkgreen',
 													'&.Mui-checked': {
-														color: 'primary.darkgreen',
-													},
+														color: 'primary.darkgreen'
+													}
 												}}
 												checked={menu.indexOf(s) > -1}
 											/>
@@ -515,12 +477,12 @@ const Project = () => {
 							<Box
 								sx={{
 									minHeight: '100%',
-									py: 2,
+									py: 2
 								}}
 							/>
 						</Hidden>
-						<ProjectCard />
 					</Grid>
+					<ProjectCard />
 				</Container>
 			</Box>
 		</>

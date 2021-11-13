@@ -31,30 +31,7 @@ const SignUpUpdate = () => {
 		position: data.user_position
 	});
 
-	const handlecontentChange = (event) => {
-		setpostBody((prev) => ({
-			...prev,
-			content: event.target.value
-		}));
-	};
-	const handlegithubChange = (event) => {
-		setpostBody((prev) => ({
-			...prev,
-			github: event.target.value
-		}));
-	};
-	const handleblogChange = (event) => {
-		setpostBody((prev) => ({
-			...prev,
-			blog: event.target.value
-		}));
-	};
-	const handlepositionChange = (event) => {
-		setpostBody((prev) => ({
-			...prev,
-			position: event.target.value
-		}));
-	};
+	// 유저 정보 없데이트, 수정하기 버튼 OnClick 함수
 	const update_user = async () => {
 		let response = await Api.postUpdateUser(
 			postBody.id,
@@ -81,10 +58,13 @@ const SignUpUpdate = () => {
 			alert('수정 실패');
 		}
 	};
+
+	// 유저 정보 삭제, 삭제하기 버튼 OnClick 함수
 	const delete_user = async () => {
 		let response = await Api.deleteUser(postBody.id);
 	};
 
+	// 사진 첨부 시, 썸네일 표시 함수
 	const input_thumbnail = () => {
 		var input_image = document.getElementById('file');
 		var thumbnail = document.getElementById('thumbnail');
@@ -108,12 +88,41 @@ const SignUpUpdate = () => {
 			}
 		}
 	};
+
+	// 썸네일 삭제 함수
 	const delete_thumbnail = () => {
 		var image_container_id = document.getElementById(
 			'thumbnail_image_container'
 		);
 		thumbnail.removeChild(image_container_id);
 	};
+
+	// React Handle Function
+	const handlecontentChange = (event) => {
+		setpostBody((prev) => ({
+			...prev,
+			content: event.target.value
+		}));
+	};
+	const handlegithubChange = (event) => {
+		setpostBody((prev) => ({
+			...prev,
+			github: event.target.value
+		}));
+	};
+	const handleblogChange = (event) => {
+		setpostBody((prev) => ({
+			...prev,
+			blog: event.target.value
+		}));
+	};
+	const handlepositionChange = (event) => {
+		setpostBody((prev) => ({
+			...prev,
+			position: event.target.value
+		}));
+	};
+
 	return (
 		<>
 			<Helmet>

@@ -13,8 +13,6 @@ import {
 } from '@material-ui/core';
 import Api from '../../Api/Api';
 
-var emailCode = null;
-
 const Password = () => {
 	const [postBody, setPostBody] = useState({
 		email: '',
@@ -23,6 +21,108 @@ const Password = () => {
 		pw: '',
 		checkpw: ''
 	});
+
+	// 이메일 인증 버튼 onClick함수
+	const emailAuth = async () => {
+		let response = await Api.getResetPasswordEmail(postBody.email);
+		console.log(response);
+		if (response.data.sucess) {
+			Api.emailCode = response.data.emailId.emailId;
+			alert('이메일이 전송되었습니다');
+		} else {
+			alert('이메일 전송에 실패했습니다');
+		}
+	};
+
+	// 이메일 인증 확인
+	const checkEmailAuth = async () => {
+		var check = { auth: false, msg: '', err: '' };
+		if (postBody.checkemail) {
+			console.log(Api.emailCode);
+			if (Api.emailCode !== null) {
+				let response = await Api.postEmail(Api.emailCode, postBody.checkemail);
+				console.log(response);
+				check.auth = await response.isAuth;
+				if (check.auth === true) {
+					check.msg = '인증되었습니다';
+					alert(check.msg);
+				} else {
+					check.err = '인증에 실패하였습니다';
+				}
+				return check;
+			} else {
+				check.err = '인증번호 전송 후 진행해주세요';
+				return check;
+			}
+		} else {
+			check.err = '이메일 인증번호를 입력해주세요';
+			return check;
+		}
+	};
+
+	// 변경한 비밀번호 확인
+	const checkPw = () => {
+		return postBody.pw === postBody.checkpw;
+	};
+
+	// 빈값 체크
+	const emptyCheck = () => {
+		if (
+			postBody.email === '' ||
+			postBody.pw === '' ||
+			postBody.login_id === ''
+		) {
+			return false;
+		}
+	};
+
+	// 중복 아이디 체크
+	const doubleCheckId = async () => {
+		let response = await Api.getDoubleCheckId(postBody.login_id);
+		console.log(response);
+		return await response.data.isDouble;
+	};
+
+	// 비밀번호 찾기 OnClick 함수
+	const updatePassword = async () => {
+		const isEmpty = emptyCheck();
+		let isEmailAuth = await checkEmailAuth();
+		const isDuplicatePw = checkPw();
+		let isDoubleCheckId = await doubleCheckId();
+		const target = '/app/dashboard';
+		if (isEmpty === false) {
+			alert('필수항목란을 채워주세요(이메일, 아이디, 변경할 비밀번호)');
+			return false;
+		}
+		if (isEmailAuth.auth === false) {
+			alert(isEmailAuth.err);
+			return false;
+		}
+		if (isDuplicatePw === false) {
+			alert('비밀번호가 일치하지 않습니다');
+			return false;
+		}
+		if (isDoubleCheckId === false) {
+			alert('존재하지 않는 아이디 입니다');
+			return false;
+		}
+		let response = await Api.postPassword(postBody.login_id, postBody.pw);
+		console.log(response);
+		if (response.sucess === true) {
+			if (sessionStorage.getItem('user_token')) {
+				let logout_response = await Api.getLogout();
+				console.log(logout_response);
+				if (logout_response.data.sucess) {
+					sessionStorage.clear();
+				}
+			}
+			window.location.href = target;
+		} else {
+			alert('비밀번호 변경 실패');
+		}
+	};
+
+	// React Handle Function
 	const handleEmailChange = (event) => {
 		setPostBody((prev) => ({
 			...prev,
@@ -53,91 +153,7 @@ const Password = () => {
 			checkpw: event.target.value
 		}));
 	};
-	// 이메일 인증 버튼 onClick함수
-	const emailAuth = async () => {
-		let response = await Api.getResetPasswordEmail(postBody.email);
-		if (response.data.sucess) {
-			emailCode = response.data.emailId.emailId;
-			alert('이메일이 전송되었습니다');
-		} else {
-			alert('이메일 전송에 실패했습니다');
-		}
-	};
-	// 이메일 인증 확인
-	const checkEmailAuth = async () => {
-		var check = { auth: false, msg: '', err: '' };
-		if (postBody.checkemail) {
-			if (emailCode !== null) {
-				let response = await Api.postEmail(emailCode, postBody.checkemail);
-				check.auth = await response.isAuth;
-				if (check.auth === true) {
-					check.msg = '인증되었습니다';
-					alert(check.msg);
-				} else {
-					check.err = '인증에 실패하였습니다';
-				}
-				return check;
-			} else {
-				check.err = '인증번호 전송 후 진행해주세요';
-				return check;
-			}
-		} else {
-			check.err = '이메일 인증번호를 입력해주세요';
-			return check;
-		}
-	};
-	// 변경한 비밀번호 확인
-	const checkPw = () => {
-		return postBody.pw === postBody.checkpw;
-	};
-	const emptyCheck = () => {
-		if (
-			postBody.email === '' ||
-			postBody.pw === '' ||
-			postBody.login_id === ''
-		) {
-			return false;
-		}
-	};
-	const doubleCheckId = async () => {
-		let response = await Api.getDoubleCheckId(postBody.login_id);
-		return await response.data.isDouble;
-	};
-	const updatePassword = async () => {
-		const isEmpty = emptyCheck();
-		let isEmailAuth = await checkEmailAuth();
-		const isDuplicatePw = checkPw();
-		let isDoubleCheckId = await doubleCheckId();
-		const target = '/app/dashboard';
-		if (isEmpty === false) {
-			alert('필수항목란을 채워주세요(이메일, 아이디, 변경할 비밀번호)');
-			return false;
-		}
-		if (isEmailAuth.auth === false) {
-			alert(isEmailAuth.err);
-			return false;
-		}
-		if (isDuplicatePw === false) {
-			alert('비밀번호가 일치하지 않습니다');
-			return false;
-		}
-		if (isDoubleCheckId === false) {
-			alert('존재하지 않는 아이디 입니다');
-			return false;
-		}
-		let response = await Api.postPassword(postBody.login_id, postBody.pw);
-		if (response.sucess === true) {
-			if (sessionStorage.getItem('user_token')) {
-				let logout_response = await Api.getLogout();
-				if (logout_response.data.sucess) {
-					sessionStorage.clear();
-				}
-			}
-			window.location.href = target;
-		} else {
-			alert('비밀번호 변경 실패');
-		}
-	};
+
 	return (
 		<>
 			<Helmet>
@@ -311,7 +327,6 @@ const Password = () => {
 												</InputAdornment>
 											)
 										}}
-										type="password"
 										variant="outlined"
 										onChange={handlecheckemailChange}
 									/>
@@ -356,7 +371,6 @@ const Password = () => {
 												</InputAdornment>
 											)
 										}}
-										type="password"
 										variant="outlined"
 										onChange={handlecheckemailChange}
 									/>
@@ -466,7 +480,6 @@ const Password = () => {
 											</InputAdornment>
 										)
 									}}
-									type="password"
 									placeholder="영어 대/소문자,특수문자"
 									variant="outlined"
 									onChange={handlepwChange}
@@ -503,7 +516,6 @@ const Password = () => {
 											</InputAdornment>
 										)
 									}}
-									type="password"
 									placeholder="영어 대/소문자,특수문자"
 									variant="outlined"
 									onChange={handlecheckpwChange}
