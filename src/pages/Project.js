@@ -166,7 +166,7 @@ const Project = () => {
 								width: 200,
 								float: 'right',
 								marginBottom: 2,
-								marginRight: 2
+								marginRight: 2,
 							}}
 						>
 							<InputLabel id="카테고리">&nbsp;카테고리</InputLabel>
@@ -248,64 +248,12 @@ const Project = () => {
 				{postBody.name}
 				<Container maxWidth={false}>
 					<Grid container spacing={3}>
-						<Grid item lg={9} md={9} sm={9} xs={9}>
-							<TextField
-								fullWidth
-								sx={{
-									flex: '1',
-									flexDirection: 'row',
-									boxShadow: 5,
-									borderBottomRightRadius: 5,
-									borderBottomLeftRadius: 5,
-									borderTopRightRadius: 5,
-									borderTopLeftRadius: 5,
-									backgroundColor: 'primary.smoothgreen'
-								}}
-								InputProps={{
-									startAdornment: (
-										<InputAdornment position="start">
-											<SvgIcon fontSize="small" color="action" />
-										</InputAdornment>
-									)
-								}}
-								placeholder="프로젝트를 검색 해보세요!"
-								variant="outlined"
-								onChange={handleTextChange}
-							/>
-						</Grid>
-						<Grid item lg={2} md={2} sm={2} xs={2}>
-							<Link to="/app/project">
-								<Button variant="contained" color="success" size="large">
-									<h4
-										style={{
-											color: '#ffffff'
-										}}
-									>
-										검색
-									</h4>
-								</Button>
-							</Link>
-						</Grid>
-					</Grid>
-					<Box
-						sx={{
-							minHeight: '100%',
-							py: 2
-						}}
-					/>
-					<Box
-						sx={{
-							bgcolor: 'primary.darkgreen',
-							width: '100%',
-							height: 2
-						}}
-					/>
-					<Grid item lg={10} md={10} sm={12} xs={12}>
 						<Hidden lgDown>
 							<Box
 								sx={{
 									minHeight: '100%',
-									py: 2
+									py: 2,
+									marginLeft: 3
 								}}
 							/>
 							<FormControl
@@ -441,48 +389,101 @@ const Project = () => {
 									))}
 								</Select>
 							</FormControl>
-							<FormControl
-								sx={{
-									width: 150,
-									marginLeft: 2.5,
-									float: 'right'
-								}}
-							>
-								<InputLabel id="최신순">&nbsp; 최신순</InputLabel>
-								<Select
-									labelId="최신순"
-									id="최신순"
-									value={menu}
-									onChange={handlemenuChange}
-									input={<OutlinedInput label="최신순" />}
-									renderValue={(selected) => selected.join(', ')}
-									MenuProps={MenuProps}
-								>
-									{Api.getMenus().map((s) => (
-										<MenuItem key={s} value={s}>
-											<Checkbox
-												sx={{
-													color: 'primary.darkgreen',
-													'&.Mui-checked': {
-														color: 'primary.darkgreen'
-													}
-												}}
-												checked={menu.indexOf(s) > -1}
-											/>
-											<ListItemText primary={s} />
-										</MenuItem>
-									))}
-								</Select>
-							</FormControl>
-							<Box
-								sx={{
-									minHeight: '100%',
-									py: 2
-								}}
-							/>
 						</Hidden>
+						<Grid item lg={9} md={9} sm={9} xs={9}>
+							<TextField
+								fullWidth
+								sx={{
+									flex: '1',
+									flexDirection: 'row',
+									boxShadow: 5,
+									borderBottomRightRadius: 5,
+									borderBottomLeftRadius: 5,
+									borderTopRightRadius: 5,
+									borderTopLeftRadius: 5,
+									backgroundColor: 'primary.smoothgreen'
+								}}
+								InputProps={{
+									startAdornment: (
+										<InputAdornment position="start">
+											<SvgIcon fontSize="small" color="action" />
+										</InputAdornment>
+									)
+								}}
+								placeholder="프로젝트를 검색 해보세요!"
+								variant="outlined"
+								onChange={handleTextChange}
+							/>
+						</Grid>
+						<Grid item lg={2} md={2} sm={2} xs={2}>
+							<Link to="/app/project">
+								<Button variant="contained" color="success" size="large">
+									<h4
+										style={{
+											color: '#ffffff'
+										}}
+									>
+										검색
+									</h4>
+								</Button>
+							</Link>
+						</Grid>
 					</Grid>
-					<ProjectCard />
+					<Box
+						sx={{
+							minHeight: '100%',
+							py: 2
+						}}
+					/>
+					<Box
+						sx={{
+							bgcolor: 'primary.darkgreen',
+							width: '100%',
+							height: 2
+						}}
+					/>
+					<Grid item lg={10} md={10} sm={12} xs={12}>
+						<FormControl
+							sx={{
+								width: 150,
+								marginTop: 2.5,
+								float: 'right',
+							}}
+						>
+							<InputLabel id="최신순">&nbsp; 최신순</InputLabel>
+							<Select
+								labelId="최신순"
+								id="최신순"
+								value={menu}
+								onChange={handlemenuChange}
+								input={<OutlinedInput label="최신순" />}
+								renderValue={(selected) => selected.join(', ')}
+								MenuProps={MenuProps}
+							>
+								{Api.getMenus().map((s) => (
+									<MenuItem key={s} value={s}>
+										<Checkbox
+											sx={{
+												color: 'primary.darkgreen',
+												'&.Mui-checked': {
+													color: 'primary.darkgreen'
+												}
+											}}
+											checked={menu.indexOf(s) > -1}
+										/>
+										<ListItemText primary={s} />
+									</MenuItem>
+								))}
+							</Select>
+						</FormControl>
+						<Box
+							sx={{
+								minHeight: '100%',
+								py: 2
+							}}
+						/>
+						<ProjectCard />
+					</Grid>
 				</Container>
 			</Box>
 		</>
