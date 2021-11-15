@@ -102,7 +102,7 @@ const ProjectCardContent = (props) => {
 						<Link to=
 							{{
 								pathname: `/app/projectDetail/${id}`,
-								state: { index: id },
+								state: { index: id },	
 							}}
 						>
 							<Box

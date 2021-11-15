@@ -27,6 +27,7 @@ const ProjectDetail = (props) => {
 	const [data, setData] = useState([]);
 	const [state, setstate] = useState(false);
 	const [tag, settag] = useState([]);
+	const [comment, setcomment] = useState([]);
 	useEffect(() => {
 		const list = [];
 		axios.get(api + url + '/' + project_id).then((response) => {
@@ -54,53 +55,14 @@ const ProjectDetail = (props) => {
 				}
 			};
 		});
+		axios.get(api + url + '/' + project_id + '/' + 'comment/').then((response) => {
+			setcomment(response.data.comments);
+		});
 	}, []);
 
 	const mem = data.project_members;
 	const memResult = mem?.map((member) => member.user_name + ' ');
-
-	const comment = [
-		{
-			id: 1,
-			name: '현수',
-			text: 'ㅋ'
-		},
-		{
-			id: 2,
-			name: '채연',
-			text: 'ㅋㅋ'
-		},
-		{
-			id: 3,
-			name: '영민',
-			text: 'ㅋㅋㅋ'
-		},
-		{
-			id: 4,
-			name: '지영',
-			text: 'ㅋㅋㅋㅋ'
-		},
-		{
-			id: 5,
-			name: '현수찡',
-			text: 'ㅋㅋㅋㅋㅋ'
-		},
-		{
-			id: 6,
-			name: '채연찡',
-			text: 'ㅋㅋㅋㅋㅋㅋ'
-		},
-		{
-			id: 7,
-			name: '나는야 카와이 소졍쨩',
-			text: '소정이는 귀여워 왜나 나는 귀엽기때문이야 키키키 소정이는 애기소졍짱 하와와와와~'
-		},
-		{
-			id: 8,
-			name: '기범',
-			text: '냐미~'
-		}
-	];
+	
 	const [postBody, setPostBody] = useState({
 		content: ''
 	});
@@ -384,7 +346,7 @@ const ProjectDetail = (props) => {
 					<Grid item lg={12} md={12} sm={12} xs={12}>
 						{comment.map((comments) => (
 							<Card
-								key={comments.id}
+								key={comments.comment_id}
 								value={comments}
 								sx={{
 									borderBottomRightRadius: 10,
@@ -411,9 +373,9 @@ const ProjectDetail = (props) => {
 										/>
 									</Box>
 									<h4 style={{ display: 'inline-block' }}>
-										{comments.name}
+										{comments.user_name}
 										&nbsp;:&nbsp;
-										{comments.text}
+										{comments.comment_content}
 									</h4>
 								</CardContent>
 							</Card>
