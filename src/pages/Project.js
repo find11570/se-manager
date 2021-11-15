@@ -35,26 +35,31 @@ const MenuProps = {
 };
 
 const Project = () => {
+	const compare_link = window.location.href;
 	const [postBody, setPostBody] = useState({
 		name: ''
 	});
 
-	const [menu, setmenu] = useState([]);
+	const [menu, setmenu] = useState(['최신순']);
 	const [stack, setstack] = useState([]);
 	const [subject, setsubject] = useState([]);
 	const [professor, setprofessor] = useState([]);
 	const [year, setyear] = useState([]);
 	const [category, setcategory] = useState([]);
-	
+
 	// 드롭다운 메뉴 불러와서 저장
 	const [stacks, setstacks] = useState([]);
 	const [subjects, setsubjects] = useState([]);
 	const [professors, setprofessors] = useState([]);
 	const [years, setyears] = useState([]);
 	const [categorys, setcategorys] = useState([]);
+	const [menus, setmenus] = useState([]);
+
+	const [state, setstate] = useState(new Date());
 
 	// 드롭다운 메뉴 세팅
 	useEffect(async () => {
+		getMenus();
 		await getStacks();
 		await getSubjects();
 		await getProfessors();
@@ -63,11 +68,11 @@ const Project = () => {
 
 		// url string quary
 		const link = document.location.href;
-    	var link_quary = link.replace('http://localhost:3000/app/project/', '');
-    	var quary = decodeURI(link_quary, 'UTF-8');
-		if(quary.includes(',')) {
+		var link_quary = link.replace('http://localhost:3000/app/project/', '');
+		var quary = decodeURI(link_quary, 'UTF-8');
+		if (quary.includes(',')) {
 			var quary_array = quary.split('&');
-		
+
 			// category
 			const c_list = [];
 			c_list.push(quary_array[0]);
@@ -76,7 +81,7 @@ const Project = () => {
 				category.push(c_list);
 				setcategory(category[0]);
 			}
-			
+
 			// stack
 			quary_array[1] = quary_array[1].slice(0, -1);
 			var stack_string = quary_array[1].split('=');
@@ -119,7 +124,7 @@ const Project = () => {
 
 			// keyword
 			var stack_string5 = quary_array[5].split('=');
-			if (stack_string5[1] != 'null') {
+			if (stack_string5[1] != 'null,' || stack_string5[1] != 'null') {
 				setPostBody({
 					name: stack_string5[1]
 				});
@@ -144,6 +149,10 @@ const Project = () => {
 		const stack_list = await response.data.tags;
 		setstacks(stack_list);
 	};
+	const getMenus = () => {
+		const menu_list = Api.getMenus();
+		setmenus(menu_list);
+	};
 	const getSubjects = async () => {
 		let response = await Api.getSubjects();
 		const subject_list = await response.data.subjects;
@@ -166,7 +175,9 @@ const Project = () => {
 		const category_list = await response.data.categorys;
 		setcategorys(category_list);
 	};
-
+	const handleChange = (event) => {
+		setstate(new Date());
+	}
 	// React Handle Function
 	const handleTextChange = (event) => {
 		setPostBody({
@@ -178,7 +189,6 @@ const Project = () => {
 			target: { value }
 		} = event;
 		setstack(typeof value === 'string' ? value.split(',') : value);
-		console.log(url);
 	};
 	const handlesubjectChange = (event) => {
 		const {
@@ -210,54 +220,55 @@ const Project = () => {
 		} = event;
 		setcategory(typeof value === 'string' ? value.split(',') : value);
 	};
-	function search_url(stack, subject, year, professor, keyword, category, sort) {
+	function search_url(stack, subject, year, professor, keyword, category) {
 		const url = [];
-		if(!(stack.length===0)){
+		if (!(stack.length === 0)) {
 			url.push("&stack=" + stack.join(','));
 		}
 		else {
 			url.push('&stack=null');
 		}
 
-		if(!(subject.length===0)){
+		if (!(subject.length === 0)) {
 			url.push("&subject=" + subject.join(','));
 		}
 		else {
 			url.push('&subject=null');
 		}
 
-		if(!(year.length===0)){
+		if (!(year.length === 0)) {
 			url.push("&year=" + year.join(','));
 		}
 		else {
 			url.push('&year=null');
 		}
 
-		if(!(professor.length===0)){
+		if (!(professor.length === 0)) {
 			url.push("&professor=" + professor.join(','));
 		}
 		else {
 			url.push('&professor=null');
 		}
 
-		if(!(keyword === '')){
-			url.push("&keyword=" + keyword);
+		if (!(keyword === '')) {
+			url.push('&keyword=' + keyword);
 		}
 		else {
 			url.push('&keyword=null');
 		}
-		if(!(category === '')){
-			url.push('&category=' + category);
+		if (!(category === '' || category === undefined)) {
+			url.push('&category=' + category.join(','));
 		}
 		else {
 			url.push('&category=null');
 		}
-		if(!(sort === '')){
-			url.push('&sort=' + sort);
+		if (!(menu === '' || menu === undefined)) {
+			url.push('&sort=' + menu);
 		}
 		else {
 			url.push('&sort=null');
 		}
+
 		return url.join();
 	}
 
@@ -546,12 +557,14 @@ const Project = () => {
 						<Grid item lg={2} md={2} sm={2} xs={2}>
 							<Link to=
 								{{
-									pathname: `/app/project/${"전체"+search_url(stack, subject, year, professor, postBody.name)}`,
+									pathname: `/app/project/${"전체" + search_url(stack, subject, year, professor, postBody.name, category)}`,
 								}}
 							>
-								<Button variant="contained" 
-										color="success" 
-										size="large"
+								<Button variant="contained"
+									color="success"
+									size="large"
+									type="submit"
+									onClick={handleChange}
 								>
 									<h4
 										style={{
@@ -595,7 +608,7 @@ const Project = () => {
 								renderValue={(selected) => selected.join(', ')}
 								MenuProps={MenuProps}
 							>
-								{Api.getMenus().map((s) => (
+								{menus.map((s) => (
 									<MenuItem key={s} value={s}>
 										<Checkbox
 											sx={{
@@ -617,7 +630,7 @@ const Project = () => {
 								py: 2
 							}}
 						/>
-						<ProjectCard category_props = {category} sort_props = {menu} />
+						<ProjectCard state={state} />
 					</Grid>
 				</Container>
 			</Box>

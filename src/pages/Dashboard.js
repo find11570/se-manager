@@ -125,35 +125,35 @@ const Dashboard = () => {
 
 	function search_url(stack, subject, year, professor, keyword) {
 		const url = [];
-		if(!(stack.length===0)){
+		if (!(stack.length === 0)) {
 			url.push("&stack=" + stack.join(','));
 		}
 		else {
 			url.push('&stack=null');
 		}
 
-		if(!(subject.length===0)){
+		if (!(subject.length === 0)) {
 			url.push("&subject=" + subject.join(','));
 		}
 		else {
 			url.push('&subject=null');
 		}
 
-		if(!(year.length===0)){
+		if (!(year.length === 0)) {
 			url.push("&year=" + year.join(','));
 		}
 		else {
 			url.push('&year=null');
 		}
 
-		if(!(professor.length===0)){
+		if (!(professor.length === 0)) {
 			url.push("&professor=" + professor.join(','));
 		}
 		else {
 			url.push('&professor=null');
 		}
 
-		if(!(keyword === '')){
+		if (!(keyword === '')) {
 			url.push("&keyword=" + keyword);
 		}
 		else {
@@ -371,7 +371,7 @@ const Dashboard = () => {
 						<Grid item lg={2} md={2} sm={2} xs={2}>
 							<Link to=
 								{{
-									pathname: `/app/project/${"전체"+search_url(stack, subject, year, professor, postBody.name)}`,
+									pathname: `/app/project/${"전체" + search_url(stack, subject, year, professor, postBody.name)}`,
 								}}
 							>
 								<Button

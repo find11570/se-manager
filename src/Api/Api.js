@@ -145,10 +145,7 @@ const Api = {
   postPassword: async (loginId, changePassword) => {
     return await postJsonReqest('/auth/password', { loginId, changePassword });
   },
-  // user_id 확인
-  getUserId: async (loginId) => {
-    return await getRequest('auth/userId', { loginId });
-  },
+
   // User--------------------------------------------------------------------------
   // 회원가입
   postUser: async (user_data) => {
@@ -171,10 +168,101 @@ const Api = {
       user_position
     });
   },
+  // 회원정보 조회
+  getReaduser: async (userId) => {
+    return await getRequest(`/user/${userId}`);
+  },
+  // 사용자 LoginId검색
+  getUserLoginId: async (loginId) => {
+    return await getRequest('/user/search/loginId', { loginId });
+  },
+  // 교수님 리스트 조회
+  getProfessors: async () => {
+    return await getRequest('/user/professors');
+  },
+  // 사용자 참가 프로젝트 리스트 조회
+  getProjectInUser: async (userId, pageNum, pageCount) => {
+    return await getRequest(`/user/${userId}/projects`, { pageNum, pageCount });
+  },
+  // 내가 작성한 팀원모집글 조회
+  getUserRecruitment: async (userId, pageNum, pageCount) => {
+    return await getRequest(`/user/${userId}/recruitment`, {
+      pageNum,
+      pageCount
+    });
+  },
   // 회원 탈퇴
   deleteUser: async (userId) => {
     return await deleteJsonReqest(`/user/${userId}`);
   },
+
+  // Projects--------------------------------------------------------------------------------
+  // 프로젝트 생성
+  postProject: async (project) => {
+    return await postJsonReqest('/project', project);
+  },
+  // 프로젝트 수정
+  postUpdateProject: async (projectId, project) => {
+    return await postJsonReqest(`/project/${projectId}`, project);
+  },
+  // 프로젝트 상세조회
+  getProject: async (projectId) => {
+    return await getRequest(`/project/${projectId}`);
+  },
+  // 프로젝트 전체조회
+  getAllProject: async (pageNum, pageCount) => {
+    return await getRequest('/project', { pageNum, pageCount });
+  },
+  // 전체 프로젝트 개수 조회
+  getAllProjectCount: async () => {
+    return await getRequest('/project-count');
+  },
+  // 프로젝트 조회수 증가
+  getHit: async (projectId) => {
+    return await getRequest(`/project/${projectId}/hit`);
+  },
+  // 프로젝트 전체 기술스택 리스트 조회
+  getStacks: async () => {
+    return await getRequest('/project/tags');
+  },
+  // 프로젝트 카테고리 리스트 조회
+  getCategorys: async () => {
+    return await getRequest('/project/categorys');
+  },
+  // 프로젝트 과목년도 리스트 조회
+  getYears: async () => {
+    return await getRequest('/project/subject-years');
+  },
+  // 프로젝트 과목리스트 조회
+  getSubjects: async () => {
+    return await getRequest('/project/subjects');
+  },
+  // 프로젝트 정렬 메뉴 조회
+  getMenus: () => {
+    return ['최신순', '좋아요순', '조회순'];
+  },
+  // 프로젝트 태그 검색
+  getProjectTags: async (tagId) => {
+    return await getRequest('/project/search/tag', { tagId });
+  },
+  // 카테고리별 프로젝트 조회
+  getProjectInCategory: async (categoryId, pageNum, pageCount) => {
+    return await getRequest('/project/search/category', {
+      categoryId,
+      pageNum,
+      pageCount
+    });
+  },
+  // 프로젝트 검색
+  postProjectSearch: async (pageNum, pageCount) => {
+    return await postJsonReqest('/project/search', { pageNum, pageCount });
+  },
+  // 프로젝트 삭제 -> 아직 구현 X
+  deleteProject: async (projectId) => {
+    return await deleteJsonReqest(`/project/${projectId}`);
+  },
+
+  // Follow------------------------------------------------------------------------------------
   // 팔로우
   getFollow: async (targetId) => {
     return await getRequest('/user/follow', { targetId });
@@ -191,34 +279,8 @@ const Api = {
   getFollowingList: async (userId) => {
     return await getRequest(`/user/${userId}/followings`);
   },
-  // 사용자 참가 프로젝트 리스트 조회
-  getProjectInUser: async (userId, pageNum, pageCount) => {
-    return await getRequest(`/user/${userId}/projects`, { pageNum, pageCount });
-  },
-  // 사용자의 좋아요한 프로젝트 리스트 조회
-  getLikedProject: async (userId, pageNum, pageCount) => {
-    return await getRequest(`/user/${userId}/like-projects`, {
-      pageNum,
-      pageCount
-    });
-  },
-  // Projects--------------------------------------------------------------------------------
-  // 프로젝트 생성
-  postProject: async (project) => {
-    return await postJsonReqest('/project', project);
-  },
-  // 프로젝트 수정 -> 수정 필요
-  postUpdateProject: async (projectId, project) => {
-    return await postJsonReqest(`/project/${projectId}`, project);
-  },
-  // 프로젝트 상세조회
-  getProejct: async (projectId) => {
-    return await getRequest(`/project/${projectId}`);
-  },
-  // 프로젝트 삭제 -> 아직 구현 X
-  deleteProject: async (projectId) => {
-    return await deleteJsonReqest(`/project/${projectId}`);
-  },
+
+  // likes------------------------------------------------------------------------------------
   // 프로젝트 좋아요 여부 확인
   getProjectIsLike: async (projectId) => {
     return await getRequest('/project/isLike', { projectId });
@@ -231,41 +293,12 @@ const Api = {
   getProjectUnlike: async (projectId) => {
     return await getRequest('/project/unlike', { projectId });
   },
-  // 프로젝트 전체조회
-  getAllProject: async (pageNum, pageCount) => {
-    return await getRequest('/project', { pageNum, pageCount });
-  },
-  // 전체 프로젝트 개수 조회
-  getAllProjectCount: async () => {
-    return await getRequest('/project-count');
-  },
-  // 프로젝트 조회수 증가
-  getHit: async (projectId) => {
-    return await getRequest(`/project/${projectId}/hit`);
-  },
-  // lists-----------------------------------------------------------------------------------
-  // 교수님 리스트 조회
-  getProfessors: async () => {
-    return await getRequest('/user/professors');
-  },
-  // 프로젝트 전체 기술스택 조회
-  getStacks: async () => {
-    return await getRequest('/project/tags');
-  },
-  // 프로젝트 카테고리 리스트 조회
-  getCategorys: async () => {
-    return await getRequest('/project/categorys');
-  },
-  // 프로젝트 과목년도 리스트 조회
-  getYears: async () => {
-    return await getRequest('/project/subject-years');
-  },
-  // 프로젝트 과목리스트 조회
-  getSubjects: async () => {
-    return await getRequest('/project/subjects');
-  },
-  getMenus: () => {
-    return ['최신순', '좋아요순', '조회순'];
+  // 사용자의 좋아요한 프로젝트 리스트 조회
+  getLikedProject: async (userId, pageNum, pageCount) => {
+    return await getRequest(`/user/${userId}/like-projects`, {
+      pageNum,
+      pageCount
+    });
   },
   // Posts------------------------------------------------------------------------------------
   // 게시글 생성

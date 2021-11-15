@@ -9,7 +9,7 @@ import {
 	TextField,
 	InputAdornment,
 	SvgIcon,
-	Button,
+	Button
 } from '@material-ui/core';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
@@ -19,11 +19,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Select from '@mui/material/Select';
 import Checkbox from '@mui/material/Checkbox';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
-
-const api = 'https://se-disk.herokuapp.com/api';
-const url = '/project';
-const token = sessionStorage.getItem('user_token');
+import Api from '../../Api/Api';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -31,9 +27,9 @@ const MenuProps = {
 	PaperProps: {
 		style: {
 			maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-			width: 250,
-		},
-	},
+			width: 250
+		}
+	}
 };
 
 const ProjectUpdate = () => {
@@ -41,142 +37,176 @@ const ProjectUpdate = () => {
 		title: undefined,
 		content: undefined,
 		image: undefined,
-		stack: undefined,
+		stack: undefined
 	});
+
 	const [subject, setsubject] = useState([]);
 	const [professor, setprofessor] = useState([]);
 	const [year, setyear] = useState([]);
 	const [category, setcategory] = useState([]);
-	const [members, setmembers] = useState([]);
-	const [p_list, setp_list] = useState([]);
-	const [years, setyears] = useState([]);
+	const [stack, setstack] = useState([]);
+
 	const [subjects, setsubjects] = useState([]);
 	const [professors, setprofessors] = useState([]);
-	const [stacks, setstacks] = useState([]);
-	const [stack, setstack] = useState([]);
+	const [years, setyears] = useState([]);
 	const [categorys, setcategorys] = useState([]);
-	useEffect(() => {
-		const List = [];
-		axios.get(api + url + '/subject-years').then((response) => {
-			setyears(response.data.years);
-		});
-		axios.get(api + url + '/subjects').then((response) => {
-			setsubjects(response.data.subjects);
-		});
-		axios.get(api + url + '/tags').then((response) => {
-			setstacks(response.data.tags);
-		});
-		axios.get(api + '/user/professors').then((response) => {
-			const data = response.data.professors;
-			data.map(v => {
-				List.push(v.user_name);
-			})
-			setprofessors(List);
-		});
-		axios.get(api + url + '/categorys').then((response) => {
-			setcategorys(response.data.categorys);
-		});
+	const [stacks, setstacks] = useState([]);
+
+	const [members, setmembers] = useState([]);
+	const [p_list, setp_list] = useState([]);
+
+	useEffect(async () => {
+		await getYears();
+		await getSubjects();
+		await getProfessors();
+		await getCategorys();
+		await getStacks();
 	}, []);
 
-	const project_id = location.href.split('/')[location.href.split('/').length - 1].split('.')[0];
-	useEffect(() => {
-		axios.get(api + url + '/' + project_id, {
-			headers: {
-				authorization: `Bearer ${token}`
-			}
-		}).then((response) => {
-			const mem = response.data.project.project_members;
-			const memberList = [];
+	// 드롭다운 메뉴 로딩
+	const getYears = async () => {
+		let response = await Api.getYears();
+		const year_list = await response.data.years;
+		setyears(year_list);
+	};
+	const getSubjects = async () => {
+		let response = await Api.getSubjects();
+		const subject_list = await response.data.subjects;
+		setsubjects(subject_list);
+	};
+	const getStacks = async () => {
+		let response = await Api.getStacks();
+		const stack_list = await response.data.tags;
+		setstacks(stack_list);
+	};
+	const getProfessors = async () => {
+		let response = await Api.getProfessors();
+		var professor_Name_list = response.data.professors.map(
+			({ user_name }) => user_name
+		);
+		setprofessors(professor_Name_list);
+	};
+	const getCategorys = async () => {
+		let response = await Api.getCategorys();
+		const category_list = await response.data.categorys;
+		setcategorys(category_list);
+	};
 
-			mem.map(v => {
-				memberList.push(v.user_id);
-			});
-			setmembers(memberList);
-			setPostBody({
-				title: response.data.project.project_title,
-				content: response.data.project.project_introduction,
-				image: response.data.project.project_image,
-			});
-			if (response.data.project.project_tags != null) {
-				const tag = [];
-				tag.push(response.data.project.project_tags);
-				setstack(tag[0]);
-			}
-			if (response.data.project.project_subject != null) {
-				const subject = [];
-				subject.push(response.data.project.project_subject);
-				setsubject(subject);
-			}
+	const project_id = location.href
+		.split('/')
+	[location.href.split('/').length - 1].split('.')[0];
 
-			if (response.data.project.project_professor != null) {
-				const professor_id = [];
-				professor_id.push(response.data.project.project_professor.user_id);
-				axios.get(api + '/user/professors', {
-					headers: {
-						authorization: `Bearer ${token}`,
-					}
-				})
-					.then((response2) => {
-						setp_list(response2.data.professors);
-						response2.data.professors.map((idx) => {
-							if (idx.user_id == professor_id) {
-								setprofessor([idx.user_name]);
-							}
-						});
-					});
-			}
-			if (response.data.project.project_subject_year != null) {
-				const year = [];
-				year.push(String(response.data.project.project_subject_year));
-				setyear(year);
-			}
-			if (response.data.project.project_categorys != null) {
-				const category = [];
-				category.push(response.data.project.project_categorys);
-				setcategory(category[0]);
-			}
+	useEffect(async () => {
+		let response = await Api.getProejct(project_id);
+
+		const mem = response.data.project.project_members;
+		const memberList = [];
+
+		mem.map((v) => {
+			memberList.push(v.user_id);
 		});
+		setmembers(memberList);
+		setPostBody({
+			title: response.data.project.project_title,
+			content: response.data.project.project_introduction,
+			image: response.data.project.project_image
+		});
+		if (response.data.project.project_tags != null) {
+			const tag = [];
+			tag.push(response.data.project.project_tags);
+			setstack(tag[0]);
+		}
+		if (response.data.project.project_subject != null) {
+			const subject = [];
+			subject.push(response.data.project.project_subject);
+			setsubject(subject);
+		}
+
+		if (response.data.project.project_professor != null) {
+			const professor_id = [];
+			professor_id.push(response.data.project.project_professor.user_id);
+			let response2 = await Api.getProfessors();
+			setp_list(response2.data.professors);
+			response2.data.professors.map((idx) => {
+				if (idx.user_id == professor_id) {
+					setprofessor([idx.user_name]);
+				}
+			});
+		}
+		if (response.data.project.project_subject_year != null) {
+			const year = [];
+			year.push(String(response.data.project.project_subject_year));
+			setyear(year);
+		}
+		if (response.data.project.project_categorys != null) {
+			const category = [];
+			category.push(response.data.project.project_categorys);
+			setcategory(category[0]);
+		}
 	}, []);
 
+	// 프로젝트 수정버튼 OnClick 함수
+	const projectUpdate = async () => {
+		const intM = [];
+		members.map(function (v) {
+			return intM.push(parseInt(v, 10));
+		});
+		const p_id = [];
+		p_list.map((idx) => {
+			if (idx.user_name == professor) return p_id.push(idx.user_id);
+		});
+		setprofessor(p_id);
+		const reqObject = {
+			project_title: postBody.title,
+			project_introduction: postBody.content,
+			project_categorys: category,
+			// project_image: postBody.image,
+			project_image: '/static/picture.PNG',
+			project_subject: subject[0],
+			project_subject_year: year[0],
+			project_professor: p_id[0],
+			project_members: intM,
+			project_tags: stack
+		};
+		let response = await Api.postUpdateProject(project_id, reqObject);
+		console.log(response);
+		if (response.sucess) {
+			alert('수정되었습니다.');
+		} else {
+			alert('수정 실패');
+		}
+	};
+
+	// React Handle Function
 	const handlecategoryChange = (event) => {
 		const {
-			target: { value },
+			target: { value }
 		} = event;
-		setcategory(
-			typeof value === 'string' ? value.split(',') : value,
-		);
+		setcategory(typeof value === 'string' ? value.split(',') : value);
 	};
 	const handlesubjectChange = (event) => {
 		const {
-			target: { value },
+			target: { value }
 		} = event;
-		setsubject(
-			typeof value === 'string' ? value.split(',') : value,
-		);
+		setsubject(typeof value === 'string' ? value.split(',') : value);
 	};
 	const handleprofessorChange = (event) => {
 		const {
-			target: { value },
+			target: { value }
 		} = event;
-		setprofessor(
-			typeof value === 'string' ? value.split(',') : value,
-		);
+		setprofessor(typeof value === 'string' ? value.split(',') : value);
 	};
 	const handleyearChange = (event) => {
 		const {
-			target: { value },
+			target: { value }
 		} = event;
-		setyear(
-			typeof value === 'string' ? value.split(',') : value,
-		);
+		setyear(typeof value === 'string' ? value.split(',') : value);
 	};
 	const handlestackChange = (event) => {
 		const {
-			target: { value },
+			target: { value }
 		} = event;
-		setstack(
-			typeof value === 'string' ? value.split(',') : value,
-		);
+		setstack(typeof value === 'string' ? value.split(',') : value);
 	};
 	const handletitleChange = (event) => {
 		setPostBody({
@@ -194,11 +224,9 @@ const ProjectUpdate = () => {
 	};
 	const handlememberChange = (event) => {
 		const {
-			target: { value },
+			target: { value }
 		} = event;
-		setmembers(
-			typeof value === 'string' ? value.split(',') : value,
-		);
+		setmembers(typeof value === 'string' ? value.split(',') : value);
 	};
 	return (
 		<>
@@ -209,16 +237,10 @@ const ProjectUpdate = () => {
 				<Box
 					sx={{
 						minHeight: '100%',
-						py: 3,
+						py: 3
 					}}
 				/>
-				<Grid
-					item
-					lg={10}
-					md={10}
-					sm={12}
-					xs={12}
-				>
+				<Grid item lg={10} md={10} sm={12} xs={12}>
 					<Card
 						sx={{
 							borderBottomRightRadius: 10,
@@ -229,9 +251,7 @@ const ProjectUpdate = () => {
 						}}
 					>
 						<CardContent>
-							<h2 style={{ color: '#006400' }}>
-								프로젝트 수정
-							</h2>
+							<h2 style={{ color: '#006400' }}>프로젝트 수정</h2>
 							<Box
 								sx={{
 									minHeight: '100%',
@@ -245,24 +265,18 @@ const ProjectUpdate = () => {
 									paddingLeft: 0.5
 								}}
 							>
-								<Grid
-									item
-									lg={3}
-									md={3}
-									sm={6}
-									xs={12}
-								>
+								<Grid item lg={3} md={3} sm={6} xs={12}>
 									<Box
 										sx={{
 											minHeight: '100%',
-											py: 1.5,
+											py: 1.5
 										}}
 									/>
 									<h3>프로젝트 사진</h3>
 									<Box
 										sx={{
 											minHeight: '100%',
-											py: 0.5,
+											py: 0.5
 										}}
 									/>
 									<Card
@@ -289,14 +303,14 @@ const ProjectUpdate = () => {
 								<Box
 									sx={{
 										minHeight: '100%',
-										py: 1.5,
+										py: 1.5
 									}}
 								/>
 								<h3>프로젝트 제목</h3>
 								<Box
 									sx={{
 										minHeight: '100%',
-										py: 0.5,
+										py: 0.5
 									}}
 								/>
 								<TextField
@@ -309,15 +323,12 @@ const ProjectUpdate = () => {
 										borderBottomLeftRadius: 5,
 										borderTopRightRadius: 5,
 										borderTopLeftRadius: 5,
-										backgroundColor: 'primary.smoothgreen',
+										backgroundColor: 'primary.smoothgreen'
 									}}
 									InputProps={{
 										startAdornment: (
 											<InputAdornment position="start">
-												<SvgIcon
-													fontSize="small"
-													color="action"
-												/>
+												<SvgIcon fontSize="small" color="action" />
 											</InputAdornment>
 										)
 									}}
@@ -328,14 +339,14 @@ const ProjectUpdate = () => {
 								<Box
 									sx={{
 										minHeight: '100%',
-										py: 2,
+										py: 2
 									}}
 								/>
 								<h3>프로젝트 설명</h3>
 								<Box
 									sx={{
 										minHeight: '100%',
-										py: 0.5,
+										py: 0.5
 									}}
 								/>
 								<TextField
@@ -347,15 +358,12 @@ const ProjectUpdate = () => {
 										borderBottomRightRadius: 5,
 										borderBottomLeftRadius: 5,
 										borderTopRightRadius: 5,
-										borderTopLeftRadius: 5,
+										borderTopLeftRadius: 5
 									}}
 									InputProps={{
 										startAdornment: (
 											<InputAdornment position="start">
-												<SvgIcon
-													fontSize="small"
-													color="action"
-												/>
+												<SvgIcon fontSize="small" color="action" />
 											</InputAdornment>
 										)
 									}}
@@ -368,14 +376,14 @@ const ProjectUpdate = () => {
 								<Box
 									sx={{
 										minHeight: '100%',
-										py: 2,
+										py: 2
 									}}
 								/>
 								<h3>프로젝트 팀원</h3>
 								<Box
 									sx={{
 										minHeight: '100%',
-										py: 0.5,
+										py: 0.5
 									}}
 								/>
 								<TextField
@@ -388,15 +396,12 @@ const ProjectUpdate = () => {
 										borderBottomLeftRadius: 5,
 										borderTopRightRadius: 5,
 										borderTopLeftRadius: 5,
-										backgroundColor: 'primary.smoothgreen',
+										backgroundColor: 'primary.smoothgreen'
 									}}
 									InputProps={{
 										startAdornment: (
 											<InputAdornment position="start">
-												<SvgIcon
-													fontSize="small"
-													color="action"
-												/>
+												<SvgIcon fontSize="small" color="action" />
 											</InputAdornment>
 										)
 									}}
@@ -407,14 +412,14 @@ const ProjectUpdate = () => {
 								<Box
 									sx={{
 										minHeight: '100%',
-										py: 2,
+										py: 2
 									}}
 								/>
 								<h3>기술 스택</h3>
 								<Box
 									sx={{
 										minHeight: '100%',
-										py: 0.5,
+										py: 0.5
 									}}
 								/>
 								<FormControl
@@ -452,14 +457,14 @@ const ProjectUpdate = () => {
 								<Box
 									sx={{
 										minHeight: '100%',
-										py: 2,
+										py: 2
 									}}
 								/>
 								<h3>프로젝트 과목</h3>
 								<Box
 									sx={{
 										minHeight: '100%',
-										py: 0.5,
+										py: 0.5
 									}}
 								/>
 								<FormControl
@@ -484,8 +489,8 @@ const ProjectUpdate = () => {
 													sx={{
 														color: 'primary.darkgreen',
 														'&.Mui-checked': {
-															color: 'primary.darkgreen',
-														},
+															color: 'primary.darkgreen'
+														}
 													}}
 													checked={subject.indexOf(s) > -1}
 												/>
@@ -497,19 +502,19 @@ const ProjectUpdate = () => {
 								<Box
 									sx={{
 										minHeight: '100%',
-										py: 2,
+										py: 2
 									}}
 								/>
 								<h3>년도</h3>
 								<Box
 									sx={{
 										minHeight: '100%',
-										py: 0.5,
+										py: 0.5
 									}}
 								/>
 								<FormControl
 									sx={{
-										width: 200,
+										width: 200
 									}}
 								>
 									<InputLabel id="년도">&nbsp; 년도</InputLabel>
@@ -528,8 +533,8 @@ const ProjectUpdate = () => {
 													sx={{
 														color: 'primary.darkgreen',
 														'&.Mui-checked': {
-															color: 'primary.darkgreen',
-														},
+															color: 'primary.darkgreen'
+														}
 													}}
 													checked={year.indexOf(s) > -1}
 												/>
@@ -541,14 +546,14 @@ const ProjectUpdate = () => {
 								<Box
 									sx={{
 										minHeight: '100%',
-										py: 2,
+										py: 2
 									}}
 								/>
 								<h3>프로젝트 지도 교수</h3>
 								<Box
 									sx={{
 										minHeight: '100%',
-										py: 0.5,
+										py: 0.5
 									}}
 								/>
 								<FormControl
@@ -573,8 +578,8 @@ const ProjectUpdate = () => {
 													sx={{
 														color: 'primary.darkgreen',
 														'&.Mui-checked': {
-															color: 'primary.darkgreen',
-														},
+															color: 'primary.darkgreen'
+														}
 													}}
 													checked={professor.indexOf(s) > -1}
 												/>
@@ -586,19 +591,19 @@ const ProjectUpdate = () => {
 								<Box
 									sx={{
 										minHeight: '100%',
-										py: 2,
+										py: 2
 									}}
 								/>
 								<h3>프로젝트 카테고리</h3>
 								<Box
 									sx={{
 										minHeight: '100%',
-										py: 0.5,
+										py: 0.5
 									}}
 								/>
 								<FormControl
 									sx={{
-										width: 200,
+										width: 200
 									}}
 								>
 									<InputLabel id="카테고리">&nbsp; 카테고리</InputLabel>
@@ -618,8 +623,8 @@ const ProjectUpdate = () => {
 													sx={{
 														color: 'primary.darkgreen',
 														'&.Mui-checked': {
-															color: 'primary.darkgreen',
-														},
+															color: 'primary.darkgreen'
+														}
 													}}
 													checked={category.indexOf(s) > -1}
 												/>
@@ -631,7 +636,7 @@ const ProjectUpdate = () => {
 								<Box
 									sx={{
 										minHeight: '100%',
-										py: 2,
+										py: 2
 									}}
 								/>
 								<Link
@@ -643,41 +648,7 @@ const ProjectUpdate = () => {
 									<Button
 										variant="contained"
 										color="success"
-										onClick={() => {
-											const intM = [];
-											members.map(function (v) {
-												return intM.push(parseInt(v, 10));
-											});
-											const p_id = [];
-											p_list.map((idx) => {
-												if (idx.user_name == professor)
-													return p_id.push(idx.user_id);
-											});
-											setprofessor(p_id);
-											const reqObject = {
-												project_title: postBody.title,
-												project_introduction: postBody.content,
-												project_categorys: category,
-												// project_image: postBody.image,
-												project_image: '/static/picture.PNG',
-												project_subject: subject[0],
-												project_subject_year: year[0],
-												project_professor: p_id[0],
-												project_members: intM,
-												project_tags: stack
-											};
-											axios.post(
-												'https://se-disk.herokuapp.com/api/project/' +
-												project_id,
-												reqObject,
-												{
-													headers: {
-														authorization: `Bearer ${token}`
-													}
-												}
-											);
-											alert('수정되었습니다.');
-										}}
+										onClick={projectUpdate}
 									>
 										<h3
 											style={{
