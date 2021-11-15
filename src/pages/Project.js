@@ -256,7 +256,7 @@ const Project = () => {
 		else {
 			url.push('&keyword=null');
 		}
-		if (!(category === '' || category === undefined)) {
+		if (!(category.length === 0)) {
 			url.push('&category=' + category.join(','));
 		}
 		else {
@@ -598,13 +598,13 @@ const Project = () => {
 								float: 'right',
 							}}
 						>
-							<InputLabel id="최신순">&nbsp; 최신순</InputLabel>
+							<InputLabel id="정렬">&nbsp; 정렬</InputLabel>
 							<Select
-								labelId="최신순"
-								id="최신순"
+								labelId="정렬"
+								id="정렬"
 								value={menu}
 								onChange={handlemenuChange}
-								input={<OutlinedInput label="최신순" />}
+								input={<OutlinedInput label="정렬" />}
 								renderValue={(selected) => selected.join(', ')}
 								MenuProps={MenuProps}
 							>

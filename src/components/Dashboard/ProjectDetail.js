@@ -16,53 +16,52 @@ import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import SimpleTabs from 'src/components/Dashboard/SimpleTabs';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import Api from '../../Api/Api';
 
-const api = 'https://se-disk.herokuapp.com/api';
-const url = '/project';
 const people = JSON.parse(sessionStorage.getItem('user_data'));
-const token = sessionStorage.getItem('user_token');
+
 const ProjectDetail = (props) => {
-	const project_id = location.href.split('/')[location.href.split('/').length - 1].split('.')[0];
+	const project_id = location.href
+		.split('/')
+	[location.href.split('/').length - 1].split('.')[0];
 	const [data, setData] = useState([]);
 	const [state, setstate] = useState(false);
 	const [tag, settag] = useState([]);
 	const [comment, setcomment] = useState([]);
-	useEffect(() => {
+	useEffect(async () => {
 		const list = [];
-		axios.get(api + url + '/' + project_id).then((response) => {
-			setData(response.data.project);
-			const year = response.data.project.project_subject_year;
-			list.push(year);
-			const p_name = response.data.project.project_professor.user_name;
-			list.push(p_name);
-			const subject = response.data.project.project_subject;
-			list.push(subject);
-			const t = response.data.project.project_tags;
-			if(t){
-				t.map(v => {
-					list.push(v);
-				})
+		let response = await Api.getProject(project_id);
+		setData(response.data.project);
+		const year = response.data.project.project_subject_year;
+		list.push(year);
+		const p_name = response.data.project.project_professor.user_name;
+		list.push(p_name);
+		const subject = response.data.project.project_subject;
+		list.push(subject);
+		const t = response.data.project.project_tags;
+		if (t) {
+			t.map((v) => {
+				list.push(v);
+			});
+		}
+		settag(list);
+		if (sessionStorage.getItem('user_token')) {
+			if (response.data.project.length != 0) {
+				response.data.project.project_members.map((m) => {
+					if (m.user_id === people.user_id) {
+						setstate(true);
+					}
+				});
 			}
-            settag(list);
-			if (sessionStorage.getItem('user_token')) {
-				if (response.data.project.length != 0) {
-					response.data.project.project_members.map((m) => {
-						if (m.user_id === people.user_id) {
-							setstate(true);
-						}
-					});
-				}
-			};
-		});
-		axios.get(api + url + '/' + project_id + '/' + 'comment/').then((response) => {
-			setcomment(response.data.comments);
-		});
+		}
+
+		let comment_response = await Api.getReadComment(project_id);
+		setcomment(comment_response.data.comments);
 	}, []);
 
 	const mem = data.project_members;
 	const memResult = mem?.map((member) => member.user_name + ' ');
-	
+
 	const [postBody, setPostBody] = useState({
 		content: ''
 	});
@@ -225,7 +224,10 @@ const ProjectDetail = (props) => {
 								backgroundColor: '#ffffff'
 							}}
 						>
-							<SimpleTabs contents={data.project_introduction} members={data.project_members} />
+							<SimpleTabs
+								contents={data.project_introduction}
+								members={data.project_members}
+							/>
 							<Box
 								sx={{
 									minHeight: '100%',
@@ -266,7 +268,7 @@ const ProjectDetail = (props) => {
 					) : (
 						<Box
 							sx={{
-								minHeight: '100%',
+								minHeight: '100%'
 							}}
 						/>
 					)}

@@ -254,8 +254,8 @@ const Api = {
     });
   },
   // 프로젝트 검색
-  postProjectSearch: async (pageNum, pageCount) => {
-    return await postJsonReqest('/project/search', { pageNum, pageCount });
+  postProjectSearch: async (pageNum, pageCount, project) => {
+    return await postJsonReqest(`/project/search/?pageNum=${pageNum}&pageCount=${pageCount}`, {project});
   },
   // 프로젝트 삭제 -> 아직 구현 X
   deleteProject: async (projectId) => {
@@ -349,11 +349,11 @@ const Api = {
   },
   // 프로젝트에 댓글 / 대댓글 삭제
   deleteComment: async (projectId, commentId) => {
-    return await deleteJsonReqest(`project/${projectId}/comment/${commentId}`);
+    return await deleteJsonReqest(`/project/${projectId}/comment/${commentId}`);
   },
   // 프로젝트의 댓글 / 대댓글 조회
-  getReadComment: async (projectId, commentId) => {
-    return await getRequest(`project/${projectId}/comment/${commentId}`);
+  getReadComment: async (projectId) => {
+    return await getRequest(`/project/${projectId}/comment/`);
   }
   // Files--------------------------------------------------------------------------------------
   // Recruitment--------------------------------------------------------------------------------

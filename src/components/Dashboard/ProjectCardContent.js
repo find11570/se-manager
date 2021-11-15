@@ -6,13 +6,11 @@ import {
 	Grid,
 } from '@material-ui/core';
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import Api from '../../Api/Api';
 
-const api = 'https://se-disk.herokuapp.com/api';
-const url = '/project';
 const token = sessionStorage.getItem('user_token');
 
 const ProjectCardContent = (props) => {
@@ -22,14 +20,8 @@ const ProjectCardContent = (props) => {
 	const [likes, setlikes] = useState(like);
 	const [bookmark, setBookmark] = useState(false);
 
-	const front = () => axios.get(api + url + '/' + id);
-	const back = () => axios.get(api + url + '/isLike?projectId=' + id,
-		{
-			headers: {
-				authorization: `Bearer ${token}`
-			}
-		}
-	);
+	const front = async() => await Api.getProject(id);
+	const back = async() => await Api.getProjectIsLike(id);
 
 	useEffect(() => {
 		if (sessionStorage.getItem('user_token')) {
@@ -46,24 +38,14 @@ const ProjectCardContent = (props) => {
 	const handleBookmark = async (id) => {
 		if (sessionStorage.getItem('user_token')) {
 			if (bookmark === false) {
-				await axios.get(api + url + '/like?projectId=' + id, {
-					headers: {
-						authorization: `Bearer ${token}`
-					}
-				}
-				);
+				await Api.getProjectLike(id);
 				const getdata = async () => {
 					const data = await front();
 					setlikes(data.data.project.project_like);
 				};
 				getdata();
 			} else {
-				await axios.get(api + url + '/unlike?projectId=' + id, {
-					headers: {
-						authorization: `Bearer ${token}`
-					}
-				}
-				);
+				await Api.getProjectUnlike(id);
 				const getdata = async () => {
 					const data = await front();
 					setlikes(data.data.project.project_like);
@@ -77,7 +59,7 @@ const ProjectCardContent = (props) => {
 		}
 	};
 	const handlehit = async (id) => {
-		await axios.get(api + url + '/' + id + '/hit')
+		await Api.getHit(id);
 	};
 
 
