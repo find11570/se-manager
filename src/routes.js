@@ -27,7 +27,7 @@ const routes = [
 		element: <DashboardLayout />,
 		children: [
 			{ path: 'dashboard', element: <Dashboard /> },
-			{ path: 'project', element: <Project /> },
+			{ path: 'project/:category', element: <Project /> },
 			{ path: 'projectDetail/:id', element: <ProjectDetail /> },
 			{ path: 'ProjectRegister', element: <ProjectRegister /> },
 			{ path: 'ProjectUpdate/:id', element: <ProjectUpdate /> }

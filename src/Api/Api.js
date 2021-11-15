@@ -203,13 +203,13 @@ const Api = {
     });
   },
   // Projects--------------------------------------------------------------------------------
-  // 프로젝트 생성 -> 수정 필요
-  postProject: async () => {
-    return await postJsonReqest('/project');
+  // 프로젝트 생성
+  postProject: async (project) => {
+    return await postJsonReqest('/project', project);
   },
   // 프로젝트 수정 -> 수정 필요
-  postUpdateProject: async (projectId) => {
-    return await postJsonReqest(`/project/${projectId}`);
+  postUpdateProject: async (projectId, project) => {
+    return await postJsonReqest(`/project/${projectId}`, project);
   },
   // 프로젝트 상세조회
   getProejct: async (projectId) => {
@@ -228,7 +228,7 @@ const Api = {
     return await getRequest('/project/like', { projectId });
   },
   // 프로젝트 좋아요 취소
-  getProejctUnlike: async (projectId) => {
+  getProjectUnlike: async (projectId) => {
     return await getRequest('/project/unlike', { projectId });
   },
   // 프로젝트 전체조회
@@ -324,7 +324,7 @@ const Api = {
   }
   // Files--------------------------------------------------------------------------------------
   // Recruitment--------------------------------------------------------------------------------
-  // Notification-------------------------------------------------------------------------------
+  // Notification———————————————————————————————————————
 };
 
 export default Api;

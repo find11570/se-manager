@@ -15,16 +15,27 @@ const url_c = '/category';
 
 const ProjectCard = (props) => {
 	const { category_props, sort_props } = props;
+<<<<<<< HEAD
 
+=======
+	
+>>>>>>> be88724a858a1b6730ba378a1a834ed1202d2dd1
 	const post_array = [];
 	const link = document.location.href;
 	var link_quary = link.replace('http://localhost:3000/app/project/', '');
 	var quary = decodeURI(link_quary, 'UTF-8');
 
+<<<<<<< HEAD
 	if (quary.includes(',')) {
 		var quary_array = quary.split('&');
 		var category = quary_array[0];
 
+=======
+	if(quary.includes(',')) {
+		var quary_array = quary.split('&');
+		var category = quary_array[0];
+		
+>>>>>>> be88724a858a1b6730ba378a1a834ed1202d2dd1
 		// stack
 		quary_array[1] = quary_array[1].slice(0, -1);
 		var stack_string = quary_array[1].split('=');
@@ -114,21 +125,33 @@ const ProjectCard = (props) => {
 	const handlePageChange = (event, value) => {
 		setPage(value);
 		const front = () => {
+<<<<<<< HEAD
 			if (quary.includes(',')) {
 				if ((stack_string[1] == 'null') && (stack_string2[1] == 'null') && (stack_string3[1] == 'null') && (stack_string4[1] == 'null') && (stack_string5[1] == 'null')) {
 					console.log('f: get 요청');
 					return axios.get(api + url + url_c + '?categoryId=' + category + '&pageNum=' + value + '&pageCount=6');
+=======
+			if(quary.includes(',')) {
+				if((stack_string[1] == 'null') && (stack_string2[1] == 'null') && (stack_string3[1] == 'null') && (stack_string4[1] == 'null') && (stack_string5[1] == 'null')) {
+					console.log('f: get 요청');
+					return axios.get(api + url + url_c + '?categoryId='+ category +'&pageNum=' + value + '&pageCount=6');
+>>>>>>> be88724a858a1b6730ba378a1a834ed1202d2dd1
 				}
 				else {
 					console.log('f:post 요청');
 					const tag_arr = [];
+<<<<<<< HEAD
 					if (post_array[0] !== 'null') {
+=======
+					if(post_array[0] !== 'null') {
+>>>>>>> be88724a858a1b6730ba378a1a834ed1202d2dd1
 						post_array[0].map(function (v) {
 							return tag_arr.push(v);
 						});
 					}
 
 					const subj_arr = [];
+<<<<<<< HEAD
 					if (post_array[1] !== 'null') {
 						post_array[1].map(function (v) {
 							return subj_arr.push(v);
@@ -137,35 +160,65 @@ const ProjectCard = (props) => {
 
 					const intYear = [];
 					if (post_array[2] !== 'null') {
+=======
+					if(post_array[1] !== 'null') {
+						post_array[1].map(function (v) {
+							return subj_arr.push(v);
+						});
+					}	
+
+					const intYear = [];
+					if(post_array[2] !== 'null') {
+>>>>>>> be88724a858a1b6730ba378a1a834ed1202d2dd1
 						post_array[2].map(function (v) {
 							return intYear.push(parseInt(v, 10));
 						});
 					}
 
 					const p_id = [];
+<<<<<<< HEAD
 					if (post_array[2] !== 'null') {
 						p_list.map((idx) => {
 							post_array[3].map((v) => {
 								if (idx.user_name == v)
 									return p_id.push(idx.user_id);
+=======
+					if(post_array[2] !== 'null') {
+						p_list.map((idx) => {
+						post_array[3].map((v) => {
+							if (idx.user_name == v) 
+								return p_id.push(idx.user_id);
+>>>>>>> be88724a858a1b6730ba378a1a834ed1202d2dd1
 							});
 						});
 					}
 
 					const cat_arr = [];
+<<<<<<< HEAD
 					if (post_array[5] !== 'null') {
+=======
+					if(post_array[5] !== 'null') {
+>>>>>>> be88724a858a1b6730ba378a1a834ed1202d2dd1
 						post_array[5].map(function (v) {
 							return cat_arr.push(v);
 						});
 					}
 
 					const sort_arr = [];
+<<<<<<< HEAD
 					if (post_array[6] !== 'null') {
+=======
+					if(post_array[6] !== 'null') {
+>>>>>>> be88724a858a1b6730ba378a1a834ed1202d2dd1
 						post_array[6].map(function (v) {
 							return sort_arr.push(v);
 						});
 					}
+<<<<<<< HEAD
 
+=======
+					
+>>>>>>> be88724a858a1b6730ba378a1a834ed1202d2dd1
 					const post_list = {
 						tag: tag_arr,
 						subject: subj_arr,
@@ -176,12 +229,21 @@ const ProjectCard = (props) => {
 						sort: sort_arr
 					};
 					console.log(post_list);
+<<<<<<< HEAD
 
 					return axios.post(api + url + '?pageNum=' + value + '&pageCount=6', post_list);
 				}
 			}
 			else {
 				return axios.get(api + url + url_c + '?categoryId=' + category + '&pageNum=' + value + '&pageCount=6');
+=======
+					
+					return axios.post(api + url +'?pageNum=' + value + '&pageCount=6', post_list);
+				}
+			}
+			else {
+				return axios.get(api + url + url_c + '?categoryId='+ category +'&pageNum=' + value + '&pageCount=6');
+>>>>>>> be88724a858a1b6730ba378a1a834ed1202d2dd1
 			}
 		}
 
@@ -193,14 +255,22 @@ const ProjectCard = (props) => {
 	};
 
 	const back = () => {
+<<<<<<< HEAD
 		if (quary.includes(',')) {
 			if ((stack_string[1] == 'null') && (stack_string2[1] == 'null') && (stack_string3[1] == 'null') && (stack_string4[1] == 'null') && (stack_string5[1] == 'null')) {
 				console.log('b: get 요청');
 				return axios.get(api + url + url_c + '?categoryId=' + category + '&pageNum=1' + '&pageCount=6');
+=======
+		if(quary.includes(',')) {
+			if((stack_string[1] == 'null') && (stack_string2[1] == 'null') && (stack_string3[1] == 'null') && (stack_string4[1] == 'null') && (stack_string5[1] == 'null')) {
+				console.log('b: get 요청');
+				return axios.get(api + url + url_c + '?categoryId='+ category +'&pageNum=1' + '&pageCount=6');
+>>>>>>> be88724a858a1b6730ba378a1a834ed1202d2dd1
 			}
 			else {
 				console.log('b : post 요청');
 				const tag_arr = [];
+<<<<<<< HEAD
 				if (post_array[0] !== 'null') {
 					post_array[0].map(function (v) {
 						return tag_arr.push(v);
@@ -268,12 +338,85 @@ const ProjectCard = (props) => {
 	useEffect(async () => {
 		await getProfessors();
 
+=======
+					if(post_array[0] !== 'null') {
+						post_array[0].map(function (v) {
+							return tag_arr.push(v);
+						});
+					}
+
+					const subj_arr = [];
+					if(post_array[1] !== 'null') {
+						post_array[1].map(function (v) {
+							return subj_arr.push(v);
+						});
+					}	
+
+					const intYear = [];
+					if(post_array[2] !== 'null') {
+						post_array[2].map(function (v) {
+							return intYear.push(parseInt(v, 10));
+						});
+					}
+
+					const p_id = [];
+					if(post_array[2] !== 'null') {
+						p_list.map((idx) => {
+						post_array[3].map((v) => {
+							if (idx.user_name == v) 
+								return p_id.push(idx.user_id);
+							});
+						});
+					}
+
+					const cat_arr = [];
+					if(post_array[5] !== 'null') {
+						post_array[5].map(function (v) {
+							return cat_arr.push(v);
+						});
+					}
+
+					const sort_arr = [];
+					if(post_array[6] !== 'null') {
+						post_array[6].map(function (v) {
+							return sort_arr.push(v);
+						});
+					}
+					
+					const post_list = {
+						tag: tag_arr,
+						subject: subj_arr,
+						year: intYear,
+						professor: p_id,
+						keyword: post_array[4],
+						category: cat_arr,
+						sort: sort_arr
+					};
+					console.log(post_list);
+
+				return axios.post(api + url +'?pageNum=1' + '&pageCount=6', post_list);
+			}
+		}
+		else {
+			return axios.get(api + url + url_c + '?categoryId='+ category +'&pageNum=1' + '&pageCount=6');
+		}
+	}
+
+
+	useEffect(async () => {
+		await getProfessors();
+		
+>>>>>>> be88724a858a1b6730ba378a1a834ed1202d2dd1
 		const getdata = async () => {
 			const data = await back();
 			setarray(data.data.projects);
 			setcount(Math.ceil(data.data.count / 6));
 		};
+<<<<<<< HEAD
 		getdata();
+=======
+    	getdata();
+>>>>>>> be88724a858a1b6730ba378a1a834ed1202d2dd1
 	}, []);
 
 	const getProfessors = async () => {

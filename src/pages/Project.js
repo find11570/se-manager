@@ -21,6 +21,8 @@ import { Link } from 'react-router-dom';
 import ProjectCard from 'src/components/Dashboard/ProjectCard';
 import Api from '../Api/Api';
 
+const api = 'https://se-disk.herokuapp.com/api';
+
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -43,7 +45,7 @@ const Project = () => {
 	const [professor, setprofessor] = useState([]);
 	const [year, setyear] = useState([]);
 	const [category, setcategory] = useState([]);
-
+	
 	// 드롭다운 메뉴 불러와서 저장
 	const [stacks, setstacks] = useState([]);
 	const [subjects, setsubjects] = useState([]);
@@ -58,6 +60,82 @@ const Project = () => {
 		await getProfessors();
 		await getYears();
 		await getCategorys();
+
+		// url string quary
+		const link = document.location.href;
+    	var link_quary = link.replace('http://localhost:3000/app/project/', '');
+    	var quary = decodeURI(link_quary, 'UTF-8');
+		if(quary.includes(',')) {
+			var quary_array = quary.split('&');
+		
+			// category
+			const c_list = [];
+			c_list.push(quary_array[0]);
+			if (quary_array[0] != '전체') {
+				const category = [];
+				category.push(c_list);
+				setcategory(category[0]);
+			}
+			
+			// stack
+			quary_array[1] = quary_array[1].slice(0, -1);
+			var stack_string = quary_array[1].split('=');
+			if (stack_string[1] != 'null') {
+				var stack_array = stack_string[1].split(',');
+				const stack = [];
+				stack.push(stack_array);
+				setstack(stack[0]);
+			}
+
+			// subject
+			quary_array[2] = quary_array[2].slice(0, -1);
+			var stack_string2 = quary_array[2].split('=');
+			if (stack_string2[1] != 'null') {
+				var stack_array = stack_string2[1].split(',');
+				const subject = [];
+				subject.push(stack_array);
+				setsubject(subject[0]);
+			}
+
+			// year
+			quary_array[3] = quary_array[3].slice(0, -1);
+			var stack_string3 = quary_array[3].split('=');
+			if (stack_string3[1] != 'null') {
+				var stack_array = stack_string3[1].split(',');
+				const year = [];
+				year.push(stack_array);
+				setyear(year[0]);
+			}
+
+			// professor
+			quary_array[4] = quary_array[4].slice(0, -1);
+			var stack_string4 = quary_array[4].split('=');
+			if (stack_string4[1] != 'null') {
+				var stack_array = stack_string4[1].split(',');
+				const professor = [];
+				professor.push(stack_array);
+				setprofessor(professor[0]);
+			}
+
+			// keyword
+			var stack_string5 = quary_array[5].split('=');
+			if (stack_string5[1] != 'null') {
+				setPostBody({
+					name: stack_string5[1]
+				});
+			}
+		}
+		else {
+			var c = quary;
+			const c_list = [];
+			c_list.push(c);
+			if (c != '전체') {
+				const category = [];
+				category.push(c_list);
+				setcategory(category[0]);
+			}
+		}
+
 	}, []);
 
 	// // 드롭다운 메뉴 Api로 get
@@ -100,6 +178,7 @@ const Project = () => {
 			target: { value }
 		} = event;
 		setstack(typeof value === 'string' ? value.split(',') : value);
+		console.log(url);
 	};
 	const handlesubjectChange = (event) => {
 		const {
@@ -124,7 +203,6 @@ const Project = () => {
 			target: { value }
 		} = event;
 		setmenu(typeof value === 'string' ? value.split(',') : value);
-		console.log(menu);
 	};
 	const handlecategoryChange = (event) => {
 		const {
@@ -132,6 +210,56 @@ const Project = () => {
 		} = event;
 		setcategory(typeof value === 'string' ? value.split(',') : value);
 	};
+	function search_url(stack, subject, year, professor, keyword, category, sort) {
+		const url = [];
+		if(!(stack.length===0)){
+			url.push("&stack=" + stack.join(','));
+		}
+		else {
+			url.push('&stack=null');
+		}
+
+		if(!(subject.length===0)){
+			url.push("&subject=" + subject.join(','));
+		}
+		else {
+			url.push('&subject=null');
+		}
+
+		if(!(year.length===0)){
+			url.push("&year=" + year.join(','));
+		}
+		else {
+			url.push('&year=null');
+		}
+
+		if(!(professor.length===0)){
+			url.push("&professor=" + professor.join(','));
+		}
+		else {
+			url.push('&professor=null');
+		}
+
+		if(!(keyword === '')){
+			url.push("&keyword=" + keyword);
+		}
+		else {
+			url.push('&keyword=null');
+		}
+		if(!(category === '')){
+			url.push('&category=' + category);
+		}
+		else {
+			url.push('&category=null');
+		}
+		if(!(sort === '')){
+			url.push('&sort=' + sort);
+		}
+		else {
+			url.push('&sort=null');
+		}
+		return url.join();
+	}
 
 	return (
 		<>
@@ -245,7 +373,6 @@ const Project = () => {
 						py: 1
 					}}
 				/>
-				{postBody.name}
 				<Container maxWidth={false}>
 					<Grid container spacing={3}>
 						<Hidden lgDown>
@@ -411,13 +538,21 @@ const Project = () => {
 									)
 								}}
 								placeholder="프로젝트를 검색 해보세요!"
+								value={postBody.name}
 								variant="outlined"
 								onChange={handleTextChange}
 							/>
 						</Grid>
 						<Grid item lg={2} md={2} sm={2} xs={2}>
-							<Link to="/app/project">
-								<Button variant="contained" color="success" size="large">
+							<Link to=
+								{{
+									pathname: `/app/project/${"전체"+search_url(stack, subject, year, professor, postBody.name)}`,
+								}}
+							>
+								<Button variant="contained" 
+										color="success" 
+										size="large"
+								>
 									<h4
 										style={{
 											color: '#ffffff'
@@ -482,7 +617,7 @@ const Project = () => {
 								py: 2
 							}}
 						/>
-						<ProjectCard />
+						<ProjectCard category_props = {category} sort_props = {menu} />
 					</Grid>
 				</Container>
 			</Box>
