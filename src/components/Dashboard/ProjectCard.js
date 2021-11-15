@@ -15,10 +15,12 @@ const url_c = '/category';
 
 const ProjectCard = (props) => {
 	const { category_props, sort_props } = props;
+	
 	const post_array = [];
 	const link = document.location.href;
 	var link_quary = link.replace('http://localhost:3000/app/project/', '');
 	var quary = decodeURI(link_quary, 'UTF-8');
+
 	if(quary.includes(',')) {
 		var quary_array = quary.split('&');
 		var category = quary_array[0];
@@ -83,6 +85,10 @@ const ProjectCard = (props) => {
 		else {
 			post_array.push('null');
 		}
+
+		// category
+
+		// sort
 	}
 	else {
 		var category = quary;
@@ -103,30 +109,48 @@ const ProjectCard = (props) => {
 				}
 				else {
 					console.log('f:post 요청');
+					const tag_arr = [];
+					if(post_array[0] !== 'null') {
+						post_array[0].map(function (v) {
+							return tag_arr.push(v);
+						});
+					}
+
+					const subj_arr = [];
+					if(post_array[1] !== 'null') {
+						post_array[1].map(function (v) {
+							return subj_arr.push(v);
+						});
+					}	
+
 					const intYear = [];
-					post_array[2].map(function (v) {
-						return intYear.push(parseInt(v, 10));
-					});
+					if(post_array[2] !== 'null') {
+						post_array[2].map(function (v) {
+							return intYear.push(parseInt(v, 10));
+						});
+					}
 
 					const p_id = [];
-					p_list.map((idx) => {
+					if(post_array[2] !== 'null') {
+						p_list.map((idx) => {
 						post_array[3].map((v) => {
-							if (idx.user_name == v)
+							if (idx.user_name == v) 
 								return p_id.push(idx.user_id);
+							});
 						});
-					});
+					}
 					
 					const post_list = {
-						tag: post_array[0],
-						subject: post_array[1],
+						tag: tag_arr,
+						subject: subj_arr,
 						year: intYear,
 						professor: p_id,
 						keyword: post_array[4],
-						category: category,
-						sort: sort
+						category: category_props,
+						sort: sort_props
 					};
 					console.log(post_list);
-
+					
 					return axios.post(api + url +'?pageNum=' + value + '&pageCount=6', post_list);
 				}
 			}
@@ -150,6 +174,20 @@ const ProjectCard = (props) => {
 			}
 			else {
 				console.log('b : post 요청');
+				const tag_arr = [];
+				if(post_array[0] !== 'null') {
+					post_array[0].map(function (v) {
+						return tag_arr.push(v);
+					});
+				}
+
+				const subj_arr = [];
+				if(post_array[1] !== 'null') {
+					post_array[1].map(function (v) {
+						return subj_arr.push(v);
+					});
+				}	
+
 				const intYear = [];
 				if(post_array[2] !== 'null') {
 					post_array[2].map(function (v) {
@@ -168,13 +206,13 @@ const ProjectCard = (props) => {
 				}
 				
 				const post_list = {
-					tag: post_array[0],
-					subject: post_array[1],
+					tag: tag_arr,
+					subject: subj_arr,
 					year: intYear,
 					professor: p_id,
 					keyword: post_array[4],
-					category: category,
-					sort: sort
+					category: category_props,
+					sort: sort_props
 				};
 				console.log(post_list);
 
@@ -189,6 +227,7 @@ const ProjectCard = (props) => {
 
 	useEffect(async () => {
 		await getProfessors();
+		
 		const getdata = async () => {
 			const data = await back();
 			setarray(data.data.projects);

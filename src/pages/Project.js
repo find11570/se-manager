@@ -45,8 +45,7 @@ const Project = () => {
 	const [professor, setprofessor] = useState([]);
 	const [year, setyear] = useState([]);
 	const [category, setcategory] = useState([]);
-	const [p_list, setp_list] = useState([]);
-
+	
 	// 드롭다운 메뉴 불러와서 저장
 	const [stacks, setstacks] = useState([]);
 	const [subjects, setsubjects] = useState([]);
@@ -179,6 +178,7 @@ const Project = () => {
 			target: { value }
 		} = event;
 		setstack(typeof value === 'string' ? value.split(',') : value);
+		console.log(url);
 	};
 	const handlesubjectChange = (event) => {
 		const {
@@ -210,6 +210,56 @@ const Project = () => {
 		} = event;
 		setcategory(typeof value === 'string' ? value.split(',') : value);
 	};
+	function search_url(stack, subject, year, professor, keyword, category, sort) {
+		const url = [];
+		if(!(stack.length===0)){
+			url.push("&stack=" + stack.join(','));
+		}
+		else {
+			url.push('&stack=null');
+		}
+
+		if(!(subject.length===0)){
+			url.push("&subject=" + subject.join(','));
+		}
+		else {
+			url.push('&subject=null');
+		}
+
+		if(!(year.length===0)){
+			url.push("&year=" + year.join(','));
+		}
+		else {
+			url.push('&year=null');
+		}
+
+		if(!(professor.length===0)){
+			url.push("&professor=" + professor.join(','));
+		}
+		else {
+			url.push('&professor=null');
+		}
+
+		if(!(keyword === '')){
+			url.push("&keyword=" + keyword);
+		}
+		else {
+			url.push('&keyword=null');
+		}
+		if(!(category === '')){
+			url.push('&category=' + category);
+		}
+		else {
+			url.push('&category=null');
+		}
+		if(!(sort === '')){
+			url.push('&sort=' + sort);
+		}
+		else {
+			url.push('&sort=null');
+		}
+		return url.join();
+	}
 
 	return (
 		<>
@@ -496,15 +546,12 @@ const Project = () => {
 						<Grid item lg={2} md={2} sm={2} xs={2}>
 							<Link to=
 								{{
-									pathname: `/app/project/${"전체"}`
+									pathname: `/app/project/${"전체"+search_url(stack, subject, year, professor, postBody.name)}`,
 								}}
 							>
 								<Button variant="contained" 
 										color="success" 
 										size="large"
-										onClick={() => {
-											<ProjectCard />
-										}}
 								>
 									<h4
 										style={{
@@ -570,7 +617,7 @@ const Project = () => {
 								py: 2
 							}}
 						/>
-						<ProjectCard category_props = {category} sort_props = {sort} />
+						<ProjectCard category_props = {category} sort_props = {menu} />
 					</Grid>
 				</Container>
 			</Box>
