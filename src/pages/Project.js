@@ -124,7 +124,6 @@ const Project = () => {
 			target: { value }
 		} = event;
 		setmenu(typeof value === 'string' ? value.split(',') : value);
-		console.log(menu);
 	};
 	const handlecategoryChange = (event) => {
 		const {
