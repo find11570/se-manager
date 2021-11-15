@@ -87,8 +87,20 @@ const ProjectCard = (props) => {
 		}
 
 		// category
+		if (category_props != 'null') {
+			post_array.push(category_props);
+		}
+		else {
+			post_array.push('null');
+		}
 
 		// sort
+		if (sort_props != 'null') {
+			post_array.push(sort_props);
+		}
+		else {
+			post_array.push('null');
+		}
 	}
 	else {
 		var category = quary;
@@ -139,6 +151,20 @@ const ProjectCard = (props) => {
 							});
 						});
 					}
+
+					const cat_arr = [];
+					if(post_array[5] !== 'null') {
+						post_array[5].map(function (v) {
+							return cat_arr.push(v);
+						});
+					}
+
+					const sort_arr = [];
+					if(post_array[6] !== 'null') {
+						post_array[6].map(function (v) {
+							return sort_arr.push(v);
+						});
+					}
 					
 					const post_list = {
 						tag: tag_arr,
@@ -146,8 +172,8 @@ const ProjectCard = (props) => {
 						year: intYear,
 						professor: p_id,
 						keyword: post_array[4],
-						category: category_props,
-						sort: sort_props
+						category: cat_arr,
+						sort: sort_arr
 					};
 					console.log(post_list);
 					
@@ -175,46 +201,60 @@ const ProjectCard = (props) => {
 			else {
 				console.log('b : post 요청');
 				const tag_arr = [];
-				if(post_array[0] !== 'null') {
-					post_array[0].map(function (v) {
-						return tag_arr.push(v);
-					});
-				}
-
-				const subj_arr = [];
-				if(post_array[1] !== 'null') {
-					post_array[1].map(function (v) {
-						return subj_arr.push(v);
-					});
-				}	
-
-				const intYear = [];
-				if(post_array[2] !== 'null') {
-					post_array[2].map(function (v) {
-						return intYear.push(parseInt(v, 10));
-					});
-				}
-
-				const p_id = [];
-				if(post_array[2] !== 'null') {
-					p_list.map((idx) => {
-					post_array[3].map((v) => {
-						if (idx.user_name == v) 
-							return p_id.push(idx.user_id);
+					if(post_array[0] !== 'null') {
+						post_array[0].map(function (v) {
+							return tag_arr.push(v);
 						});
-					});
-				}
-				
-				const post_list = {
-					tag: tag_arr,
-					subject: subj_arr,
-					year: intYear,
-					professor: p_id,
-					keyword: post_array[4],
-					category: category_props,
-					sort: sort_props
-				};
-				console.log(post_list);
+					}
+
+					const subj_arr = [];
+					if(post_array[1] !== 'null') {
+						post_array[1].map(function (v) {
+							return subj_arr.push(v);
+						});
+					}	
+
+					const intYear = [];
+					if(post_array[2] !== 'null') {
+						post_array[2].map(function (v) {
+							return intYear.push(parseInt(v, 10));
+						});
+					}
+
+					const p_id = [];
+					if(post_array[2] !== 'null') {
+						p_list.map((idx) => {
+						post_array[3].map((v) => {
+							if (idx.user_name == v) 
+								return p_id.push(idx.user_id);
+							});
+						});
+					}
+
+					const cat_arr = [];
+					if(post_array[5] !== 'null') {
+						post_array[5].map(function (v) {
+							return cat_arr.push(v);
+						});
+					}
+
+					const sort_arr = [];
+					if(post_array[6] !== 'null') {
+						post_array[6].map(function (v) {
+							return sort_arr.push(v);
+						});
+					}
+					
+					const post_list = {
+						tag: tag_arr,
+						subject: subj_arr,
+						year: intYear,
+						professor: p_id,
+						keyword: post_array[4],
+						category: cat_arr,
+						sort: sort_arr
+					};
+					console.log(post_list);
 
 				return axios.post(api + url +'?pageNum=1' + '&pageCount=6', post_list);
 			}
