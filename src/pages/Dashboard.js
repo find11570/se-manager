@@ -123,6 +123,46 @@ const Dashboard = () => {
 		setyear(typeof value === 'string' ? value.split(',') : value);
 	};
 
+	function search_url(stack, subject, year, professor, keyword) {
+		const url = [];
+		if(!(stack.length===0)){
+			url.push("&stack=" + stack.join(','));
+		}
+		else {
+			url.push('&stack=null');
+		}
+
+		if(!(subject.length===0)){
+			url.push("&subject=" + subject.join(','));
+		}
+		else {
+			url.push('&subject=null');
+		}
+
+		if(!(year.length===0)){
+			url.push("&year=" + year.join(','));
+		}
+		else {
+			url.push('&year=null');
+		}
+
+		if(!(professor.length===0)){
+			url.push("&professor=" + professor.join(','));
+		}
+		else {
+			url.push('&professor=null');
+		}
+
+		if(!(keyword === '')){
+			url.push("&keyword=" + keyword);
+		}
+		else {
+			url.push('&keyword=null');
+		}
+
+		return url.join();
+	}
+
 	return (
 		<>
 			<Helmet>
@@ -301,7 +341,6 @@ const Dashboard = () => {
 						py: 1
 					}}
 				/>
-				{postBody.name}
 				<Container maxWidth={false}>
 					<Grid container spacing={3}>
 						<Grid item lg={9} md={9} sm={9} xs={9}>
@@ -330,38 +369,24 @@ const Dashboard = () => {
 							/>
 						</Grid>
 						<Grid item lg={2} md={2} sm={2} xs={2}>
-							<Hidden lgDown>
-								<Link to="/app/project">
-									<Button variant="contained" color="success" size="large">
-										<h4
-											style={{
-												color: '#ffffff'
-											}}
-										>
-											검색
-										</h4>
-									</Button>
-								</Link>
-							</Hidden>
-							<Hidden lgUp>
-								<Link to="/app/project">
-									<Box
-										sx={{
-											paddingTop: 1
+							<Link to=
+								{{
+									pathname: `/app/project/${"전체"+search_url(stack, subject, year, professor, postBody.name)}`,
+								}}
+							>
+								<Button
+									variant="contained"
+									color="success"
+								>
+									<h4
+										style={{
+											color: '#ffffff'
 										}}
 									>
-										<Button variant="contained" color="success">
-											<h4
-												style={{
-													color: '#ffffff'
-												}}
-											>
-												검색
-											</h4>
-										</Button>
-									</Box>
-								</Link>
-							</Hidden>
+										검색
+									</h4>
+								</Button>
+							</Link>
 						</Grid>
 					</Grid>
 					<Box
@@ -377,7 +402,11 @@ const Dashboard = () => {
 					>
 						<Grid container spacing={3}>
 							<Grid item lg={2} md={3} sm={5} xs={12}>
-								<Link to="/app/project">
+								<Link to=
+									{{
+										pathname: `/app/project/${"웹사이트"}`
+									}}
+								>
 									<Card
 										sx={{
 											boxShadow: 5,
@@ -411,7 +440,11 @@ const Dashboard = () => {
 								</Link>
 							</Grid>
 							<Grid item lg={2} md={3} sm={5} xs={12}>
-								<Link to="/app/project">
+								<Link to=
+									{{
+										pathname: `/app/project/${"모바일앱"}`
+									}}
+								>
 									<Card
 										sx={{
 											boxShadow: 5,
@@ -444,7 +477,11 @@ const Dashboard = () => {
 								</Link>
 							</Grid>
 							<Grid item lg={2} md={3} sm={5} xs={12}>
-								<Link to="/app/project">
+								<Link to=
+									{{
+										pathname: `/app/project/${"인공지능"}`
+									}}
+								>
 									<Card
 										sx={{
 											boxShadow: 5,
@@ -478,7 +515,11 @@ const Dashboard = () => {
 								</Link>
 							</Grid>
 							<Grid item lg={2} md={3} sm={5} xs={12}>
-								<Link to="/app/project">
+								<Link to=
+									{{
+										pathname: `/app/project/${"IoT"}`
+									}}
+								>
 									<Card
 										sx={{
 											boxShadow: 5,
@@ -511,7 +552,11 @@ const Dashboard = () => {
 								</Link>
 							</Grid>
 							<Grid item lg={2} md={3} sm={5} xs={12}>
-								<Link to="/app/project">
+								<Link to=
+									{{
+										pathname: `/app/project/${"블록체인"}`
+									}}
+								>
 									<Card
 										sx={{
 											boxShadow: 5,
@@ -545,7 +590,11 @@ const Dashboard = () => {
 								</Link>
 							</Grid>
 							<Grid item lg={2} md={3} sm={5} xs={12}>
-								<Link to="/app/project">
+								<Link to=
+									{{
+										pathname: `/app/project/${"보안"}`
+									}}
+								>
 									<Card
 										sx={{
 											boxShadow: 5,
@@ -578,7 +627,11 @@ const Dashboard = () => {
 								</Link>
 							</Grid>
 							<Grid item lg={2} md={3} sm={5} xs={12}>
-								<Link to="/app/project">
+								<Link to=
+									{{
+										pathname: `/app/project/${"VR/AR"}`
+									}}
+								>
 									<Card
 										sx={{
 											boxShadow: 5,
@@ -612,7 +665,11 @@ const Dashboard = () => {
 								</Link>
 							</Grid>
 							<Grid item lg={2} md={3} sm={5} xs={12}>
-								<Link to="/app/project">
+								<Link to=
+									{{
+										pathname: `/app/project/${"게임"}`
+									}}
+								>
 									<Card
 										sx={{
 											boxShadow: 5,
@@ -645,7 +702,11 @@ const Dashboard = () => {
 								</Link>
 							</Grid>
 							<Grid item lg={2} md={3} sm={5} xs={12}>
-								<Link to="/app/project">
+								<Link to=
+									{{
+										pathname: `/app/project/${"로봇"}`
+									}}
+								>
 									<Card
 										sx={{
 											boxShadow: 5,
@@ -679,7 +740,11 @@ const Dashboard = () => {
 								</Link>
 							</Grid>
 							<Grid item lg={2} md={3} sm={5} xs={12}>
-								<Link to="/app/project">
+								<Link to=
+									{{
+										pathname: `/app/project/${"자연어처리"}`
+									}}
+								>
 									<Card
 										sx={{
 											boxShadow: 5,
@@ -712,7 +777,11 @@ const Dashboard = () => {
 								</Link>
 							</Grid>
 							<Grid item lg={2} md={3} sm={5} xs={12}>
-								<Link to="/app/project">
+								<Link to=
+									{{
+										pathname: `/app/project/${"영상처리"}`
+									}}
+								>
 									<Card
 										sx={{
 											boxShadow: 5,
@@ -746,7 +815,11 @@ const Dashboard = () => {
 								</Link>
 							</Grid>
 							<Grid item lg={2} md={3} sm={5} xs={12}>
-								<Link to="/app/project">
+								<Link to=
+									{{
+										pathname: `/app/project/${"전체"}`
+									}}
+								>
 									<Card
 										sx={{
 											boxShadow: 5,

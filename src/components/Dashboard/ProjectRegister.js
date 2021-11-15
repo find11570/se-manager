@@ -82,15 +82,15 @@ const ProjectRegister = () => {
 				authorization: `Bearer ${token}`,
 			}
 		})
-			.then((response2) => {
-				setp_list(response2.data.professors);
-				const p = [];
-				p_list.map((idx) => {
-					if (idx.user_id == professor)
-						return p.push(idx.user_name);
-				});
-				setprofessor(p);
+		.then((response2) => {
+			setp_list(response2.data.professors);
+			const p = [];
+			p_list.map((idx) => {
+				if (idx.user_id == professor)
+					return p.push(idx.user_name);
 			});
+			setprofessor(p);
+		});
 	}, []);
 	const handlecategoryChange = (event) => {
 		const {
