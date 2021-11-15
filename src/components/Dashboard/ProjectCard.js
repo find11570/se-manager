@@ -98,11 +98,11 @@ const ProjectCard = (props) => {
 		const front = () => {
 			if(quary.includes(',')) {
 				if((stack_string[1] == 'null') && (stack_string2[1] == 'null') && (stack_string3[1] == 'null') && (stack_string4[1] == 'null') && (stack_string5[1] == 'null')) {
-					console.log('get 요청');
+					console.log('f: get 요청');
 					return axios.get(api + url + url_c + '?categoryId='+ category +'&pageNum=' + value + '&pageCount=6');
 				}
 				else {
-					console.log('post 요청');
+					console.log('f:post 요청');
 					const intYear = [];
 					post_array[2].map(function (v) {
 						return intYear.push(parseInt(v, 10));
