@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const api = 'https://se-disk.herokuapp.com/api';
+const api = '202.31.202.28:443';
 
 const getRequest = async (path, params = {}) => {
   try {

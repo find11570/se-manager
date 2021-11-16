@@ -21,8 +21,6 @@ import { Link } from 'react-router-dom';
 import ProjectCard from 'src/components/Dashboard/ProjectCard';
 import Api from '../Api/Api';
 
-const api = 'https://se-disk.herokuapp.com/api';
-
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -68,7 +66,7 @@ const Project = () => {
 
 		// url string quary
 		const link = document.location.href;
-		var link_quary = link.replace('http://localhost:3000/app/project/', '');
+		var link_quary = link.replace('http://202.31.202.28:80/app/project/', '');
 		var quary = decodeURI(link_quary, 'UTF-8');
 		if (quary.includes(',')) {
 			var quary_array = quary.split('&');
