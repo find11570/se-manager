@@ -5,13 +5,8 @@ import {
 } from '@material-ui/core';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
-import axios from 'axios';
 import ProjectCardContent from 'src/components/Dashboard/ProjectCardContent';
 import Api from 'src/Api/Api';
-
-const api = 'https://se-disk.herokuapp.com/api';
-const url = '/project/search';
-const url_c = '/category';
 
 const ProjectCard = (props) => {
 	const { state } = props;
@@ -102,8 +97,12 @@ const ProjectCard = (props) => {
 				post_array.push(stack_string7[1]);
 			}
 			else {
-				post_array.push('null');
+				post_array.push('최신순');
 			}
+		}
+		else {
+			post_array.push('null');
+			post_array.push('최신순');
 		}
 	}
 	else {
@@ -116,10 +115,10 @@ const ProjectCard = (props) => {
 	const [array, setarray] = useState([]);
 	const handlePageChange = (event, value) => {
 		setPage(value);
-		const front = () => {
+		const front = async() => {
 			if (quary.includes(',')) {
 				if ((stack_string[1] == 'null') && (stack_string2[1] == 'null') && (stack_string3[1] == 'null') && (stack_string4[1] == 'null') && (stack_string5[1] == 'null') && (stack_string6[1] == 'null') && (stack_string7[1] == '최신순')) {
-					return axios.get(api + url + url_c + '?categoryId=' + category + '&pageNum=' + value + '&pageCount=6');
+					return await Api.getProjectInCategory(category, value, 6);
 				}
 				else {
 					const tag_arr = [];
@@ -153,6 +152,11 @@ const ProjectCard = (props) => {
 						});
 					}
 
+					var keyword_string = post_array[4];
+					if(post_array[4] == 'null,') { 
+						keyword_string = post_array[4].slice(0, -1);
+					}
+
 					const cat_arr = [];
 					if (post_array[5] !== 'null') {
 						cat_arr.push(post_array[5]);
@@ -168,16 +172,15 @@ const ProjectCard = (props) => {
 						subject: subj_arr,
 						year: intYear,
 						professor: p_id,
-						keyword: post_array[4].slice(0, -1),
+						keyword: keyword_string,
 						category: cat_arr,
 						sort: sort_arr
 					};
-
-					return axios.post(api + url + '?pageNum=' + value + '&pageCount=6', post_list);
+					return await Api.postProjectSearch(value, 6 , post_list);
 				}
 			}
 			else {
-				return axios.get(api + url + url_c + '?categoryId=' + category + '&pageNum=' + value + '&pageCount=6');
+				return await Api.getProjectInCategory(category, value, 6);
 			}
 		}
 
@@ -188,10 +191,10 @@ const ProjectCard = (props) => {
 		getdata();
 	};
 
-	const back = () => {
+	const back = async() => {
 		if (quary.includes(',')) {
 			if ((stack_string[1] == 'null') && (stack_string2[1] == 'null') && (stack_string3[1] == 'null') && (stack_string4[1] == 'null') && (stack_string5[1] == 'null') && (stack_string6[1] == 'null') && (stack_string7[1] == '최신순')) {
-				return axios.get(api + url + url_c + '?categoryId=' + category + '&pageNum=1' + '&pageCount=6');
+				return await Api.getProjectInCategory(category, 1, 6);
 			}
 			else {
 				const tag_arr = [];
@@ -225,6 +228,11 @@ const ProjectCard = (props) => {
 					});
 				}
 
+				var keyword_string = post_array[4];
+				if(post_array[4] == 'null,') { 
+					keyword_string = post_array[4].slice(0, -1);
+				}
+
 				const cat_arr = [];
 				if (post_array[5] !== 'null') {
 					cat_arr.push(post_array[5]);
@@ -240,16 +248,15 @@ const ProjectCard = (props) => {
 					subject: subj_arr,
 					year: intYear,
 					professor: p_id,
-					keyword: post_array[4].slice(0, -1),
+					keyword: keyword_string,
 					category: cat_arr,
 					sort: sort_arr
 				};
-
-				return axios.post(api + url + '?pageNum=1' + '&pageCount=6', post_list);
+				return await Api.postProjectSearch(1, 6 , post_list);
 			}
 		}
 		else {
-			return axios.get(api + url + url_c + '?categoryId=' + category + '&pageNum=1' + '&pageCount=6');
+			return await Api.getProjectInCategory(category, 1, 6);
 		}
 	}
 
@@ -258,8 +265,8 @@ const ProjectCard = (props) => {
 		await getProfessors();
 		const getdata = async () => {
 			const data = await back();
-			setarray(data.data.projects);
-			setcount(Math.ceil(data.data.count / 6));
+			setarray(data.projects);
+			setcount(Math.ceil(data.count / 6));
 		};
 		getdata();
 	}, [state]);

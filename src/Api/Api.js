@@ -255,7 +255,7 @@ const Api = {
   },
   // 프로젝트 검색
   postProjectSearch: async (pageNum, pageCount, project) => {
-    return await postJsonReqest(`/project/search/?pageNum=${pageNum}&pageCount=${pageCount}`, {project});
+    return await postJsonReqest(`/project/search/?pageNum=${pageNum}&pageCount=${pageCount}`, project);
   },
   // 프로젝트 삭제 -> 아직 구현 X
   deleteProject: async (projectId) => {
