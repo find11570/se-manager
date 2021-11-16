@@ -247,11 +247,12 @@ const Api = {
   },
   // 카테고리별 프로젝트 조회
   getProjectInCategory: async (categoryId, pageNum, pageCount) => {
-    return await getRequest('/project/search/category', {
+    const response = await getRequest('/project/search/category', {
       categoryId,
       pageNum,
       pageCount
     });
+	return response.data;
   },
   // 프로젝트 검색
   postProjectSearch: async (pageNum, pageCount, project) => {

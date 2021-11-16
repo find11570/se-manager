@@ -125,9 +125,11 @@ const Project = () => {
 			// keyword
 			var stack_string5 = quary_array[5].split('=');
 			if (stack_string5[1] != 'null') {
-				setPostBody({
-					name: stack_string5[1]
-				});
+				if(stack_string5[1] != 'null,'){
+					setPostBody({
+						name: stack_string5[1]
+					});
+				}
 			}
 		}
 		else {

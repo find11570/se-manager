@@ -117,7 +117,7 @@ const ProjectCard = (props) => {
 		setPage(value);
 		const front = async() => {
 			if (quary.includes(',')) {
-				if ((stack_string[1] == 'null') && (stack_string2[1] == 'null') && (stack_string3[1] == 'null') && (stack_string4[1] == 'null') && (stack_string5[1] == 'null') && (stack_string6[1] == 'null') && (stack_string7[1] == '최신순')) {
+				if ((stack_string[1] == 'null') && (stack_string2[1] == 'null') && (stack_string3[1] == 'null') && (stack_string4[1] == 'null') && (stack_string5[1] == 'null')) {
 					return await Api.getProjectInCategory(category, value, 6);
 				}
 				else {
@@ -193,7 +193,7 @@ const ProjectCard = (props) => {
 
 	const back = async() => {
 		if (quary.includes(',')) {
-			if ((stack_string[1] == 'null') && (stack_string2[1] == 'null') && (stack_string3[1] == 'null') && (stack_string4[1] == 'null') && (stack_string5[1] == 'null') && (stack_string6[1] == 'null') && (stack_string7[1] == '최신순')) {
+			if ((stack_string[1] == 'null') && (stack_string2[1] == 'null') && (stack_string3[1] == 'null') && (stack_string4[1] == 'null') && (stack_string5[1] == 'null')) {
 				return await Api.getProjectInCategory(category, 1, 6);
 			}
 			else {
