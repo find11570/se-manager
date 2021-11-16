@@ -124,6 +124,9 @@ const Project = () => {
 			var stack_string5 = quary_array[5].split('=');
 			if (stack_string5[1] != 'null') {
 				if(stack_string5[1] != 'null,'){
+					if(stack_string5[1].includes(',')){
+						stack_string5[1] = stack_string5[1].slice(0, -1);
+					}
 					setPostBody({
 						name: stack_string5[1]
 					});
@@ -562,7 +565,6 @@ const Project = () => {
 							>
 								<Button variant="contained"
 									color="success"
-									size="large"
 									type="submit"
 									onClick={handleChange}
 								>

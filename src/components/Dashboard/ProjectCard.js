@@ -186,7 +186,7 @@ const ProjectCard = (props) => {
 
 		const getdata = async () => {
 			const data = await front();
-			setarray(data.data.projects);
+			setarray(data.projects);
 		};
 		getdata();
 	};
@@ -229,7 +229,7 @@ const ProjectCard = (props) => {
 				}
 
 				var keyword_string = post_array[4];
-				if(post_array[4] == 'null,') { 
+				if(keyword_string.includes(',')){
 					keyword_string = post_array[4].slice(0, -1);
 				}
 
