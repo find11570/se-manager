@@ -27,11 +27,9 @@ const logout = () => {
 			}
 		})
 		.then((response) => {
-			console.log(response);
 			sessionStorage.clear();
 			window.location.href = target;
 		})
-		.catch((err) => console.log(err));
 };
 const TeamboardNavbar = ({ onMobileNavOpen, ...rest }) => {
 	const [notifications] = useState([]);

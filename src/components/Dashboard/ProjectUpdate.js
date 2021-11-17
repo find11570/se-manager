@@ -76,8 +76,14 @@ const ProjectUpdate = () => {
 	};
 	const getStacks = async () => {
 		let response = await Api.getStacks();
-		const stack_list = await response.data.tags;
-		setstacks(stack_list);
+		if(response.data.tags == null){
+			const stack_list = [];
+			setstacks(stack_list);
+		}
+		else{
+			const stack_list = await response.data.tags;
+			setstacks(stack_list);
+		}
 	};
 	const getProfessors = async () => {
 		let response = await Api.getProfessors();
@@ -97,7 +103,7 @@ const ProjectUpdate = () => {
 	[location.href.split('/').length - 1].split('.')[0];
 
 	useEffect(async () => {
-		let response = await Api.getProejct(project_id);
+		let response = await Api.getProject(project_id);
 
 		const mem = response.data.project.project_members;
 		const memberList = [];
@@ -169,7 +175,6 @@ const ProjectUpdate = () => {
 			project_tags: stack
 		};
 		let response = await Api.postUpdateProject(project_id, reqObject);
-		console.log(response);
 		if (response.sucess) {
 			alert('수정되었습니다.');
 		} else {
@@ -641,8 +646,7 @@ const ProjectUpdate = () => {
 								/>
 								<Link
 									to={{
-										pathname: `/app/projectDetail/${project_id}`,
-										state: { index: project_id }
+										pathname: `/app/dashboard`,
 									}}
 								>
 									<Button

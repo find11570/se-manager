@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const api = 'https://se-disk.herokuapp.com/api';
+const api = 'http://202.31.202.28:443/api';
 
 const getRequest = async (path, params = {}) => {
   try {
@@ -223,6 +223,7 @@ const Api = {
   },
   // 프로젝트 전체 기술스택 리스트 조회
   getStacks: async () => {
+	  const stack = await getRequest('/project/tags');
     return await getRequest('/project/tags');
   },
   // 프로젝트 카테고리 리스트 조회

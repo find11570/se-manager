@@ -149,8 +149,14 @@ const Project = () => {
 	// // 드롭다운 메뉴 Api로 get
 	const getStacks = async () => {
 		let response = await Api.getStacks();
-		const stack_list = await response.data.tags;
-		setstacks(stack_list);
+		if(response.data.tags == null){
+			const stack_list = [];
+			setstacks(stack_list);
+		}
+		else{
+			const stack_list = await response.data.tags;
+			setstacks(stack_list);
+		}
 	};
 	const getMenus = () => {
 		const menu_list = Api.getMenus();

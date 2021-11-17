@@ -31,7 +31,7 @@ const MyCard = (props) => {
 		const front = async () => {
 			let response = await Api.getProjectInUser(
 				people.user_id,
-				value - 1,
+				value,
 				Api.pageCount
 			);
 			return response;

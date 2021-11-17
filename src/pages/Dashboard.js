@@ -81,8 +81,14 @@ const Dashboard = () => {
 	};
 	const getStacks = async () => {
 		let response = await Api.getStacks();
-		const stack_list = await response.data.tags;
-		setstacks(stack_list);
+		if(response.data.tags == null){
+			const stack_list = [];
+			setstacks(stack_list);
+		}
+		else{
+			const stack_list = await response.data.tags;
+			setstacks(stack_list);
+		}
 	};
 	const getProfessors = async () => {
 		let response = await Api.getProfessors();

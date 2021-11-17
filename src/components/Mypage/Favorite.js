@@ -18,7 +18,7 @@ const Favorite = (props) => {
 		const front = async () => {
 			let response = await Api.getLikedProject(
 				people.user_id,
-				value - 1,
+				value,
 				Api.pageCount
 			);
 			return response;
@@ -40,6 +40,7 @@ const Favorite = (props) => {
 		const getdata = async () => {
 			const data = await back();
 			if (data !== undefined) {
+				console.log(data.data);
 				setarray(data.data.projects);
 				setcount(Math.ceil(data.data.count / Api.pageCount));
 			}

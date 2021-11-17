@@ -98,8 +98,14 @@ const ProjectRegister = () => {
 	};
 	const getStacks = async () => {
 		let response = await Api.getStacks();
-		const stack_list = await response.data.tags;
-		setstacks(stack_list);
+		if(response.data.tags == null){
+			const stack_list = [];
+			setstacks(stack_list);
+		}
+		else{
+			const stack_list = await response.data.tags;
+			setstacks(stack_list);
+		}
 	};
 
 	// 프로젝트 생성 버튼 OnClick 함수
@@ -127,9 +133,7 @@ const ProjectRegister = () => {
 			project_members: intM,
 			project_tags: stack
 		};
-		console.log(reqObject);
 		let response = await Api.postProject(reqObject);
-		console.log(response);
 		if (response.sucess) {
 			alert('생성되었습니다.');
 		} else {

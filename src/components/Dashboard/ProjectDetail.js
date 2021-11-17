@@ -298,9 +298,8 @@ const ProjectDetail = (props) => {
 							py: 1
 						}}
 					/>
-					{postBody.content}
 					<Grid container spacing={2}>
-						<Grid item lg={9} md={9} sm={9} xs={9}>
+						<Grid item lg={10} md={10} sm={10} xs={10}>
 							<TextField
 								fullWidth
 								sx={{
