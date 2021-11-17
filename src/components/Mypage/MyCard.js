@@ -9,7 +9,7 @@ import Api from '../../Api/Api';
 const people = JSON.parse(sessionStorage.getItem('user_data'));
 
 const MyCard = (props) => {
-	const [page, setPage] = useState(0);
+	const [page, setPage] = useState(1);
 	const [count, setcount] = useState(1);
 	const [array, setarray] = useState([]);
 

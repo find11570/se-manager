@@ -61,7 +61,6 @@ const SignUpRegister = () => {
 				check.auth = await response.isAuth;
 				if (check.auth === true) {
 					check.msg = '인증되었습니다';
-					alert(check.msg);
 				} else {
 					check.err = '인증에 실패하였습니다';
 				}
@@ -116,6 +115,9 @@ const SignUpRegister = () => {
 	// 중복 아이디 체크
 	const checkId = async () => {
 		var check = false;
+		if (!postBody.id) {
+			return check;
+		}
 		let response = await Api.getDoubleCheckId(postBody.id);
 		if (response.data.sucess) {
 			check = response.data.isDouble;
@@ -127,11 +129,11 @@ const SignUpRegister = () => {
 	// 빈 값 체크
 	const emptyCheck = () => {
 		if (
-			postBody.number === '' ||
-			postBody.email === '' ||
-			postBody.id === '' ||
-			postBody.pw === '' ||
-			postBody.name === ''
+			postBody.number === null ||
+			postBody.email === null ||
+			postBody.id === null ||
+			postBody.pw === null ||
+			postBody.name === null
 		) {
 			return false;
 		}
@@ -156,7 +158,11 @@ const SignUpRegister = () => {
 			return false;
 		}
 		if (isEmailAuth.auth === false) {
-			alert(isEmailAuth.err);
+			if (isEmailAuth.msg) {
+				alert(isEmailAuth.msg);
+			} else {
+				alert(isEmailAuth.err);
+			}
 			return false;
 		}
 		if (isDuplicateId === true) {

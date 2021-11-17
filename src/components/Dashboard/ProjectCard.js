@@ -109,7 +109,7 @@ const ProjectCard = (props) => {
 		var category = quary;
 	}
 
-	const [page, setPage] = useState(0);
+	const [page, setPage] = useState(1);
 	const [count, setcount] = useState(1);
 	const [p_list, setp_list] = useState([]);
 	const [array, setarray] = useState([]);

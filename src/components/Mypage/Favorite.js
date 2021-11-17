@@ -8,7 +8,7 @@ import Api from '../../Api/Api';
 const people = JSON.parse(sessionStorage.getItem('user_data'));
 
 const Favorite = (props) => {
-	const [page, setPage] = useState(0);
+	const [page, setPage] = useState(1);
 	const [count, setcount] = useState(1);
 	const [array, setarray] = useState([]);
 
@@ -40,7 +40,6 @@ const Favorite = (props) => {
 		const getdata = async () => {
 			const data = await back();
 			if (data !== undefined) {
-				console.log(data.data);
 				setarray(data.data.projects);
 				setcount(Math.ceil(data.data.count / Api.pageCount));
 			}

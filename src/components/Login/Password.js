@@ -21,6 +21,7 @@ const Password = () => {
 		pw: '',
 		checkpw: ''
 	});
+	const [isClick, setIsClick] = useState(false);
 
 	// 이메일 인증 버튼 onClick함수
 	const emailAuth = async () => {
@@ -35,24 +36,24 @@ const Password = () => {
 
 	// 이메일 인증 확인
 	const checkEmailAuth = async () => {
-		var check = { auth: false, msg: '', err: '' };
+		var check = { auth: false, msg: '' };
 		if (postBody.checkemail) {
 			if (Api.emailCode !== null) {
 				let response = await Api.postEmail(Api.emailCode, postBody.checkemail);
 				check.auth = await response.isAuth;
 				if (check.auth === true) {
 					check.msg = '인증되었습니다';
-					alert(check.msg);
+					setIsClick(true);
 				} else {
-					check.err = '인증에 실패하였습니다';
+					check.msg = '인증에 실패하였습니다';
 				}
 				return check;
 			} else {
-				check.err = '인증번호 전송 후 진행해주세요';
+				check.msg = '인증번호 전송 후 진행해주세요';
 				return check;
 			}
 		} else {
-			check.err = '이메일 인증번호를 입력해주세요';
+			check.msg = '이메일 인증번호를 입력해주세요';
 			return check;
 		}
 	};
@@ -75,10 +76,17 @@ const Password = () => {
 
 	// 중복 아이디 체크
 	const doubleCheckId = async () => {
+		var check = false;
+		if (!postBody.login_id) {
+			return check;
+		}
 		let response = await Api.getDoubleCheckId(postBody.login_id);
-		return await response.data.isDouble;
+		if (response.data.sucess) {
+			check = response.data.isDouble;
+			return check;
+		}
+		return check;
 	};
-
 	// 비밀번호 찾기 OnClick 함수
 	const updatePassword = async () => {
 		const isEmpty = emptyCheck();
@@ -90,8 +98,12 @@ const Password = () => {
 			alert('필수항목란을 채워주세요(이메일, 아이디, 변경할 비밀번호)');
 			return false;
 		}
+		if (!isClick) {
+			alert('인증번호 확인을 해주세요');
+			return false;
+		}
 		if (isEmailAuth.auth === false) {
-			alert(isEmailAuth.err);
+			alert(isEmailAuth.msg);
 			return false;
 		}
 		if (isDuplicatePw === false) {
@@ -332,7 +344,9 @@ const Password = () => {
 											width: 240,
 											marginTop: 0.5
 										}}
-										onClick={checkEmailAuth}
+										onClick={() => {
+											checkEmailAuth().then((check) => alert(check.msg));
+										}}
 									>
 										<h3
 											style={{
@@ -383,7 +397,9 @@ const Password = () => {
 											marginTop: 0.5
 										}}
 										// 수정
-										onClick={checkEmailAuth}
+										onClick={() => {
+											checkEmailAuth().then((check) => alert(check.msg));
+										}}
 									>
 										<h3
 											style={{
@@ -474,6 +490,7 @@ const Password = () => {
 											</InputAdornment>
 										)
 									}}
+									type="password"
 									placeholder="영어 대/소문자,특수문자"
 									variant="outlined"
 									onChange={handlepwChange}
@@ -510,6 +527,7 @@ const Password = () => {
 											</InputAdornment>
 										)
 									}}
+									type="password"
 									placeholder="영어 대/소문자,특수문자"
 									variant="outlined"
 									onChange={handlecheckpwChange}

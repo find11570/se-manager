@@ -54,6 +54,7 @@ const ProjectUpdate = () => {
 
 	const [members, setmembers] = useState([]);
 	const [p_list, setp_list] = useState([]);
+	const [leader, setleader] = useState([]);
 
 	useEffect(async () => {
 		await getYears();
@@ -76,11 +77,11 @@ const ProjectUpdate = () => {
 	};
 	const getStacks = async () => {
 		let response = await Api.getStacks();
-		if(response.data.tags == null){
+		if (response.data.tags == null) {
 			const stack_list = [];
 			setstacks(stack_list);
 		}
-		else{
+		else {
 			const stack_list = await response.data.tags;
 			setstacks(stack_list);
 		}
@@ -149,19 +150,47 @@ const ProjectUpdate = () => {
 			category.push(response.data.project.project_categorys);
 			setcategory(category[0]);
 		}
+		setleader(response.data.project.project_leader);
 	}, []);
+
+	// 빈 값 체크
+	const emptyCheck = () => {
+		if (
+			postBody.title === '' ||
+			subject[0] === undefined ||
+			year[0] === undefined ||
+			professor[0] === undefined ||
+			category.length == 0
+		) {
+			return false;
+		}
+	};
 
 	// 프로젝트 수정버튼 OnClick 함수
 	const projectUpdate = async () => {
+		const isEmpty = emptyCheck();
+		if (isEmpty === false) {
+			alert('필수항목란을 채워주세요(제목, 기술 스택, 해당 과목, 진행년도, 지도교수, 카테고리)');
+			return false;
+		}
+
 		const intM = [];
-		members.map(function (v) {
-			return intM.push(parseInt(v, 10));
-		});
+		if (members == '') {
+			intM.push(leader);
+		}
+		else {
+			members.map(function (v) {
+				return intM.push(parseInt(v, 10));
+			});
+		}
+
 		const p_id = [];
-		p_list.map((idx) => {
-			if (idx.user_name == professor) return p_id.push(idx.user_id);
-		});
-		setprofessor(p_id);
+		if (professor !== null || professor !== undefined) {
+			p_list.map((idx) => {
+				if (idx.user_name == professor) return p_id.push(idx.user_id);
+			});
+		}
+
 		const reqObject = {
 			project_title: postBody.title,
 			project_introduction: postBody.content,
@@ -176,7 +205,10 @@ const ProjectUpdate = () => {
 		};
 		let response = await Api.postUpdateProject(project_id, reqObject);
 		if (response.sucess) {
+			setprofessor(p_id);
 			alert('수정되었습니다.');
+			const target = '/app/dashboard';
+			window.location.href = target;
 		} else {
 			alert('수정 실패');
 		}
@@ -644,25 +676,19 @@ const ProjectUpdate = () => {
 										py: 2
 									}}
 								/>
-								<Link
-									to={{
-										pathname: `/app/dashboard`,
-									}}
+								<Button
+									variant="contained"
+									color="success"
+									onClick={projectUpdate}
 								>
-									<Button
-										variant="contained"
-										color="success"
-										onClick={projectUpdate}
+									<h3
+										style={{
+											color: '#ffffff'
+										}}
 									>
-										<h3
-											style={{
-												color: '#ffffff'
-											}}
-										>
-											수정하기
-										</h3>
-									</Button>
-								</Link>
+										수정하기
+									</h3>
+								</Button>
 								<Link to="/app/dashboard">
 									<Button
 										variant="contained"

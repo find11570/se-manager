@@ -332,7 +332,7 @@ const ProjectDetail = (props) => {
 											color: '#ffffff'
 										}}
 									>
-										검색
+										등록
 									</h4>
 								</Button>
 							</Link>
