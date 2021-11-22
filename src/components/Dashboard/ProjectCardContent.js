@@ -77,6 +77,7 @@ const ProjectCardContent = (props) => {
 				<Card
 					sx={{
 						boxShadow: 5,
+						height: 350
 					}}
 					onClick={() => handlehit(id)}
 				>
@@ -89,7 +90,8 @@ const ProjectCardContent = (props) => {
 						>
 							<Box
 								sx={{
-									marginBottom: 3
+									marginBottom: 3,
+									height: '80%'
 								}}
 							>
 								<img
@@ -97,7 +99,7 @@ const ProjectCardContent = (props) => {
 									alt="profile"
 									style={{
 										width: '100%',
-										height: '15%'
+										height: 200
 									}}
 								/>
 								<h3>{title}</h3>
