@@ -360,8 +360,22 @@ const Api = {
   // Files--------------------------------------------------------------------------------------
   getReadFile: async (fileData) => {
     return await postFormReqest(`/file/upload`, fileData);
-  }
+  },
   // Recruitment--------------------------------------------------------------------------------
+  postTeam: async (Team) => {
+    return await postJsonReqest('/recruitment', Team);
+  },
+  getAllTeam: async (pageNum, pageCount) => {
+	const response = await getRequest('/recruitment', { pageNum, pageCount })
+	return response.data;
+  },
+  getTeam: async (Teamid) => {
+    return await getRequest(`/recruitment/${Teamid}`);
+  },
+
+  getTeamEnd: async (Teamid) => {
+    return await getRequest(`/recruitment/${Teamid}/end`);
+  },
   // Notification———————————————————————————————————————
 };
 

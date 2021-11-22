@@ -58,7 +58,7 @@ const ProjectUpdate = () => {
 	const [p_list, setp_list] = useState([]);
 	const [leader, setleader] = useState([]);
 	const [image, setimage] = useState();
-    const [fileUrl, setFileUrl] = useState(null);
+	const [fileUrl, setFileUrl] = useState(null);
 
 	useEffect(async () => {
 		await getYears();
@@ -283,14 +283,23 @@ const ProjectUpdate = () => {
 			let image_path = response.files[0].file_path.replace('file\\', '')
 			let image = server_path + image_path;
 			setPostBody({
-			title: postBody.title,
-			image: image,
-			content: postBody.content
+				title: postBody.title,
+				image: image,
+				content: postBody.content
 			});
 		} else {
 			console.log('이미지 업로드 실패');
 		}
-   };
+	};
+
+	const deleteImage = (event) => {
+		setFileUrl(null);
+		setPostBody({
+			title: postBody.title,
+			image: '',
+			content: postBody.content
+		});
+	};
 
 	return (
 		<>
@@ -355,24 +364,76 @@ const ProjectUpdate = () => {
 										<CardContent>
 											<div className="img__box">
 												<img
-												src={fileUrl}
-												alt="profile"
-												style={{
-													width: '100%',
-													height: '15%'
-												}}
+													src={fileUrl}
+													style={{
+														width: '100%',
+														height: '15%'
+													}}
 												/>
 												<Box
-												sx={{
-												minHeight: '100%',
-												py: 1.5
-												}}
+													sx={{
+														minHeight: '100%',
+														py: 1.5
+													}}
 												/>
-												<input
-												type="file"
-												accept="image/*"
-												onChange={processImage}
-												></input>
+												<Button
+													variant="contained"
+													size="small"
+													color="info"
+													sx={{
+														marginTop: 2,
+														width: 180
+													}}
+												>
+													<label
+														htmlFor="file"
+														style={{
+															width: 100
+														}}
+													>
+														<h3
+															style={{
+																color: '#ffffff'
+															}}
+														>
+															사진 선택
+														</h3>
+													</label>
+													<input
+														type="file"
+														id="file"
+														accept="image/*"
+														style={{
+															color: '#ffffff',
+															display: 'none'
+														}}
+														onChange={processImage}
+													></input>
+												</Button>
+												<Box
+													sx={{
+														minHeight: '100%',
+														py: 0.5
+													}}
+												/>
+												<Button
+													variant="contained"
+													size="small"
+													color="success"
+													sx={{
+														marginTop: 2,
+														width: 180
+													}}
+													onClick={deleteImage}
+												>
+													<h3
+														style={{
+															color: '#ffffff'
+														}}
+													>
+														기본 이미지로 변경
+													</h3>
+												</Button>
 											</div>
 										</CardContent>
 									</Card>

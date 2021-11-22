@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
 	Box,
 	Card,
@@ -10,41 +10,51 @@ import {
 	Button,
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
+import Api from '../../Api/Api';
 
 const TeamSpecific = () => {
-	const [chartData] = useState({
-		id: '1',
-		peopleKey: '1',
-		name: '진채연',
-		date: '5',
-		title: '창의 융합 종합 설계 1 프로젝트 인원 모집',
-		tag: ['hi', 'my', 'name', 'is', 'door'],
-		Maxpeople: '4',
-		currentpeople: '2',
-		content: '으아아아아아ㅏㅇ 나는 프로젝트하는 중이다..... 으아아아아아아아 배고파아아아아앙 키키키키키키키키 졸려어ㅓㅌ어어어어어라너미런아ㅣㅓㄹ민ㅇㄹ'
-	});
-	const List = chartData.tag.map((t) => (
-		<Box
-			key={t}
-			value={t}
-			sx={{
-				backgroundColor: 'primary.smoothgreen',
-				display: 'inline-block',
-				textAlign: 'center',
-				marginRight: 2,
-				borderBottomRightRadius: 5,
-				borderBottomLeftRadius: 5,
-				borderTopRightRadius: 5,
-				borderTopLeftRadius: 5,
-				borderColor: 'primary.main',
-				paddingLeft: 2,
-				paddingRight: 2,
-				boxShadow: 1
-			}}
-		>
-			{t}
-		</Box>
-	));
+	const project_id = location.href
+		.split('/')
+	[location.href.split('/').length - 1].split('.')[0];
+	const [data, setData] = useState([]);
+	const temp = '';
+	const [state, setstate] = useState(false);
+	const user = JSON.parse(sessionStorage.getItem('user_data'));
+	const [date, setdate] = useState();
+	useEffect(async () => {
+		function dateCul(date) {
+			var year = date.slice(0, 4);
+			var month = date.slice(5, 7);
+			var day = date.slice(8, 10);
+			var Dday = new Date(year, month - 1, day);
+			var now = new Date();
+
+			var gap = now.getTime() - Dday.getTime();
+			var result = Math.floor(gap / (1000 * 60 * 60 * 24)) * -1;
+			return result;
+		};
+		let response = await Api.getTeam(project_id);
+		setData(response.data.recruitment);
+		setdate(dateCul(response.data.recruitment.recruitment_deadline_date));
+		if (sessionStorage.getItem('user_token')) {
+			if (response.data.recruitment.length != 0) {
+				if (response.data.recruitment.user_id === user.user_id) {
+					setstate(true);
+				}
+			}
+		}
+	}, []);
+
+	const teamEnd = async () => {
+		let response = await Api.getTeamEnd(data.recruitment_id);
+		if (response.data.sucess) {
+			alert('마감되었습니다');
+			const target = '/se/team';
+			window.location.href = target;
+		} else {
+			alert('마감실패');
+		}
+	}
 
 	return (
 		<>
@@ -92,17 +102,17 @@ const TeamSpecific = () => {
 									}}
 									>
 										마감까지 D-
-										{chartData.date}
+										{date}
 									</h2>
 								</Hidden>
 								<Hidden lgDown>
 									<h1 style={{ color: '#ffffff', marginLeft: 25 }}>
-										{chartData.title}
+										{data.recruitment_title}
 									</h1>
 								</Hidden>
 								<Hidden lgUp>
 									<h3 style={{ color: '#ffffff', marginLeft: 20 }}>
-										{chartData.title}
+										{data.recruitment_title}
 									</h3>
 								</Hidden>
 								<Box
@@ -111,30 +121,34 @@ const TeamSpecific = () => {
 										py: 1,
 									}}
 								/>
-								<Hidden lgDown>
-									<Box
-										sx={{
-											marginLeft: 2,
-										}}
-									>
-										<h4 style={{ color: '#006400' }}>
-											#&nbsp;
-											{List}
-										</h4>
-									</Box>
-								</Hidden>
-								<Box>
-									<Hidden lgUp>
-										<h4 style={{
-											color: '#ffffff',
-											float: 'right',
-											marginTop: 5,
-											marginRight: 5,
-										}}
+								<Box
+									sx={{
+										marginLeft: 2,
+									}}
+								>
+									<h4 style={{ color: '#006400' }}>
+										#&nbsp;
+										<Box
+											sx={{
+												backgroundColor: 'primary.smoothgreen',
+												display: 'inline-block',
+												textAlign: 'center',
+												marginRight: 2,
+												borderBottomRightRadius: 5,
+												borderBottomLeftRadius: 5,
+												borderTopRightRadius: 5,
+												borderTopLeftRadius: 5,
+												borderColor: 'primary.main',
+												paddingLeft: 2,
+												paddingRight: 2,
+												boxShadow: 1
+											}}
 										>
-											{chartData.name}
-										</h4>
-									</Hidden>
+											{data.recruitment_subject}
+										</Box>
+									</h4>
+								</Box>
+								<Box>
 									<Hidden lgDown>
 										<h2 style={{
 											color: '#ffffff',
@@ -143,7 +157,7 @@ const TeamSpecific = () => {
 											marginRight: 20,
 										}}
 										>
-											{chartData.name}
+											{data.user_name}
 										</h2>
 										<Avatar
 											sx={{
@@ -171,11 +185,10 @@ const TeamSpecific = () => {
 								}}
 							>
 								<h3>
-									{chartData.content}
+									{data.recruitment_content}
 								</h3>
 							</Box>
-							<Hidden lgDown>
-								<Link to="/se/team">
+							{state ? (
 									<Button
 										variant="contained"
 										size="medium"
@@ -186,6 +199,7 @@ const TeamSpecific = () => {
 											marginTop: 0.5,
 											marginLeft: 2
 										}}
+										onClick={teamEnd}
 									>
 										<h3 style={{
 											color: '#ffffff',
@@ -194,7 +208,12 @@ const TeamSpecific = () => {
 											마감하기
 										</h3>
 									</Button>
-								</Link>
+							) : (
+								temp
+							)}
+							{state ? (
+								temp
+							) : (
 								<Link to="/se/team">
 									<Button
 										variant="contained"
@@ -215,43 +234,7 @@ const TeamSpecific = () => {
 										</h3>
 									</Button>
 								</Link>
-							</Hidden>
-							<Hidden lgUp>
-								<Link to="/se/team">
-									<Button
-										variant="contained"
-										size="medium"
-										color="success"
-										sx={{
-											float: 'right',
-										}}
-									>
-										<h3 style={{
-											color: '#ffffff',
-										}}
-										>
-											마감하기
-										</h3>
-									</Button>
-								</Link>
-								<Link to="/se/teamSpecificQuestion">
-									<Button
-										variant="contained"
-										size="medium"
-										color="success"
-										sx={{
-											float: 'left',
-										}}
-									>
-										<h3 style={{
-											color: '#ffffff',
-										}}
-										>
-											신청하기
-										</h3>
-									</Button>
-								</Link>
-							</Hidden>
+							)}
 							<Box
 								sx={{
 									minHeight: '100%',
@@ -266,7 +249,7 @@ const TeamSpecific = () => {
 							py: 2,
 						}}
 					/>
-					<Hidden lgDown>
+					{state ? (
 						<Link to="/se/teamList">
 							<Button
 								variant="contained"
@@ -285,6 +268,10 @@ const TeamSpecific = () => {
 								</h3>
 							</Button>
 						</Link>
+					) : (
+						temp
+					)}
+					{state ? (
 						<Link to="/se/teamupdate">
 							<Button
 								variant="contained"
@@ -303,53 +290,9 @@ const TeamSpecific = () => {
 								</h3>
 							</Button>
 						</Link>
-					</Hidden>
-					<Hidden lgUp>
-						<Link to="/se/teamList">
-							<Button
-								variant="contained"
-								size="medium"
-								color="success"
-								sx={{
-									float: 'right',
-									marginRight: 2,
-									marginTop: 0.5,
-								}}
-							>
-								<h3 style={{
-									color: '#ffffff',
-								}}
-								>
-									신청목록
-								</h3>
-							</Button>
-						</Link>
-						<Link to="/se/teamupdate">
-							<Button
-								variant="contained"
-								size="medium"
-								color="success"
-								sx={{
-									float: 'left',
-									marginTop: 0.5,
-									marginLeft: 2
-								}}
-							>
-								<h3 style={{
-									color: '#ffffff',
-								}}
-								>
-									수정하기
-								</h3>
-							</Button>
-						</Link>
-					</Hidden>
-					<Box
-						sx={{
-							minHeight: '100%',
-							py: 2,
-						}}
-					/>
+					) : (
+						temp
+					)}
 				</Grid>
 			</Box>
 		</>

@@ -15,6 +15,7 @@ import { Link } from 'react-router-dom';
 import Api from '../../Api/Api';
 
 const data = JSON.parse(sessionStorage.getItem('user_data'));
+const server_path = 'http://202.31.202.28:443/file/';
 
 const SignUpUpdate = () => {
 	const [postBody, setpostBody] = useState({
@@ -31,6 +32,9 @@ const SignUpUpdate = () => {
 		position: data.user_position
 	});
 
+	const [image, setimage] = useState();
+	const [fileUrl, setFileUrl] = useState(data.user_image);
+
 	// 유저 정보 없데이트, 수정하기 버튼 OnClick 함수
 	const update_user = async () => {
 		let response = await Api.postUpdateUser(
@@ -41,11 +45,10 @@ const SignUpUpdate = () => {
 			postBody.blog,
 			postBody.position
 		);
-
 		if (response.sucess === true) {
 			const target = 'page';
 			var user_data = JSON.parse(sessionStorage.getItem('user_data'));
-			user_data.user_image = 'blank';
+			user_data.user_image = postBody.image;
 			user_data.user_introduction = postBody.content;
 			user_data.user_github = postBody.github;
 			user_data.user_blog = postBody.blog;
@@ -64,37 +67,50 @@ const SignUpUpdate = () => {
 		let response = await Api.deleteUser(postBody.id);
 	};
 
-	// 사진 첨부 시, 썸네일 표시 함수
-	const input_thumbnail = () => {
-		var input_image = document.getElementById('file');
-		var thumbnail = document.getElementById('thumbnail');
-		if (!thumbnail.hasChildNodes()) {
-			if (input_image.files) {
-				var image_container = document.createElement('div');
-				var image = document.createElement('img');
-				image.style.width = '100px';
-				image.style.height = '100px';
-				image.style.borderRadius = '50%';
-				var image_list = input_image.files;
-				var reader = new FileReader();
-				reader.readAsDataURL(image_list[0]);
-				reader.onload = function () {
-					image.src = reader.result;
-					image.id = 'thumbnail_image';
-				};
-				image_container.id = 'thumbnail_image_container';
-				image_container.appendChild(image);
-				thumbnail.appendChild(image_container);
-			}
+	const processImage = async (event) => {
+		const imageFile = event.target.files[0];
+		const imageUrl = URL.createObjectURL(imageFile);
+		setimage(imageFile);
+		setFileUrl(imageUrl);
+		const formData = new FormData();
+		formData.append('attachments', imageFile);
+		let response = await Api.getReadFile(formData);
+		if (response.sucess) {
+			let image_path = response.files[0].file_path.replace('file\\', '');
+			let image = server_path + image_path;
+			setpostBody({
+				id: postBody.id,
+				login_id: postBody.login_id,
+				email: postBody.email,
+				name: postBody.name,
+				number: postBody.number,
+				image: image,
+				type: postBody.type,
+				github: postBody.github,
+				blog: postBody.blog,
+				content: postBody.content,
+				position: postBody.position
+			});
+		} else {
+			console.log('이미지 업로드 실패');
 		}
 	};
 
-	// 썸네일 삭제 함수
-	const delete_thumbnail = () => {
-		var image_container_id = document.getElementById(
-			'thumbnail_image_container'
-		);
-		thumbnail.removeChild(image_container_id);
+	const deleteImage = () => {
+		setFileUrl(null);
+		setpostBody({
+			id: postBody.id,
+			login_id: postBody.login_id,
+			email: postBody.email,
+			name: postBody.name,
+			number: postBody.number,
+			image: '',
+			type: postBody.type,
+			github: postBody.github,
+			blog: postBody.blog,
+			content: postBody.content,
+			position: postBody.position
+		});
 	};
 
 	// React Handle Function
@@ -222,75 +238,93 @@ const SignUpUpdate = () => {
 										py: 2
 									}}
 								/>
-								<Avatar
-									sx={{
-										cursor: 'pointer',
-										width: 60,
-										height: 60,
-										float: 'left',
-										marginTop: 4,
-										marginRight: 2
-									}}
-								/>
-								<Button
-									variant="contained"
-									size="medium"
-									color="success"
-									sx={{
-										marginTop: 2,
-										width: 180
-									}}
-								>
-									<label
-										htmlFor="file"
-										style={{
-											width: 100
-										}}
-									>
-										<h3
-											style={{
-												color: '#ffffff'
-											}}
-										>
-											사진선택
-										</h3>
-									</label>
-									<input
-										type="file"
-										id="file"
-										accept="image/*"
-										style={{
-											color: '#ffffff',
-											display: 'none'
-										}}
-										onChange={input_thumbnail}
-									/>
-								</Button>
+								<h3>프로필 사진</h3>
 								<Box
 									sx={{
 										minHeight: '100%',
 										py: 0.5
 									}}
 								/>
-								<Button
-									variant="contained"
-									size="medium"
-									color="success"
-									sx={{
-										marginTop: 2,
-										width: 180
-									}}
-									onClick={delete_thumbnail}
-								>
-									<h3
+								<div className="img__box">
+									<img
+										src={fileUrl}
 										style={{
-											color: '#ffffff'
+											width: '100px',
+											height: '100px',
+											borderRadius: '50%'
+										}}
+									/>
+									<Box
+										sx={{
+											minHeight: '100%',
+											py: 0.5
+										}}
+									/>
+									<Button
+										variant="contained"
+										size="small"
+										color="info"
+										sx={{
+											marginTop: 1,
+											width: 180
 										}}
 									>
-										기본 이미지로 변경
-									</h3>
-								</Button>
-								<Box id="thumbnail" />
+										<label
+											htmlFor="file"
+											style={{
+												width: 100
+											}}
+										>
+											<h3
+												style={{
+													color: '#ffffff'
+												}}
+											>
+												사진 선택
+											</h3>
+										</label>
+										<input
+											type="file"
+											id="file"
+											accept="image/*"
+											style={{
+												color: '#ffffff',
+												display: 'none'
+											}}
+											onChange={processImage}
+										></input>
+									</Button>
+									<Box
+										sx={{
+											minHeight: '100%',
+											py: 0.5
+										}}
+									/>
+									<Button
+										variant="contained"
+										size="small"
+										color="success"
+										sx={{
+											marginTop: 1,
+											width: 180
+										}}
+										onClick={deleteImage}
+									>
+										<h3
+											style={{
+												color: '#ffffff'
+											}}
+										>
+											기본 이미지로 변경
+										</h3>
+									</Button>
+								</div>
+								<Box
+									sx={{
+										minHeight: '100%',
+										py: 2
+									}}
+								/>
 								<Box
 									sx={{
 										minHeight: '100%',

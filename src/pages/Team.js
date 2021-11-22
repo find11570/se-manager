@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet';
 import TeamRead from 'src/components/Team/TeamRead';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
 	Box,
 	Container,
@@ -21,6 +21,7 @@ import Checkbox from '@mui/material/Checkbox';
 import { Link } from 'react-router-dom';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
+import Api from '../Api/Api';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -32,29 +33,17 @@ const MenuProps = {
 		},
 	},
 };
-const stacks = [
-	'React',
-	'Java',
-	'C++',
-	'C',
-	'Mysql',
-	'MongoDB',
-	'Python',
-	'자연어처리',
-	'영상처리',
-	'딥러닝',
-];
-const subjects = [
-	'창의융합종합설계1',
-	'창의융합종합설계2',
-	'일반 프로젝트'
-];
+
 const Team = () => {
 	const [postBody, setPostBody] = useState({
 		name: ''
 	});
 	const [stack, setstack] = useState([]);
 	const [subject, setsubject] = useState([]);
+
+	const [stacks, setstacks] = useState([]);
+	const [subjects, setsubjects] = useState([]);
+
 	const handleTextChange = (event) => {
 		setPostBody({
 			name: event.currentTarget.value,
@@ -75,6 +64,27 @@ const Team = () => {
 		setsubject(
 			typeof value === 'string' ? value.split(',') : value,
 		);
+	};
+	useEffect(async () => {
+		getSubjects();
+		getStacks();
+
+	}, []);
+	const getSubjects = async () => {
+		let response = await Api.getSubjects();
+		const subject_list = await response.data.subjects;
+		setsubjects(subject_list);
+	};
+	const getStacks = async () => {
+		let response = await Api.getStacks();
+		if (response.data.tags == null) {
+			const stack_list = [];
+			setstacks(stack_list);
+		}
+		else {
+			const stack_list = await response.data.tags;
+			setstacks(stack_list);
+		}
 	};
 	return (
 		<>
@@ -277,81 +287,7 @@ const Team = () => {
 							py: 2,
 						}}
 					/>
-					<Grid
-						container
-						spacing={3}
-					>
-						<Grid
-							item
-							lg={5}
-							md={5}
-							sm={6}
-							xs={12}
-						>
-							<TeamRead />
-						</Grid>
-						<Grid
-							item
-							lg={5}
-							md={5}
-							sm={6}
-							xs={12}
-						>
-							<TeamRead />
-						</Grid>
-						<Grid
-							item
-							lg={5}
-							md={5}
-							sm={6}
-							xs={12}
-						>
-							<TeamRead />
-						</Grid>
-						<Grid
-							item
-							lg={5}
-							md={5}
-							sm={6}
-							xs={12}
-						>
-							<TeamRead />
-						</Grid>
-						<Grid
-						item
-						lg={10}
-						md={10}
-						sm={10}
-						xs={10}
-					>
-						<Hidden lgUp>
-							<Box
-								sx={{
-									justifyContent: 'center',
-									alignItems: 'center',
-									display: 'flex'
-								}}
-							>
-								<Stack spacing={2}>
-									<Pagination count={10} size="small" showFirstButton showLastButton />
-								</Stack>
-							</Box>
-						</Hidden>
-						<Hidden lgDown>
-							<Box
-								sx={{
-									justifyContent: 'center',
-									alignItems: 'center',
-									display: 'flex'
-								}}
-							>
-								<Stack spacing={2}>
-									<Pagination count={10} showFirstButton showLastButton />
-								</Stack>
-							</Box>
-						</Hidden>
-					</Grid>
-					</Grid>
+						<TeamRead />
 				</Container>
 			</Box>
 		</>

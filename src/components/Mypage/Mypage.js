@@ -16,6 +16,7 @@ const Mypage = () => {
 	const [chartData] = useState({
 		id: data.user_id,
 		name: data.user_name,
+		image: data.user_image,
 		number: data.user_school_num,
 		github: data.user_github,
 		blog: data.user_blog,
@@ -62,13 +63,12 @@ const Mypage = () => {
 											marginLeft: 5
 										}}
 									>
-										<Avatar
-											sx={{
-												cursor: 'pointer',
-												width: 80,
-												height: 80,
-												marginTop: 1.5,
-												marginBottom: 1.5
+										<img
+											src={chartData.image}
+											style={{
+												width: '100px',
+												height: '100px',
+												borderRadius: '50%'
 											}}
 										/>
 										<h3 style={{ color: '#ffffff' }}>{chartData.name}</h3>

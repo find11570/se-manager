@@ -39,7 +39,7 @@ const routes = [
 		children: [
 			{ path: 'team', element: <Team /> },
 			{ path: 'teamRegister', element: <TeamRegister /> },
-			{ path: 'teamSpecific', element: <TeamSpecific /> },
+			{ path: 'teamSpecific/:id', element: <TeamSpecific /> },
 			{ path: 'teamupdate', element: <TeamUpdate /> },
 			{ path: 'teamList', element: <TeamList /> }
 		]

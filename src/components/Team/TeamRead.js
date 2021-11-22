@@ -1,152 +1,109 @@
+import { useState, useEffect } from 'react';
 import {
 	Box,
-	Card,
-	CardContent,
-	Hidden,
-	Avatar
+	Grid,
 } from '@material-ui/core';
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
+import TeamReadContent from 'src/components/Team/TeamReadContent';
+import Api from 'src/Api/Api';
 
-const TeamRead = () => {
-	const [chartData] = useState({
-		id: '1',
-		peopleKey: '20191141',
-		name: '진채연',
-		date: '5',
-		title: '창의 융합 종합 설계 1 프로젝트 인원 모집',
-		tag: ['hi', 'my', 'name', 'is', 'door'],
-		Maxpeople: '4',
-		currentpeople: '2'
-	});
+const TeamRead = (props) => {
+	const { state } = props;
 
-	const List = chartData.tag.map((t) => (
-		<Box
-			key={t}
-			value={t}
-			sx={{
-				backgroundColor: 'primary.smoothgreen',
-				display: 'inline-block',
-				textAlign: 'center',
-				marginRight: 2,
-				borderBottomRightRadius: 5,
-				borderBottomLeftRadius: 5,
-				borderTopRightRadius: 5,
-				borderTopLeftRadius: 5,
-				borderColor: 'primary.main',
-				paddingLeft: 1,
-				paddingRight: 1,
-				boxShadow: 1
-			}}
-		>
-			{t}
-		</Box>
-	));
+	const [page, setPage] = useState(1);
+	const [count, setcount] = useState(1);
+	const [array, setarray] = useState([]);
+	const handlePageChange = (event, value) => {
+		setPage(value);
+		const front = async() => {
+			return await Api.getAllTeam(value, 6);
+		}
+		const getdata = async() => {
+            const data = await front();
+            setarray(data.recruitments);
+        };
+        getdata();
+	}
+
+	const back = async () => {
+		return await Api.getAllTeam(1, 6);
+	}
+
+	function dateCul(date) {
+		var year = date.slice(0, 4);
+		var month = date.slice(5, 7);
+		var day = date.slice(8, 10);
+		var Dday = new Date(year, month-1, day);
+		var now = new Date();
+
+		var gap = now.getTime() - Dday.getTime();
+		var result = Math.floor(gap / (1000 * 60 * 60 * 24)) * -1;
+		return result;
+	}
+	useEffect(async () => {
+		const getdata = async () => {
+			const data = await back();
+			setarray(data.recruitments);
+			setcount(Math.ceil(data.count / 6));
+		};
+		getdata();
+	}, [state]);
+
 
 	return (
-		<Link to="/se/teamSpecific">
-			<Card
-				sx={{
-					borderBottomRightRadius: 10,
-					borderBottomLeftRadius: 10,
-					borderTopRightRadius: 10,
-					borderTopLeftRadius: 10,
-					boxShadow: 5
-				}}
+		<>
+			<Box >
+				<Grid
+					container
+					spacing={3}
+				>
+					{
+						array.map(row => (
+							<TeamReadContent key={row.recruitment_id}
+								id={row.recruitment_id}
+								title={row.recruitment_title}
+								content={row.recruitment_content}
+								tag={row.recruitment_subject}
+								currentpeople={row.recruitment_recruited_cnt}
+								Maxpeople={row.recruitment_recruited_limit}
+								user_id={row.user_id}
+								user_name={row.user_name}
+								user_image={row.user_image}
+								people_key={row.user_school_num}
+								date={dateCul(row.recruitment_deadline_date)}
+							/>
+						))
+					}
+				</Grid>
+			</Box >
+			<Grid
+				item
+				lg={10}
+				md={10}
+				sm={12}
+				xs={12}
 			>
-				<CardContent>
-					<Hidden lgDown>
-						<Avatar
-							sx={{
-								cursor: 'pointer',
-								width: 60,
-								height: 60,
-								float: 'left',
-								marginTop: 4,
-								marginRight: 2,
-							}}
-						/>
-					</Hidden>
-					<Box
-						sx={{
-							height: 145,
-							position: 'relative',
-						}}
+				<Box
+					sx={{
+						justifyContent: 'center',
+						alignItems: 'center',
+						display: 'flex'
+					}}
+				>
+					<Stack
+						spacing={2}
 					>
-						<Hidden lgDown>
-							<h3 style={{ color: 'red' }}>
-								D-
-								{chartData.date}
-							</h3>
-						</Hidden>
-						<Box
-							sx={{
-								marginTop: 2,
-								marginBottom: 4
-							}}
-						>
-							<h3 style={{ color: '#006400' }}>
-								{chartData.title}
-							</h3>
-						</Box>
-						<Hidden lgDown>
-							<Box
-								sx={{
-									marginTop: 1
-								}}
-							>
-
-								<h4 style={{ color: '#006400' }}>
-									&nbsp;
-									{chartData.name}
-								</h4>
-
-							</Box>
-						</Hidden>
-						<Hidden lgUp>
-							<h4 style={{ color: '#006400' }}>
-								#&nbsp;
-								{List}
-							</h4>
-						</Hidden>
-						<Hidden lgDown>
-							<Box
-								sx={{
-									marginLeft: 10
-								}}
-							>
-								<h4>
-									#&nbsp;
-									{List}
-								</h4>
-							</Box>
-						</Hidden>
-						<Box
-							sx={{
-								py: 0.5,
-							}}
+						<Pagination
+							count={count}
+							page={page}
+							onChange={handlePageChange}
+							showFirstButton showLastButton
 						/>
-						<Box>
-							<h3 style={{
-								color: 'red',
-								display: 'inline-block',
-								float: 'right'
-							}}
-							>
-								{chartData.currentpeople}
-								/
-								{chartData.Maxpeople}
-							</h3>
-						</Box>
-						<Box
-							sx={{
-								py: 0.5,
-							}}
-						/>
-					</Box>
-				</CardContent>
-			</Card>
-		</Link>
+					</Stack>
+				</Box>
+			</Grid>
+		</>
 	);
 };
 

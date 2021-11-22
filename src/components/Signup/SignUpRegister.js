@@ -15,15 +15,17 @@ import {
 	FormControlLabel,
 	Checkbox,
 	Hidden,
-	Avatar
 } from '@material-ui/core';
 import Api from '../../Api/Api';
+
+const server_path = 'http://202.31.202.28:443/file/';
 
 const SignUpRegister = () => {
 	const [postBody, setPostBody] = useState({
 		id: '',
 		pw: '',
 		checkpw: '',
+		image: '',
 		name: '',
 		number: '',
 		checkemail: '',
@@ -35,6 +37,10 @@ const SignUpRegister = () => {
 		content: '',
 		position: ''
 	});
+
+	const [isClick, setIsClick] = useState(false);
+	const [image, setimage] = useState();
+	const [fileUrl, setFileUrl] = useState(null);
 
 	// 이메일 인증 번호 전송, 이메일 인증 번호 전송 버튼 OnClick 함수
 	const emailAuth = async () => {
@@ -54,57 +60,78 @@ const SignUpRegister = () => {
 
 	// 이메일 인증 확인, 이메일 인증 번호 인증 버튼 OnClick 함수
 	const checkEmailAuth = async () => {
-		var check = { auth: false, msg: '', err: '' };
+		var check = { auth: false, msg: '' };
 		if (postBody.checkemail) {
 			if (Api.emailCode !== null) {
 				let response = await Api.postEmail(Api.emailCode, postBody.checkemail);
 				check.auth = await response.isAuth;
 				if (check.auth === true) {
 					check.msg = '인증되었습니다';
+					setIsClick(true);
 				} else {
-					check.err = '인증에 실패하였습니다';
+					check.msg = '인증에 실패하였습니다';
 				}
 				return check;
 			} else {
-				check.err = '인증번호 전송 후 진행해주세요';
+				check.msg = '인증번호 전송 후 진행해주세요';
 				return check;
 			}
 		} else {
-			check.err = '이메일 인증번호를 입력해주세요';
+			check.msg = '이메일 인증번호를 입력해주세요';
 			return check;
 		}
 	};
 
-	// 사진 첨부 시, 썸네일 표시 함수
-	const input_thumbnail = () => {
-		const input_image = document.getElementById('file');
-		if (input_image.files) {
-			const image_container = document.createElement('div');
-			const image = document.createElement('img');
-			image.style.width = '100px';
-			image.style.height = '100px';
-			image.style.borderRadius = '50%';
-			const image_list = input_image.files;
-			const reader = new FileReader();
-			reader.readAsDataURL(image_list[0]);
-
-			reader.onload = function () {
-				image.src = reader.result;
-				image.id = 'thumbnail_image';
-			};
-			image_container.id = 'thumbnail_image_container';
-			image_container.appendChild(image);
-			const thumbnail = document.getElementById('thumbnail');
-			thumbnail.appendChild(image_container);
+	const processImage = async (event) => {
+		const imageFile = event.target.files[0];
+		const imageUrl = URL.createObjectURL(imageFile);
+		setimage(imageFile);
+		setFileUrl(imageUrl);
+		const formData = new FormData();
+		formData.append('attachments', imageFile);
+		let response = await Api.getReadFile(formData);
+		if (response.sucess) {
+			let image_path = response.files[0].file_path.replace('file\\', '');
+			let image = server_path + image_path;
+			setPostBody({
+				id: postBody.id,
+				pw: postBody.pw,
+				checkpw: postBody.checkpw,
+				image: image,
+				name: postBody.name,
+				number: postBody.number,
+				checkemail: postBody.checkemail,
+				email: postBody.email,
+				type: postBody.type,
+				checked: postBody.checked,
+				github: postBody.github,
+				blog: postBody.blog,
+				content: postBody.content,
+				position: postBody.position
+			});
+		} else {
+			console.log('이미지 업로드 실패');
 		}
 	};
 
-	// 썸네일 삭제
-	const delete_thumbnail = () => {
-		const image_container_id = document.getElementById(
-			'thumbnail_image_container'
-		);
-		thumbnail.removeChild(image_container_id);
+	const deleteImage = () => {
+		setFileUrl(null);
+		setPostBody({
+			id: postBody.id,
+			pw: postBody.pw,
+			checkpw: postBody.checkpw,
+			image: '',
+			name: postBody.name,
+			number: postBody.number,
+			checkemail: postBody.checkemail,
+			email: postBody.email,
+			type: postBody.type,
+			checked: postBody.checked,
+			github: postBody.github,
+			blog: postBody.blog,
+			content: postBody.content,
+			position: postBody.position
+		});
 	};
 
 	// 비밀번호 확인
@@ -129,11 +156,11 @@ const SignUpRegister = () => {
 	// 빈 값 체크
 	const emptyCheck = () => {
 		if (
-			postBody.number === null ||
-			postBody.email === null ||
-			postBody.id === null ||
-			postBody.pw === null ||
-			postBody.name === null
+			postBody.number === '' ||
+			postBody.email === '' ||
+			postBody.id === '' ||
+			postBody.pw === '' ||
+			postBody.name === ''
 		) {
 			return false;
 		}
@@ -157,12 +184,12 @@ const SignUpRegister = () => {
 			alert('필수항목란을 채워주세요(학번, 이메일, 아이디, 비밀번호, 이름)');
 			return false;
 		}
+		if (!isClick) {
+			alert('인증번호 확인을 해주세요');
+			return false;
+		}
 		if (isEmailAuth.auth === false) {
-			if (isEmailAuth.msg) {
-				alert(isEmailAuth.msg);
-			} else {
-				alert(isEmailAuth.err);
-			}
+			alert(isEmailAuth.msg);
 			return false;
 		}
 		if (isDuplicateId === true) {
@@ -175,7 +202,7 @@ const SignUpRegister = () => {
 			user_password: postBody.pw,
 			user_type: postBody.type,
 			user_name: postBody.name,
-			user_image: 'hello',
+			user_image: postBody.image,
 			user_introduction: postBody.content,
 			user_github: postBody.github,
 			user_blog: postBody.blog,
@@ -514,7 +541,9 @@ const SignUpRegister = () => {
 											width: 240,
 											marginTop: 0.5
 										}}
-										onClick={checkEmailAuth}
+										onClick={() => {
+											checkEmailAuth().then((check) => alert(check.msg));
+										}}
 									>
 										<h3
 											style={{
@@ -564,7 +593,9 @@ const SignUpRegister = () => {
 											marginTop: 0.5
 										}}
 										// 수정
-										onClick={checkEmailAuth}
+										onClick={() => {
+											checkEmailAuth().then((check) => alert(check.msg));
+										}}
 									>
 										<h3
 											style={{
@@ -692,76 +723,87 @@ const SignUpRegister = () => {
 										py: 2
 									}}
 								/>
-
-								<Avatar
-									sx={{
-										cursor: 'pointer',
-										width: 60,
-										height: 60,
-										float: 'left',
-										marginTop: 4,
-										marginRight: 2
-									}}
-								/>
-								<Button
-									variant="contained"
-									size="medium"
-									color="success"
-									sx={{
-										marginTop: 2,
-										width: 180
-									}}
-								>
-									<label
-										htmlFor="file"
-										style={{
-											width: 100
-										}}
-									>
-										<h3
-											style={{
-												color: '#ffffff'
-											}}
-										>
-											사진선택
-										</h3>
-									</label>
-									<input
-										type="file"
-										id="file"
-										accept="image/*"
-										style={{
-											color: '#ffffff',
-											display: 'none'
-										}}
-										onChange={input_thumbnail}
-									/>
-								</Button>
+								<h3>프로필 사진</h3>
 								<Box
 									sx={{
 										minHeight: '100%',
 										py: 0.5
 									}}
 								/>
-								<Button
-									variant="contained"
-									size="medium"
-									color="success"
-									sx={{
-										marginTop: 2,
-										width: 180
-									}}
-									onClick={delete_thumbnail}
-								>
-									<h3
+								<div className="img__box">
+									<img
+										src={fileUrl}
 										style={{
-											color: '#ffffff'
+											width: '100px',
+											height: '100px',
+											borderRadius: '50%'
+										}}
+									/>
+									<Box
+										sx={{
+											minHeight: '100%',
+											py: 0.5
+										}}
+									/>
+									<Button
+										variant="contained"
+										size="small"
+										color="info"
+										sx={{
+											marginTop: 1,
+											width: 180
 										}}
 									>
-										기본 이미지로 변경
-									</h3>
-								</Button>
-								<Box id="thumbnail" />
+										<label
+											htmlFor="file"
+											style={{
+												width: 100
+											}}
+										>
+											<h3
+												style={{
+													color: '#ffffff'
+												}}
+											>
+												사진 선택
+											</h3>
+										</label>
+										<input
+											type="file"
+											id="file"
+											accept="image/*"
+											style={{
+												color: '#ffffff',
+												display: 'none'
+											}}
+											onChange={processImage}
+										></input>
+									</Button>
+									<Box
+										sx={{
+											minHeight: '100%',
+											py: 0.5
+										}}
+									/>
+									<Button
+										variant="contained"
+										size="small"
+										color="success"
+										sx={{
+											marginTop: 1,
+											width: 180
+										}}
+										onClick={deleteImage}
+									>
+										<h3
+											style={{
+												color: '#ffffff'
+											}}
+										>
+											기본 이미지로 변경
+										</h3>
+									</Button>
+								</div>
 								<Box
 									sx={{
 										minHeight: '100%',
