@@ -21,6 +21,8 @@ import Checkbox from '@mui/material/Checkbox';
 import { Link } from 'react-router-dom';
 import Api from '../../Api/Api';
 
+const server_path = 'http://202.31.202.28:443/file/';
+
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -55,6 +57,8 @@ const ProjectUpdate = () => {
 	const [members, setmembers] = useState([]);
 	const [p_list, setp_list] = useState([]);
 	const [leader, setleader] = useState([]);
+	const [image, setimage] = useState();
+    const [fileUrl, setFileUrl] = useState(null);
 
 	useEffect(async () => {
 		await getYears();
@@ -118,6 +122,9 @@ const ProjectUpdate = () => {
 			content: response.data.project.project_introduction,
 			image: response.data.project.project_image
 		});
+		if (response.data.project.project_image != null) {
+			setFileUrl(response.data.project.project_image);
+		}
 		if (response.data.project.project_tags != null) {
 			const tag = [];
 			tag.push(response.data.project.project_tags);
@@ -195,8 +202,7 @@ const ProjectUpdate = () => {
 			project_title: postBody.title,
 			project_introduction: postBody.content,
 			project_categorys: category,
-			// project_image: postBody.image,
-			project_image: '/static/picture.PNG',
+			project_image: postBody.image,
 			project_subject: subject[0],
 			project_subject_year: year[0],
 			project_professor: p_id[0],
@@ -249,14 +255,14 @@ const ProjectUpdate = () => {
 		setPostBody({
 			content: postBody.content,
 			title: event.currentTarget.value,
-			picture: postBody.picture
+			image: postBody.image
 		});
 	};
 	const handlecontentChange = (event) => {
 		setPostBody({
 			content: event.currentTarget.value,
 			title: postBody.title,
-			picture: postBody.picture
+			image: postBody.image
 		});
 	};
 	const handlememberChange = (event) => {
@@ -265,6 +271,27 @@ const ProjectUpdate = () => {
 		} = event;
 		setmembers(typeof value === 'string' ? value.split(',') : value);
 	};
+	const processImage = async (event) => {
+		const imageFile = event.target.files[0];
+		const imageUrl = URL.createObjectURL(imageFile);
+		setimage(imageFile);
+		setFileUrl(imageUrl);
+		const formData = new FormData();
+		formData.append('attachments', imageFile);
+		let response = await Api.getReadFile(formData);
+		if (response.sucess) {
+			let image_path = response.files[0].file_path.replace('file\\', '')
+			let image = server_path + image_path;
+			setPostBody({
+			title: postBody.title,
+			image: image,
+			content: postBody.content
+			});
+		} else {
+			console.log('이미지 업로드 실패');
+		}
+   };
+
 	return (
 		<>
 			<Helmet>
@@ -326,14 +353,27 @@ const ProjectUpdate = () => {
 										}}
 									>
 										<CardContent>
-											<img
-												src={postBody.picture}
+											<div className="img__box">
+												<img
+												src={fileUrl}
 												alt="profile"
 												style={{
-													width: 220,
-													height: 120
+													width: '100%',
+													height: '15%'
 												}}
-											/>
+												/>
+												<Box
+												sx={{
+												minHeight: '100%',
+												py: 1.5
+												}}
+												/>
+												<input
+												type="file"
+												accept="image/*"
+												onChange={processImage}
+												></input>
+											</div>
 										</CardContent>
 									</Card>
 								</Grid>

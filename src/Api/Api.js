@@ -356,8 +356,11 @@ const Api = {
   // 프로젝트의 댓글 / 대댓글 조회
   getReadComment: async (projectId) => {
     return await getRequest(`/project/${projectId}/comment/`);
-  }
+  },
   // Files--------------------------------------------------------------------------------------
+  getReadFile: async (fileData) => {
+    return await postFormReqest(`/file/upload`, fileData);
+  }
   // Recruitment--------------------------------------------------------------------------------
   // Notification———————————————————————————————————————
 };

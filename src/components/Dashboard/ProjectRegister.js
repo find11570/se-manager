@@ -10,7 +10,6 @@ import {
    InputAdornment,
    SvgIcon,
    Button,
-   Avatar
 } from '@material-ui/core';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
@@ -19,7 +18,6 @@ import FormControl from '@mui/material/FormControl';
 import ListItemText from '@mui/material/ListItemText';
 import Select from '@mui/material/Select';
 import Checkbox from '@mui/material/Checkbox';
-import { Link } from 'react-router-dom';
 import Api from '../../Api/Api';
 
 const ITEM_HEIGHT = 48;
@@ -34,12 +32,13 @@ const MenuProps = {
 };
 
 const data = JSON.parse(sessionStorage.getItem('user_data'));
+const server_path = 'http://202.31.202.28:443/file/';
 
 const ProjectRegister = () => {
    const [postBody, setPostBody] = useState({
       title: '',
       content: '',
-      image: '/static/picture.PNG'
+      image: ''
    });
 
    const [subject, setsubject] = useState([]);
@@ -56,6 +55,8 @@ const ProjectRegister = () => {
 
    const [members, setmembers] = useState([]);
    const [p_list, setp_list] = useState([]);
+   const [image, setimage] = useState();
+   const [fileUrl, setFileUrl] = useState(null);
 
    useEffect(async () => {
       await getYears();
@@ -150,8 +151,7 @@ const ProjectRegister = () => {
          project_introduction: postBody.content,
          project_categorys: category,
          project_leader: data.user_id,
-         // project_image: postBody.image,
-         project_image: '/static/picture.PNG',
+         project_image: postBody.image,
          project_subject: subject[0],
          project_subject_year: year[0],
          project_professor: p_id[0],
@@ -220,435 +220,477 @@ const ProjectRegister = () => {
       } = event;
       setmembers(typeof value === 'string' ? value.split(',') : value);
    };
+
+   const processImage = async (event) => {
+      const imageFile = event.target.files[0];
+      const imageUrl = URL.createObjectURL(imageFile);
+      setimage(imageFile);
+      setFileUrl(imageUrl);
+      const formData = new FormData();
+      formData.append('attachments', imageFile);
+      let response = await Api.getReadFile(formData);
+      if (response.sucess) {
+            let image_path = response.files[0].file_path.replace('file\\', '')
+            let image = server_path + image_path;
+            setPostBody({
+              title: postBody.title,
+              image: image,
+              content: postBody.content
+            });
+         } else {
+            console.log('이미지 업로드 실패');
+         }
+   };
+
+
    return (
-      <>
-         <Helmet>
-            <title>ProjectRegitser</title>
-         </Helmet>
-         <Box>
-            <Box
-               sx={{
-                  minHeight: '100%',
-                  py: 3
-               }}
-            />
-            <Grid item lg={10} md={10} sm={12} xs={12}>
-               <Card
-                  sx={{
-                     borderBottomRightRadius: 10,
-                     borderBottomLeftRadius: 10,
-                     borderTopRightRadius: 10,
-                     borderTopLeftRadius: 10,
-                     boxShadow: 5
-                  }}
+     <>
+       <Helmet>
+         <title>ProjectRegitser</title>
+       </Helmet>
+       <Box>
+         <Box
+           sx={{
+             minHeight: '100%',
+             py: 3
+           }}
+         />
+         <Grid item lg={10} md={10} sm={12} xs={12}>
+           <Card
+             sx={{
+               borderBottomRightRadius: 10,
+               borderBottomLeftRadius: 10,
+               borderTopRightRadius: 10,
+               borderTopLeftRadius: 10,
+               boxShadow: 5
+             }}
+           >
+             <CardContent>
+               <h2 style={{ color: '#006400' }}>새 프로젝트 생성</h2>
+               <h4>산출물 관리를 할수 있어요!</h4>
+               <Box
+                 sx={{
+                   minHeight: '100%',
+                   py: 2,
+                   borderBottom: '1px solid grey'
+                 }}
+               />
+               <Box
+                 sx={{
+                   backgroundColor: '#ffffff',
+                   paddingLeft: 0.5
+                 }}
                >
-                  <CardContent>
-                     <h2 style={{ color: '#006400' }}>새 프로젝트 생성</h2>
-                     <h4>산출물 관리를 할수 있어요!</h4>
-                     <Box
-                        sx={{
+                 <Grid item lg={3} md={3} sm={6} xs={12}>
+                   <Box
+                     sx={{
+                       minHeight: '100%',
+                       py: 1.5
+                     }}
+                   />
+                   <h3>프로젝트 사진</h3>
+                   <Box
+                     sx={{
+                       minHeight: '100%',
+                       py: 0.5
+                     }}
+                   />
+                   <Card
+                     sx={{
+                       borderBottomRightRadius: 10,
+                       borderBottomLeftRadius: 10,
+                       borderTopRightRadius: 10,
+                       borderTopLeftRadius: 10,
+                       boxShadow: 5
+                     }}
+                   >
+                     <CardContent>
+                       <div className="img__box">
+                        <img
+                           src={fileUrl}
+                           style={{
+                             width: '100%',
+                             height: '15%'
+                           }}
+                        />
+                         <Box
+                           sx={{
                            minHeight: '100%',
-                           py: 2,
-                           borderBottom: '1px solid grey'
-                        }}
-                     />
-                     <Box
-                        sx={{
-                           backgroundColor: '#ffffff',
-                           paddingLeft: 0.5
-                        }}
-                     >
-                        <Grid item lg={3} md={3} sm={6} xs={12}>
-                           <Box
-                              sx={{
-                                 minHeight: '100%',
-                                 py: 1.5
-                              }}
-                           />
-                           <h3>프로젝트 사진</h3>
-                           <Box
-                              sx={{
-                                 minHeight: '100%',
-                                 py: 0.5
-                              }}
-                           />
-                           <Card
-                              sx={{
-                                 borderBottomRightRadius: 10,
-                                 borderBottomLeftRadius: 10,
-                                 borderTopRightRadius: 10,
-                                 borderTopLeftRadius: 10,
-                                 boxShadow: 5
-                              }}
-                           >
-                              <CardContent>
-                                 <Avatar
-                                    sx={{
-                                       cursor: 'pointer',
-                                       width: 150,
-                                       height: 100
-                                    }}
-                                 />
-                              </CardContent>
-                           </Card>
-                        </Grid>
-                        <Box
-                           sx={{
-                              minHeight: '100%',
-                              py: 1.5
+                           py: 1.5
                            }}
                         />
-                        <h3>프로젝트 제목</h3>
-                        <Box
+                        <input
+                           type="file"
+                           accept="image/*"
+                           onChange={processImage}
+                        ></input>
+                       </div>
+                     </CardContent>
+                   </Card>
+                   <Box
+                     sx={{
+                       minHeight: '100%',
+                       py: 1.5
+                     }}
+                   />
+                 </Grid>
+                 <Box
+                   sx={{
+                     minHeight: '100%',
+                     py: 1.5
+                   }}
+                 />
+                 <h3>프로젝트 제목</h3>
+                 <Box
+                   sx={{
+                     minHeight: '100%',
+                     py: 0.5
+                   }}
+                 />
+                 <TextField
+                   halfwidth="true"
+                   sx={{
+                     flex: '1',
+                     flexDirection: 'row',
+                     boxShadow: 5,
+                     borderBottomRightRadius: 5,
+                     borderBottomLeftRadius: 5,
+                     borderTopRightRadius: 5,
+                     borderTopLeftRadius: 5,
+                     backgroundColor: 'primary.smoothgreen'
+                   }}
+                   InputProps={{
+                     startAdornment: (
+                       <InputAdornment position="start">
+                         <SvgIcon fontSize="small" color="action" />
+                       </InputAdornment>
+                     )
+                   }}
+                   variant="outlined"
+                   onChange={handletitleChange}
+                 />
+                 <Box
+                   sx={{
+                     minHeight: '100%',
+                     py: 2
+                   }}
+                 />
+                 <h3>프로젝트 설명</h3>
+                 <Box
+                   sx={{
+                     minHeight: '100%',
+                     py: 0.5
+                   }}
+                 />
+                 <TextField
+                   fullWidth
+                   sx={{
+                     flex: '1',
+                     flexDirection: 'row',
+                     boxShadow: 5,
+                     borderBottomRightRadius: 5,
+                     borderBottomLeftRadius: 5,
+                     borderTopRightRadius: 5,
+                     borderTopLeftRadius: 5
+                   }}
+                   InputProps={{
+                     startAdornment: (
+                       <InputAdornment position="start">
+                         <SvgIcon fontSize="small" color="action" />
+                       </InputAdornment>
+                     )
+                   }}
+                   multiline
+                   rows={4}
+                   variant="outlined"
+                   onChange={handlecontentChange}
+                 />
+                 <Box
+                   sx={{
+                     minHeight: '100%',
+                     py: 2
+                   }}
+                 />
+                 <h3>프로젝트 팀원</h3>
+                 <Box
+                   sx={{
+                     minHeight: '100%',
+                     py: 0.5
+                   }}
+                 />
+                 <TextField
+                   halfwidth="true"
+                   sx={{
+                     flex: '1',
+                     flexDirection: 'row',
+                     boxShadow: 5,
+                     borderBottomRightRadius: 5,
+                     borderBottomLeftRadius: 5,
+                     borderTopRightRadius: 5,
+                     borderTopLeftRadius: 5,
+                     backgroundColor: 'primary.smoothgreen'
+                   }}
+                   InputProps={{
+                     startAdornment: (
+                       <InputAdornment position="start">
+                         <SvgIcon fontSize="small" color="action" />
+                       </InputAdornment>
+                     )
+                   }}
+                   placeholder="아이디를 입력해주세요"
+                   variant="outlined"
+                   onChange={handlememberChange}
+                 />
+                 <Box
+                   sx={{
+                     minHeight: '100%',
+                     py: 2
+                   }}
+                 />
+                 <h3>기술 스택</h3>
+                 <Box
+                   sx={{
+                     minHeight: '100%',
+                     py: 0.5
+                   }}
+                 />
+                 <FormControl
+                   sx={{
+                     width: 200
+                   }}
+                 >
+                   <InputLabel id="기술스택">&nbsp; 기술스택</InputLabel>
+                   <Select
+                     labelId="기술스택"
+                     id="기술스택"
+                     multiple
+                     value={stack}
+                     onChange={handlestackChange}
+                     input={<OutlinedInput label="기술스택" />}
+                     renderValue={(selected) => selected.join(', ')}
+                     MenuProps={MenuProps}
+                   >
+                     {stacks.map((s) => (
+                       <MenuItem key={s} value={s}>
+                         <Checkbox
                            sx={{
-                              minHeight: '100%',
-                              py: 0.5
+                             color: 'primary.darkgreen',
+                             '&.Mui-checked': {
+                               color: 'primary.darkgreen'
+                             }
                            }}
-                        />
-                        <TextField
-                           halfwidth="true"
+                           checked={stack.indexOf(s) > -1}
+                         />
+                         <ListItemText primary={s} />
+                       </MenuItem>
+                     ))}
+                   </Select>
+                 </FormControl>
+                 <Box
+                   sx={{
+                     minHeight: '100%',
+                     py: 2
+                   }}
+                 />
+                 <h3>프로젝트 과목</h3>
+                 <Box
+                   sx={{
+                     minHeight: '100%',
+                     py: 0.5
+                   }}
+                 />
+                 <FormControl
+                   sx={{
+                     width: 200,
+                     backgroundColor: 'primary.smoothgreen'
+                   }}
+                 >
+                   <InputLabel id="과목명">&nbsp; 과목명</InputLabel>
+                   <Select
+                     labelId="과목명"
+                     id="과목명"
+                     value={subject}
+                     onChange={handlesubjectChange}
+                     input={<OutlinedInput label="과목명" />}
+                     renderValue={(selected) => selected.join(', ')}
+                     MenuProps={MenuProps}
+                   >
+                     {subjects.map((s) => (
+                       <MenuItem key={s} value={s}>
+                         <Checkbox
                            sx={{
-                              flex: '1',
-                              flexDirection: 'row',
-                              boxShadow: 5,
-                              borderBottomRightRadius: 5,
-                              borderBottomLeftRadius: 5,
-                              borderTopRightRadius: 5,
-                              borderTopLeftRadius: 5,
-                              backgroundColor: 'primary.smoothgreen'
+                             color: 'primary.darkgreen',
+                             '&.Mui-checked': {
+                               color: 'primary.darkgreen'
+                             }
                            }}
-                           InputProps={{
-                              startAdornment: (
-                                 <InputAdornment position="start">
-                                    <SvgIcon fontSize="small" color="action" />
-                                 </InputAdornment>
-                              )
-                           }}
-                           variant="outlined"
-                           onChange={handletitleChange}
-                        />
-                        <Box
+                           checked={subject.indexOf(s) > -1}
+                         />
+                         <ListItemText primary={s} />
+                       </MenuItem>
+                     ))}
+                   </Select>
+                 </FormControl>
+                 <Box
+                   sx={{
+                     minHeight: '100%',
+                     py: 2
+                   }}
+                 />
+                 <h3>년도</h3>
+                 <Box
+                   sx={{
+                     minHeight: '100%',
+                     py: 0.5
+                   }}
+                 />
+                 <FormControl
+                   sx={{
+                     width: 200
+                   }}
+                 >
+                   <InputLabel id="년도">&nbsp; 년도</InputLabel>
+                   <Select
+                     labelId="년도"
+                     id="년도"
+                     value={year}
+                     onChange={handleyearChange}
+                     input={<OutlinedInput label="년도" />}
+                     renderValue={(selected) => selected.join(', ')}
+                     MenuProps={MenuProps}
+                   >
+                     {years.map((s) => (
+                       <MenuItem key={s} value={s}>
+                         <Checkbox
                            sx={{
-                              minHeight: '100%',
-                              py: 2
+                             color: 'primary.darkgreen',
+                             '&.Mui-checked': {
+                               color: 'primary.darkgreen'
+                             }
                            }}
-                        />
-                        <h3>프로젝트 설명</h3>
-                        <Box
+                           checked={year.indexOf(s) > -1}
+                         />
+                         <ListItemText primary={s} />
+                       </MenuItem>
+                     ))}
+                   </Select>
+                 </FormControl>
+                 <Box
+                   sx={{
+                     minHeight: '100%',
+                     py: 2
+                   }}
+                 />
+                 <h3>프로젝트 지도 교수</h3>
+                 <Box
+                   sx={{
+                     minHeight: '100%',
+                     py: 0.5
+                   }}
+                 />
+                 <FormControl
+                   sx={{
+                     width: 200,
+                     backgroundColor: 'primary.smoothgreen'
+                   }}
+                 >
+                   <InputLabel id="지도교수">&nbsp; 지도교수</InputLabel>
+                   <Select
+                     labelId="지도교수"
+                     id="지도교수"
+                     value={professor}
+                     onChange={handleprofessorChange}
+                     input={<OutlinedInput label="지도교수" />}
+                     renderValue={(selected) => selected.join(', ')}
+                     MenuProps={MenuProps}
+                   >
+                     {professors.map((s) => (
+                       <MenuItem key={s} value={s}>
+                         <Checkbox
                            sx={{
-                              minHeight: '100%',
-                              py: 0.5
+                             color: 'primary.darkgreen',
+                             '&.Mui-checked': {
+                               color: 'primary.darkgreen'
+                             }
                            }}
-                        />
-                        <TextField
-                           fullWidth
+                           checked={professor.indexOf(s) > -1}
+                         />
+                         <ListItemText primary={s} />
+                       </MenuItem>
+                     ))}
+                   </Select>
+                 </FormControl>
+                 <Box
+                   sx={{
+                     minHeight: '100%',
+                     py: 2
+                   }}
+                 />
+                 <h3>프로젝트 카테고리</h3>
+                 <Box
+                   sx={{
+                     minHeight: '100%',
+                     py: 0.5
+                   }}
+                 />
+                 <FormControl
+                   sx={{
+                     width: 200,
+                     backgroundColor: 'primary.smoothgreen'
+                   }}
+                 >
+                   <InputLabel id="카테고리">&nbsp; 카테고리</InputLabel>
+                   <Select
+                     labelId="카테고리"
+                     id="카테고리"
+                     multiple
+                     value={category}
+                     onChange={handlecategoryChange}
+                     input={<OutlinedInput label="카테고리" />}
+                     renderValue={(selected) => selected.join(', ')}
+                     MenuProps={MenuProps}
+                   >
+                     {categorys.map((s) => (
+                       <MenuItem key={s} value={s}>
+                         <Checkbox
                            sx={{
-                              flex: '1',
-                              flexDirection: 'row',
-                              boxShadow: 5,
-                              borderBottomRightRadius: 5,
-                              borderBottomLeftRadius: 5,
-                              borderTopRightRadius: 5,
-                              borderTopLeftRadius: 5
+                             color: 'primary.darkgreen',
+                             '&.Mui-checked': {
+                               color: 'primary.darkgreen'
+                             }
                            }}
-                           InputProps={{
-                              startAdornment: (
-                                 <InputAdornment position="start">
-                                    <SvgIcon fontSize="small" color="action" />
-                                 </InputAdornment>
-                              )
-                           }}
-                           multiline
-                           rows={4}
-                           variant="outlined"
-                           onChange={handlecontentChange}
-                        />
-                        <Box
-                           sx={{
-                              minHeight: '100%',
-                              py: 2
-                           }}
-                        />
-                        <h3>프로젝트 팀원</h3>
-                        <Box
-                           sx={{
-                              minHeight: '100%',
-                              py: 0.5
-                           }}
-                        />
-                        <TextField
-                           halfwidth="true"
-                           sx={{
-                              flex: '1',
-                              flexDirection: 'row',
-                              boxShadow: 5,
-                              borderBottomRightRadius: 5,
-                              borderBottomLeftRadius: 5,
-                              borderTopRightRadius: 5,
-                              borderTopLeftRadius: 5,
-                              backgroundColor: 'primary.smoothgreen'
-                           }}
-                           InputProps={{
-                              startAdornment: (
-                                 <InputAdornment position="start">
-                                    <SvgIcon fontSize="small" color="action" />
-                                 </InputAdornment>
-                              )
-                           }}
-                           placeholder="아이디를 입력해주세요"
-                           variant="outlined"
-                           onChange={handlememberChange}
-                        />
-                        <Box
-                           sx={{
-                              minHeight: '100%',
-                              py: 2
-                           }}
-                        />
-                        <h3>기술 스택</h3>
-                        <Box
-                           sx={{
-                              minHeight: '100%',
-                              py: 0.5
-                           }}
-                        />
-                        <FormControl
-                           sx={{
-                              width: 200
-                           }}
-                        >
-                           <InputLabel id="기술스택">&nbsp; 기술스택</InputLabel>
-                           <Select
-                              labelId="기술스택"
-                              id="기술스택"
-                              multiple
-                              value={stack}
-                              onChange={handlestackChange}
-                              input={<OutlinedInput label="기술스택" />}
-                              renderValue={(selected) => selected.join(', ')}
-                              MenuProps={MenuProps}
-                           >
-                              {stacks.map((s) => (
-                                 <MenuItem key={s} value={s}>
-                                    <Checkbox
-                                       sx={{
-                                          color: 'primary.darkgreen',
-                                          '&.Mui-checked': {
-                                             color: 'primary.darkgreen'
-                                          }
-                                       }}
-                                       checked={stack.indexOf(s) > -1}
-                                    />
-                                    <ListItemText primary={s} />
-                                 </MenuItem>
-                              ))}
-                           </Select>
-                        </FormControl>
-                        <Box
-                           sx={{
-                              minHeight: '100%',
-                              py: 2
-                           }}
-                        />
-                        <h3>프로젝트 과목</h3>
-                        <Box
-                           sx={{
-                              minHeight: '100%',
-                              py: 0.5
-                           }}
-                        />
-                        <FormControl
-                           sx={{
-                              width: 200,
-                              backgroundColor: 'primary.smoothgreen'
-                           }}
-                        >
-                           <InputLabel id="과목명">&nbsp; 과목명</InputLabel>
-                           <Select
-                              labelId="과목명"
-                              id="과목명"
-                              value={subject}
-                              onChange={handlesubjectChange}
-                              input={<OutlinedInput label="과목명" />}
-                              renderValue={(selected) => selected.join(', ')}
-                              MenuProps={MenuProps}
-                           >
-                              {subjects.map((s) => (
-                                 <MenuItem key={s} value={s}>
-                                    <Checkbox
-                                       sx={{
-                                          color: 'primary.darkgreen',
-                                          '&.Mui-checked': {
-                                             color: 'primary.darkgreen'
-                                          }
-                                       }}
-                                       checked={subject.indexOf(s) > -1}
-                                    />
-                                    <ListItemText primary={s} />
-                                 </MenuItem>
-                              ))}
-                           </Select>
-                        </FormControl>
-                        <Box
-                           sx={{
-                              minHeight: '100%',
-                              py: 2
-                           }}
-                        />
-                        <h3>년도</h3>
-                        <Box
-                           sx={{
-                              minHeight: '100%',
-                              py: 0.5
-                           }}
-                        />
-                        <FormControl
-                           sx={{
-                              width: 200
-                           }}
-                        >
-                           <InputLabel id="년도">&nbsp; 년도</InputLabel>
-                           <Select
-                              labelId="년도"
-                              id="년도"
-                              value={year}
-                              onChange={handleyearChange}
-                              input={<OutlinedInput label="년도" />}
-                              renderValue={(selected) => selected.join(', ')}
-                              MenuProps={MenuProps}
-                           >
-                              {years.map((s) => (
-                                 <MenuItem key={s} value={s}>
-                                    <Checkbox
-                                       sx={{
-                                          color: 'primary.darkgreen',
-                                          '&.Mui-checked': {
-                                             color: 'primary.darkgreen'
-                                          }
-                                       }}
-                                       checked={year.indexOf(s) > -1}
-                                    />
-                                    <ListItemText primary={s} />
-                                 </MenuItem>
-                              ))}
-                           </Select>
-                        </FormControl>
-                        <Box
-                           sx={{
-                              minHeight: '100%',
-                              py: 2
-                           }}
-                        />
-                        <h3>프로젝트 지도 교수</h3>
-                        <Box
-                           sx={{
-                              minHeight: '100%',
-                              py: 0.5
-                           }}
-                        />
-                        <FormControl
-                           sx={{
-                              width: 200,
-                              backgroundColor: 'primary.smoothgreen'
-                           }}
-                        >
-                           <InputLabel id="지도교수">&nbsp; 지도교수</InputLabel>
-                           <Select
-                              labelId="지도교수"
-                              id="지도교수"
-                              value={professor}
-                              onChange={handleprofessorChange}
-                              input={<OutlinedInput label="지도교수" />}
-                              renderValue={(selected) => selected.join(', ')}
-                              MenuProps={MenuProps}
-                           >
-                              {professors.map((s) => (
-                                 <MenuItem key={s} value={s}>
-                                    <Checkbox
-                                       sx={{
-                                          color: 'primary.darkgreen',
-                                          '&.Mui-checked': {
-                                             color: 'primary.darkgreen'
-                                          }
-                                       }}
-                                       checked={professor.indexOf(s) > -1}
-                                    />
-                                    <ListItemText primary={s} />
-                                 </MenuItem>
-                              ))}
-                           </Select>
-                        </FormControl>
-                        <Box
-                           sx={{
-                              minHeight: '100%',
-                              py: 2
-                           }}
-                        />
-                        <h3>프로젝트 카테고리</h3>
-                        <Box
-                           sx={{
-                              minHeight: '100%',
-                              py: 0.5
-                           }}
-                        />
-                        <FormControl
-                           sx={{
-                              width: 200,
-                              backgroundColor: 'primary.smoothgreen'
-                           }}
-                        >
-                           <InputLabel id="카테고리">&nbsp; 카테고리</InputLabel>
-                           <Select
-                              labelId="카테고리"
-                              id="카테고리"
-                              multiple
-                              value={category}
-                              onChange={handlecategoryChange}
-                              input={<OutlinedInput label="카테고리" />}
-                              renderValue={(selected) => selected.join(', ')}
-                              MenuProps={MenuProps}
-                           >
-                              {categorys.map((s) => (
-                                 <MenuItem key={s} value={s}>
-                                    <Checkbox
-                                       sx={{
-                                          color: 'primary.darkgreen',
-                                          '&.Mui-checked': {
-                                             color: 'primary.darkgreen'
-                                          }
-                                       }}
-                                       checked={category.indexOf(s) > -1}
-                                    />
-                                    <ListItemText primary={s} />
-                                 </MenuItem>
-                              ))}
-                           </Select>
-                        </FormControl>
-                        <Box
-                           sx={{
-                              minHeight: '100%',
-                              py: 2
-                           }}
-                        />
-                        <Button
-                           variant="contained"
-                           color="success"
-                           onClick={createProject}
-                        >
-                           <h3
-                              style={{
-                                 color: '#ffffff'
-                              }}
-                           >
-                              생성하기
-                           </h3>
-                        </Button>
-                     </Box>
-                  </CardContent>
-               </Card>
-            </Grid>
-         </Box>
-      </>
+                           checked={category.indexOf(s) > -1}
+                         />
+                         <ListItemText primary={s} />
+                       </MenuItem>
+                     ))}
+                   </Select>
+                 </FormControl>
+                 <Box
+                   sx={{
+                     minHeight: '100%',
+                     py: 2
+                   }}
+                 />
+                 <Button
+                   variant="contained"
+                   color="success"
+                   onClick={createProject}
+                 >
+                   <h3
+                     style={{
+                       color: '#ffffff'
+                     }}
+                   >
+                     생성하기
+                   </h3>
+                 </Button>
+               </Box>
+             </CardContent>
+           </Card>
+         </Grid>
+       </Box>
+     </>
    );
 };
 
