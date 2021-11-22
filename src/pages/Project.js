@@ -33,7 +33,6 @@ const MenuProps = {
 };
 
 const Project = () => {
-	const compare_link = window.location.href;
 	const [postBody, setPostBody] = useState({
 		name: ''
 	});

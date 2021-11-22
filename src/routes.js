@@ -37,10 +37,11 @@ const routes = [
 		path: 'se',
 		element: <TeamboardLayout />,
 		children: [
-			{ path: 'team', element: <Team /> },
+			{ path: 'team/', element: <Team /> },
+			{ path: 'team/:subject', element: <Team />},
 			{ path: 'teamRegister', element: <TeamRegister /> },
 			{ path: 'teamSpecific/:id', element: <TeamSpecific /> },
-			{ path: 'teamupdate', element: <TeamUpdate /> },
+			{ path: 'teamupdate/:id', element: <TeamUpdate /> },
 			{ path: 'teamList', element: <TeamList /> }
 		]
 	},

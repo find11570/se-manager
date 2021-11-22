@@ -45,6 +45,17 @@ const TeamSpecific = () => {
 		}
 	}, []);
 
+	const teamApplication = async () => {
+		let response = await Api.getTeamApplication(data.recruitment_id);
+		if (response.data.sucess) {
+			alert('신청되었습니다');
+			const target = '/se/team';
+			window.location.href = target;
+		} else {
+			alert('신청실패');
+		}
+	}
+
 	const teamEnd = async () => {
 		let response = await Api.getTeamEnd(data.recruitment_id);
 		if (response.data.sucess) {
@@ -189,51 +200,50 @@ const TeamSpecific = () => {
 								</h3>
 							</Box>
 							{state ? (
-									<Button
-										variant="contained"
-										size="medium"
-										color="success"
-										sx={{
-											float: 'right',
-											marginRight: 2,
-											marginTop: 0.5,
-											marginLeft: 2
-										}}
-										onClick={teamEnd}
+								<Button
+									variant="contained"
+									size="medium"
+									color="success"
+									sx={{
+										float: 'right',
+										marginRight: 2,
+										marginTop: 0.5,
+										marginLeft: 2
+									}}
+									onClick={teamEnd}
+								>
+									<h3 style={{
+										color: '#ffffff',
+									}}
 									>
-										<h3 style={{
-											color: '#ffffff',
-										}}
-										>
-											마감하기
-										</h3>
-									</Button>
+										마감하기
+									</h3>
+								</Button>
 							) : (
 								temp
 							)}
 							{state ? (
 								temp
 							) : (
-								<Link to="/se/team">
-									<Button
-										variant="contained"
-										size="medium"
-										color="success"
-										sx={{
-											float: 'right',
-											marginRight: 2,
-											marginTop: 0.5,
-											marginLeft: 2
-										}}
+								<Button
+									variant="contained"
+									size="medium"
+									color="success"
+									sx={{
+										float: 'right',
+										marginRight: 2,
+										marginTop: 0.5,
+										marginLeft: 2
+									}}
+									onClick={teamApplication}
+								>
+									<h3 style={{
+										color: '#ffffff',
+									}}
 									>
-										<h3 style={{
-											color: '#ffffff',
-										}}
-										>
-											신청하기
-										</h3>
-									</Button>
-								</Link>
+										신청하기
+									</h3>
+								</Button>
 							)}
 							<Box
 								sx={{
@@ -272,7 +282,12 @@ const TeamSpecific = () => {
 						temp
 					)}
 					{state ? (
-						<Link to="/se/teamupdate">
+						<Link
+							to={{
+								pathname: `/se/teamupdate/${data.recruitment_id}`,
+								state: { index: data.recruitment_id }
+							}}
+						>
 							<Button
 								variant="contained"
 								size="medium"

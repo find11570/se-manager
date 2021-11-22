@@ -19,8 +19,6 @@ import ListItemText from '@mui/material/ListItemText';
 import Select from '@mui/material/Select';
 import Checkbox from '@mui/material/Checkbox';
 import { Link } from 'react-router-dom';
-import Pagination from '@mui/material/Pagination';
-import Stack from '@mui/material/Stack';
 import Api from '../Api/Api';
 
 const ITEM_HEIGHT = 48;
@@ -38,25 +36,19 @@ const Team = () => {
 	const [postBody, setPostBody] = useState({
 		name: ''
 	});
-	const [stack, setstack] = useState([]);
 	const [subject, setsubject] = useState([]);
 
-	const [stacks, setstacks] = useState([]);
 	const [subjects, setsubjects] = useState([]);
+	const [state, setstate] = useState(new Date());
 
 	const handleTextChange = (event) => {
 		setPostBody({
 			name: event.currentTarget.value,
 		});
 	};
-	const handlestackChange = (event) => {
-		const {
-			target: { value },
-		} = event;
-		setstack(
-			typeof value === 'string' ? value.split(',') : value,
-		);
-	};
+	const handleChange = (event) => {
+		setstate(new Date());
+	}
 	const handlesubjectChange = (event) => {
 		const {
 			target: { value },
@@ -67,24 +59,42 @@ const Team = () => {
 	};
 	useEffect(async () => {
 		getSubjects();
-		getStacks();
-
+		const link = document.location.href;
+		var link_quary = link.replace('http://localhost:3000/se/team/', '');
+		var quary = decodeURI(link_quary, 'UTF-8');
+		if (quary.includes(',')) {
+			var quary_array = quary.split('&');
+			var stack_string = quary_array[1].split('=');
+			var stack_string2 = quary_array[2].split('=');
+			setsubject(stack_string[1]);
+			setPostBody({
+				name: stack_string2[1]
+			});
+        }
 	}, []);
+
+	function search_url(subject, keyword) {
+		const url = [];
+		if (!(subject.length == 0)) {
+			url.push("&subject=" + subject);
+		}
+		else {
+			url.push('&subject=null');
+		}
+
+		if (!(keyword === '')) {
+			url.push('&keyword=' + keyword);
+		}
+		else {
+			url.push('&keyword=null');
+		}
+
+		return url.join();
+	}
 	const getSubjects = async () => {
 		let response = await Api.getSubjects();
 		const subject_list = await response.data.subjects;
 		setsubjects(subject_list);
-	};
-	const getStacks = async () => {
-		let response = await Api.getStacks();
-		if (response.data.tags == null) {
-			const stack_list = [];
-			setstacks(stack_list);
-		}
-		else {
-			const stack_list = await response.data.tags;
-			setstacks(stack_list);
-		}
 	};
 	return (
 		<>
@@ -119,40 +129,6 @@ const Team = () => {
 					}}
 				/>
 				<Hidden lgDown>
-					<FormControl
-						sx={{
-							m: 1,
-							width: 200,
-							marginLeft: 2.5,
-						}}
-					>
-						<InputLabel id="기술스택">&nbsp;기술스택</InputLabel>
-						<Select
-							labelId="기술스택"
-							id="기술스택"
-							multiple
-							value={stack}
-							onChange={handlestackChange}
-							input={<OutlinedInput label="기술스택" />}
-							renderValue={(selected) => selected.join(', ')}
-							MenuProps={MenuProps}
-						>
-							{stacks.map((s) => (
-								<MenuItem key={s} value={s}>
-									<Checkbox
-										sx={{
-											color: 'primary.darkgreen',
-											'&.Mui-checked': {
-												color: 'primary.darkgreen',
-											},
-										}}
-										checked={stack.indexOf(s) > -1}
-									/>
-									<ListItemText primary={s} />
-								</MenuItem>
-							))}
-						</Select>
-					</FormControl>
 					<FormControl
 						sx={{
 							m: 1,
@@ -195,7 +171,6 @@ const Team = () => {
 						py: 1,
 					}}
 				/>
-				{postBody.name}
 				<Container maxWidth={false}>
 					<Grid
 						container
@@ -242,12 +217,20 @@ const Team = () => {
 							sm={2}
 							xs={2}
 						>
-							<Hidden lgDown>
-								<Link to="/se/team">
+							<Link to=
+								{{
+									pathname: `/se/team/${search_url(subject, postBody.name)}`,
+								}}
+							>
+								<Box
+									sx={{
+										paddingTop: 1,
+									}}
+								>
 									<Button
 										variant="contained"
 										color="success"
-										size="large"
+										onClick={handleChange}
 									>
 										<h4 style={{
 											color: '#ffffff',
@@ -256,29 +239,8 @@ const Team = () => {
 											검색
 										</h4>
 									</Button>
-								</Link>
-							</Hidden>
-							<Hidden lgUp>
-								<Link to="/se/team">
-									<Box
-										sx={{
-											paddingTop: 1,
-										}}
-									>
-										<Button
-											variant="contained"
-											color="success"
-										>
-											<h4 style={{
-												color: '#ffffff',
-											}}
-											>
-												검색
-											</h4>
-										</Button>
-									</Box>
-								</Link>
-							</Hidden>
+								</Box>
+							</Link>
 						</Grid>
 					</Grid>
 					<Box
@@ -287,7 +249,7 @@ const Team = () => {
 							py: 2,
 						}}
 					/>
-						<TeamRead />
+					<TeamRead state={state} />
 				</Container>
 			</Box>
 		</>

@@ -26,10 +26,6 @@ const TeamRead = (props) => {
         getdata();
 	}
 
-	const back = async () => {
-		return await Api.getAllTeam(1, 6);
-	}
-
 	function dateCul(date) {
 		var year = date.slice(0, 4);
 		var month = date.slice(5, 7);
@@ -41,6 +37,34 @@ const TeamRead = (props) => {
 		var result = Math.floor(gap / (1000 * 60 * 60 * 24)) * -1;
 		return result;
 	}
+	var link = document.location.href;
+    var link_quary = link.replace('http://localhost:3000/se/team/', '');
+    var quary = decodeURI(link_quary, 'UTF-8');
+	
+	const back = async() => {
+        if (quary.includes(',')) {
+			var quary_array = quary.split('&');
+			quary_array[1] = quary_array[1].slice(0, -1);
+			var stack_string = quary_array[1].split('=');
+			var stack_string2 = quary_array[2].split('=');
+            if ((stack_string[1] == 'null') && (stack_string2[1] == 'null')) {
+                return await Api.getAllTeam(1, 6);
+            } else {
+				var keyword = stack_string2[1];
+				var subject = stack_string[1];
+				if(stack_string2[1] == 'null'){
+					keyword = 'null'
+				}
+				if(stack_string[1] == 'null'){
+					subject = 'null'
+				}
+                return await Api.getSearch(1,6,keyword,subject);
+            }
+        } else {
+            return await Api.getAllTeam(1, 6);
+        }
+    }
+
 	useEffect(async () => {
 		const getdata = async () => {
 			const data = await back();

@@ -1,6 +1,6 @@
 import 'date-fns';
 import { Helmet } from 'react-helmet';
-import { useState, React } from 'react';
+import { useState, React, useEffect } from 'react';
 import {
 	Box,
 	Card,
@@ -24,6 +24,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Select from '@mui/material/Select';
 import Checkbox from '@mui/material/Checkbox';
 import { Link } from 'react-router-dom';
+import Api from '../../Api/Api';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -35,34 +36,17 @@ const MenuProps = {
 		},
 	},
 };
-const stacks = [
-	'React',
-	'Java',
-	'C++',
-	'C',
-	'Mysql',
-	'MongoDB',
-	'Python',
-	'자연어처리',
-	'영상처리',
-	'딥러닝',
-];
-const subjects = [
-	'창의융합종합설계1',
-	'창의융합종합설계2',
-	'일반 프로젝트'
-];
 
 const TeamUpdate = () => {
 	const [chartData, setchartData] = useState({
-		id: '1',
-		name: '진채연',
-		date: '2021-05-08',
-		title: '창의 융합 종합 설계 1 프로젝트 인원 모집',
-		Maxpeople: '4',
-		content: '으아아아아아ㅏㅇ 나는 프로젝트하는 중이다..... 으아아아아아아아 배고파아아아아앙 키키키키키키키키 졸려어ㅓㅌ어어어어어라너미런아ㅣㅓㄹ민ㅇㄹ',
+		id: '',
+		date: new Date(),
+		title: '',
+		Maxpeople: '',
+		content: '',
 	});
-	const [stack, setstack] = useState([]);
+	const [subjects, setsubjects] = useState([]);
+
 	const [subject, setsubject] = useState([]);
 	const handlesubjectChange = (event) => {
 		const {
@@ -72,33 +56,109 @@ const TeamUpdate = () => {
 			typeof value === 'string' ? value.split(',') : value,
 		);
 	};
-	const handlestackChange = (event) => {
-		const {
-			target: { value },
-		} = event;
-		setstack(
-			typeof value === 'string' ? value.split(',') : value,
-		);
-	};
 	const handleDateChange = (date) => {
 		setchartData({
-			selectDate: date,
+			date: date,
+			title: chartData.title,
+			content: chartData.content,
+			Maxpeople: chartData.Maxpeople,
+			id: chartData.id
 		});
 	};
 	const handletitleChange = (event) => {
 		setchartData({
 			title: event.currentTarget.value,
+			date: chartData.date,
+			content: chartData.content,
+			Maxpeople: chartData.Maxpeople,
+			id: chartData.id
 		});
 	};
 	const handlecontentChange = (event) => {
 		setchartData({
 			content: event.currentTarget.value,
+			date: chartData.date,
+			title: chartData.title,
+			Maxpeople: chartData.Maxpeople,
+			id: chartData.id
 		});
 	};
 	const handlecountChange = (event) => {
 		setchartData({
-			count: event.currentTarget.value,
+			Maxpeople: event.currentTarget.value,
+			date: chartData.date,
+			title: chartData.title,
+			content: chartData.content,
+			id: chartData.id
 		});
+	};
+	const emptyCheck = () => {
+		if (
+			chartData.title === undefined ||
+			subject[0] === undefined ||
+			chartData.content === undefined ||
+			chartData.Maxpeople === undefined
+		) {
+			return false;
+		}
+	};
+	const Team_id = location.href
+		.split('/')
+	[location.href.split('/').length - 1].split('.')[0];
+
+	useEffect(async () => {
+		getSubjects();
+		let response = await Api.getTeam(Team_id);
+		setchartData({
+			date: response.data.recruitment.recruitment_deadline_date,
+			title: response.data.recruitment.recruitment_title,
+			content: response.data.recruitment.recruitment_content,
+			Maxpeople: response.data.recruitment.recruitment_recruited_limit,
+			id: response.data.recruitment.recruitment_id
+		});
+		const subject = [];
+		subject.push(response.data.recruitment.recruitment_subject);
+		setsubject(subject);
+	}, []);
+
+	const getSubjects = async () => {
+		let response = await Api.getSubjects();
+		const subject_list = await response.data.subjects;
+		setsubjects(subject_list);
+	};
+
+	const TeamUpdate = async () => {
+		const isEmpty = emptyCheck();
+		if (isEmpty === false) {
+			alert('필수항목란을 채워주세요(제목, 설명, 모집인원, 과목)');
+			return false;
+		}
+
+		const reqObject = {
+			recruitment_title: chartData.title,
+			recruitment_content: chartData.content,
+			recruitment_recruited_limit: chartData.Maxpeople,
+			recruitment_deadline_date: chartData.date,
+			recruitment_subject: subject[0],
+		};
+		let response = await Api.postTeamUpdate(chartData.id, reqObject);
+		if (response.sucess) {
+			alert('수정되었습니다.');
+			const target = '/se/team';
+			window.location.href = target;
+		} else {
+			alert('수정 실패');
+		}
+	};
+	const deleteTeam = async () => {
+		let response = await Api.deleteTeam(chartData.id);
+		if (response.sucess) {
+			alert('삭제되었습니다');
+			const target = '/se/team';
+			window.location.href = target;
+		} else {
+			alert('삭제 실패');
+		}
 	};
 	return (
 		<>
@@ -347,92 +407,40 @@ const TeamUpdate = () => {
 										py: 2,
 									}}
 								/>
-								<h3>기술 스택</h3>
 								<Box
 									sx={{
 										minHeight: '100%',
-										py: 0.5,
+										py: 2,
 									}}
 								/>
-								<FormControl
-									sx={{
-										width: 200
-									}}
+
+								<Button
+									variant="contained"
+									color="success"
+									onClick={TeamUpdate}
 								>
-									<InputLabel id="기술스택">&nbsp;기술스택</InputLabel>
-									<Select
-										labelId="기술스택"
-										id="기술스택"
-										multiple
-										value={stack}
-										onChange={handlestackChange}
-										input={<OutlinedInput label="기술스택" />}
-										renderValue={(selected) => selected.join(', ')}
-										MenuProps={MenuProps}
-									>
-										{stacks.map((s) => (
-											<MenuItem key={s} value={s}>
-												<Checkbox
-													sx={{
-														color: 'primary.darkgreen',
-														'&.Mui-checked': {
-															color: 'primary.darkgreen',
-														},
-													}}
-													checked={stack.indexOf(s) > -1}
-												/>
-												<ListItemText primary={s} />
-											</MenuItem>
-										))}
-									</Select>
-								</FormControl>
-								<Box
-									sx={{
-										minHeight: '100%',
-										py: 2,
+									<h3 style={{
+										color: '#ffffff',
 									}}
-								/>
-								<Box
+									>
+										수정
+									</h3>
+								</Button>
+								<Button
+									variant="contained"
+									color="success"
 									sx={{
-										minHeight: '100%',
-										py: 2,
+										float: 'right'
 									}}
-								/>
-								<Link to="/se/teamSpecific">
-									<Button
-										variant="contained"
-										color="success"
-										onClick={() => {
-											alert('수정되었습니다.');
-										}}
+									onClick={deleteTeam}
+								>
+									<h3 style={{
+										color: '#ffffff',
+									}}
 									>
-										<h3 style={{
-											color: '#ffffff',
-										}}
-										>
-											수정
-										</h3>
-									</Button>
-								</Link>
-								<Link to="/se/Team">
-									<Button
-										variant="contained"
-										color="success"
-										sx={{
-											float: 'right'
-										}}
-										onClick={() => {
-											alert('삭제되었습니다.');
-										}}
-									>
-										<h3 style={{
-											color: '#ffffff',
-										}}
-										>
-											삭제
-										</h3>
-									</Button>
-								</Link>
+										삭제
+									</h3>
+								</Button>
 							</Box>
 						</CardContent>
 					</Card>

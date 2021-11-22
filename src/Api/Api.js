@@ -85,7 +85,7 @@ const putJsonReqest = async (path, body) => {
 
 const deleteJsonReqest = async (path) => {
   try {
-    const token = sessionStorage.getItem('token');
+    const token = sessionStorage.getItem('user_token');
     if (token) {
       const { data } = await axios.delete(api + path, {
         headers: {
@@ -375,6 +375,20 @@ const Api = {
 
   getTeamEnd: async (Teamid) => {
     return await getRequest(`/recruitment/${Teamid}/end`);
+  },
+  getTeamApplication: async (Teamid) => {
+    return await getRequest(`/recruitment/${Teamid}/application`);
+  },
+
+  postTeamUpdate: async (Teamid, Team) => {
+    return await postJsonReqest(`/recruitment/${Teamid}`, Team);
+  },
+  deleteTeam: async (Teamid) => {
+    return await deleteJsonReqest(`/recruitment/${Teamid}`);
+  },
+  getSearch: async (pageNum, pageCount, keyword, subject) => {
+	const response = await getRequest(`/recruitment/search`, {pageNum, pageCount, keyword, subject});
+	return response.data;
   },
   // Notification———————————————————————————————————————
 };

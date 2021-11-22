@@ -37,7 +37,6 @@ const MenuProps = {
 };
 
 const TeamRegister = () => {
-
 	const [postBody, setPostBody] = useState({
 		title: '',
 		content: '',
@@ -46,23 +45,13 @@ const TeamRegister = () => {
 	});
 	
 	const [subjects, setsubjects] = useState([]);
-	const [stacks, setstacks] = useState([]);
 
-	const [stack, setstack] = useState([]);
 	const [subject, setsubject] = useState([]);
 	const handlesubjectChange = (event) => {
 		const {
 			target: { value },
 		} = event;
 		setsubject(
-			typeof value === 'string' ? value.split(',') : value,
-		);
-	};
-	const handlestackChange = (event) => {
-		const {
-			target: { value },
-		} = event;
-		setstack(
 			typeof value === 'string' ? value.split(',') : value,
 		);
 	};
@@ -143,23 +132,11 @@ const TeamRegister = () => {
 	};
 	useEffect(() => {
 		getSubjects();
-		getStacks();
 	}, []);
 	const getSubjects = async () => {
 		let response = await Api.getSubjects();
 		const subject_list = await response.data.subjects;
 		setsubjects(subject_list);
-	};
-	const getStacks = async () => {
-		let response = await Api.getStacks();
-		if (response.data.tags == null) {
-			const stack_list = [];
-			setstacks(stack_list);
-		}
-		else {
-			const stack_list = await response.data.tags;
-			setstacks(stack_list);
-		}
 	};
 	return (
 		<>
@@ -394,51 +371,6 @@ const TeamRegister = () => {
 														},
 													}}
 													checked={subject.indexOf(s) > -1}
-												/>
-												<ListItemText primary={s} />
-											</MenuItem>
-										))}
-									</Select>
-								</FormControl>
-								<Box
-									sx={{
-										minHeight: '100%',
-										py: 2,
-									}}
-								/>
-								<h3>기술 스택</h3>
-								<Box
-									sx={{
-										minHeight: '100%',
-										py: 0.5,
-									}}
-								/>
-								<FormControl
-									sx={{
-										width: 200
-									}}
-								>
-									<InputLabel id="기술스택">&nbsp;기술스택</InputLabel>
-									<Select
-										labelId="기술스택"
-										id="기술스택"
-										multiple
-										value={stack}
-										onChange={handlestackChange}
-										input={<OutlinedInput label="기술스택" />}
-										renderValue={(selected) => selected.join(', ')}
-										MenuProps={MenuProps}
-									>
-										{stacks.map((s) => (
-											<MenuItem key={s} value={s}>
-												<Checkbox
-													sx={{
-														color: 'primary.darkgreen',
-														'&.Mui-checked': {
-															color: 'primary.darkgreen',
-														},
-													}}
-													checked={stack.indexOf(s) > -1}
 												/>
 												<ListItemText primary={s} />
 											</MenuItem>
