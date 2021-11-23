@@ -28,6 +28,13 @@ const ProjectDetail = (props) => {
 	const [state, setstate] = useState(false);
 	const [tag, settag] = useState([]);
 	const [comment, setcomment] = useState([]);
+	const [nestedComment, setNestedComment] = useState([]);
+	const [postBody, setPostBody] = useState({
+		comment: ''
+	});
+	const mem = data.project_members;
+	const memResult = mem?.map((member) => member.user_name + ' ');
+
 	useEffect(async () => {
 		const list = [];
 		let response = await Api.getProject(project_id);
@@ -56,21 +63,306 @@ const ProjectDetail = (props) => {
 		}
 
 		let comment_response = await Api.getReadComment(project_id);
-		setcomment(comment_response.data.comments);
+		divideComment(comment_response.data.comments);
 	}, []);
 
-	const mem = data.project_members;
-	const memResult = mem?.map((member) => member.user_name + ' ');
+	// 댓글과 대댓글 분리
+	const divideComment = (comments) => {
+		var comment = [];
+		var nestedComment = [];
+		for (var i = 0; i < comments.length; i++) {
+			// 그냥 댓글
+			if (comments[i].comment_parent === null) {
+				comment.push(comments[i]);
+			} else {
+				nestedComment.push(comments[i]);
+			}
+		}
+		setcomment(comment);
+		setNestedComment(nestedComment);
+	};
 
-	const [postBody, setPostBody] = useState({
-		content: ''
-	});
+	// 댓글 등록 onClick 함수
+	const createComment = async () => {
+		if (!sessionStorage.getItem('user_token')) {
+			return alert('로그인 후 댓글 작성가능합니다.');
+		} else {
+			if (postBody.comment) {
+				let response = await Api.postComment(
+					project_id,
+					postBody.comment,
+					0,
+					null
+				);
+				document.getElementById('comment_field').value = '';
+				location.replace(location.href);
+			}
+		}
+	};
 
+	// 자신 댓글만 수정버튼이 보이도록
+	const showUpdateCommentBtn = (user_name) => {
+		if (people) {
+			if (people.user_name === user_name) {
+				return (
+					<Button
+						variant="contained"
+						color="success"
+						size="small"
+						onClick={updateComment}
+						sx={{
+							float: 'right'
+						}}
+					>
+						수정
+					</Button>
+				);
+			}
+		}
+	};
+
+	// 자신의 대댓글에만 수정버튼이 보이도록
+	const showUpdateNestedCommentBtn = (user_name) => {
+		if (people) {
+			if (people.user_name === user_name) {
+				return (
+					<Button
+						variant="contained"
+						color="success"
+						size="small"
+						onClick={updateNestedComment}
+						sx={{
+							float: 'right'
+						}}
+					>
+						수정
+					</Button>
+				);
+			}
+		}
+	};
+
+	// 대댓글 버튼이 로그인 해야 보이도록
+	const showNestedCommentBtn = () => {
+		if (people) {
+			return (
+				<Button
+					variant="contained"
+					size="small"
+					onClick={createNestedComment}
+					sx={{
+						float: 'right'
+					}}
+				>
+					대댓글
+				</Button>
+			);
+		}
+	};
+
+	// 댓글 삭제 버튼
+	const showDeleteCommentBtn = (user_name) => {
+		if (people) {
+			if (people.user_name === user_name) {
+				return (
+					<Button
+						variant="contained"
+						color="success"
+						size="small"
+						onClick={deleteComment}
+						sx={{
+							float: 'right'
+						}}
+					>
+						삭제
+					</Button>
+				);
+			}
+		}
+	};
+
+	// 대댓글 삭제 버튼
+	const showDeleteNestedCommentBtn = (user_name) => {
+		if (people) {
+			if (people.user_name === user_name) {
+				return (
+					<Button
+						variant="contained"
+						color="success"
+						size="small"
+						onClick={deleteNestedComment}
+						sx={{
+							float: 'right'
+						}}
+					>
+						삭제
+					</Button>
+				);
+			}
+		}
+	};
+	// 댓글 삭제
+	const deleteComment = async (e) => {
+		var commnet_id = e.target.parentNode.childNodes[2].id;
+		let response = await Api.deleteComment(project_id, commnet_id);
+		location.replace(location.href);
+	};
+
+	// 대댓글 삭제
+	const deleteNestedComment = async (e) => {
+		var commnet_id = e.target.parentNode.id;
+		let response = await Api.deleteComment(project_id, commnet_id);
+		location.replace(location.href);
+	};
+
+	// 대댓글 버튼 onClick 함수 -> 대댓글 등록창 열리게 끔
+	const createNestedComment = (e) => {
+		var card = e.target.parentNode;
+		if (
+			!(
+				card.childNodes[card.childNodes.length - 1].id ===
+				'nestedComment_input_' + card.childNodes[2].id
+			)
+		) {
+			var nestedComment_Container = document.createElement('Card');
+			var nestedComment_input = document.createElement('input');
+
+			var btn = document.createElement('Button');
+			btn.innerHTML = '대댓글 등록';
+			btn.style.color = 'white';
+			btn.style.padding = '4px 10px';
+			btn.style.borderRadius = '4px';
+			btn.style.backgroundColor = '#2e7d32';
+			btn.style.boxShadow =
+				'0 0 1px 0 rgb(0 0 0 / 31%), 0 2px 2px -2px rgb(0 0 0 / 25%)';
+			btn.style.float = 'right';
+			btn.style.border = '0';
+			btn.style.cursor = 'pointer';
+			btn.onclick = postNestedComment;
+
+			nestedComment_Container.id =
+				'nestedComment_input_' + card.childNodes[2].id;
+			nestedComment_input.style.marginLeft = '50px';
+			nestedComment_input.style.fontSize = '15px';
+			nestedComment_input.style.fontWeight = 'bolder';
+			nestedComment_input.style.width = '50%';
+
+			nestedComment_Container.appendChild(nestedComment_input);
+			nestedComment_Container.appendChild(btn);
+
+			card.appendChild(nestedComment_Container);
+		}
+	};
+
+	// 대댓글 등록 버튼 OnClick 함수
+	const postNestedComment = async (e) => {
+		var comment_content = e.target.parentNode.childNodes[0].value;
+		if (comment_content) {
+			var comment_parent = e.target.parentNode.id.substring(
+				20,
+				e.target.parentNode.id.length
+			);
+			let response = await Api.postComment(
+				project_id,
+				comment_content,
+				1,
+				comment_parent
+			);
+			location.replace(location.href);
+		}
+	};
+	// 대댓글 Display 함수
+	const showNestedComment = (comment_id) => {
+		var nestedComments = [];
+		for (var i = 0; i < nestedComment.length; i++) {
+			if (nestedComment[i].comment_parent === comment_id) {
+				nestedComments.push({
+					id: nestedComment[i].comment_id,
+					content: nestedComment[i].comment_content,
+					user_name: nestedComment[i].user_name
+				});
+			}
+		}
+		var nestedComment_Container = (
+			<div>
+				{nestedComments.map((comment) => {
+					return (
+						<Card
+							id={comment.id}
+							key={comment.id}
+							sx={{
+								margin: 1,
+								paddingLeft: 7,
+								paddingTop: 1,
+								paddingBottom: 1,
+								fontWeight: 'bold',
+								fontSize: 'medium'
+							}}
+						>
+							{comment.user_name} : {comment.content}
+							{showDeleteNestedCommentBtn(comment.user_name)}
+							{showUpdateNestedCommentBtn(comment.user_name)}
+						</Card>
+					);
+				})}
+			</div>
+		);
+		return nestedComment_Container;
+	};
+
+	// 댓글 수정 onClick 함수
+	const updateComment = async (e) => {
+		var card = e.target.parentNode;
+		if (card.childNodes[2].nodeName === 'INPUT') {
+			var comment_id = card.childNodes[2].id;
+			var comment_content = card.childNodes[2].value;
+			let response = await Api.postUpdateComment(
+				project_id,
+				comment_id.substring(13, comment_id.length),
+				comment_content
+			);
+			location.replace(location.href);
+		} else {
+			var comment_container = card.childNodes[2];
+			var comment = comment_container.innerText;
+			var comment_id = comment_container.getAttribute('id');
+			card.removeChild(comment_container);
+			var update_container = document.createElement('input');
+			update_container.value = comment;
+			update_container.id = 'update_input_' + comment_id;
+			card.insertBefore(update_container, card.childNodes[2]);
+		}
+	};
+
+	// 대댓글 수정 onClick 함수
+	const updateNestedComment = async (e) => {
+		var card = e.target.parentNode;
+		if (card.childNodes[2].nodeName === 'INPUT') {
+			var comment_id = card.childNodes[2].id;
+			var comment_content = card.childNodes[2].value;
+			let response = await Api.postUpdateComment(
+				project_id,
+				comment_id.substring(13, comment_id.length),
+				comment_content
+			);
+			location.replace(location.href);
+		}
+		var comment_id = card.id;
+		var comment = card.childNodes[2];
+		var update_container = document.createElement('input');
+		update_container.value = comment.data;
+		update_container.id = 'update_input_' + comment_id;
+		card.removeChild(comment);
+		card.insertBefore(update_container, card.childNodes[2]);
+	};
+
+	// React Handle Function
 	const handleTextChange = (event) => {
 		setPostBody({
-			content: event.currentTarget.value
+			comment: event.currentTarget.value
 		});
 	};
+
 	const List = tag.map((t) => (
 		<Box
 			key={t}
@@ -301,6 +593,7 @@ const ProjectDetail = (props) => {
 					<Grid container spacing={2}>
 						<Grid item lg={10} md={10} sm={10} xs={10}>
 							<TextField
+								id="comment_field"
 								fullWidth
 								sx={{
 									flex: '1',
@@ -325,17 +618,20 @@ const ProjectDetail = (props) => {
 							/>
 						</Grid>
 						<Grid item lg={2} md={2} sm={2} xs={2}>
-							<Link to="/app/project">
-								<Button variant="contained" color="success" size="large">
-									<h4
-										style={{
-											color: '#ffffff'
-										}}
-									>
-										등록
-									</h4>
-								</Button>
-							</Link>
+							<Button
+								variant="contained"
+								color="success"
+								size="large"
+								onClick={createComment}
+							>
+								<h4
+									style={{
+										color: '#ffffff'
+									}}
+								>
+									등록
+								</h4>
+							</Button>
 						</Grid>
 					</Grid>
 					<Box
@@ -376,8 +672,18 @@ const ProjectDetail = (props) => {
 									<h4 style={{ display: 'inline-block' }}>
 										{comments.user_name}
 										&nbsp;:&nbsp;
+									</h4>
+									<h4
+										id={comments.comment_id}
+										className="comment"
+										style={{ display: 'inline-block' }}
+									>
 										{comments.comment_content}
 									</h4>
+									{showDeleteCommentBtn(comments.user_name)}
+									{showUpdateCommentBtn(comments.user_name)}
+									{showNestedCommentBtn(comments.user_name)}
+									{showNestedComment(comments.comment_id)}
 								</CardContent>
 							</Card>
 						))}

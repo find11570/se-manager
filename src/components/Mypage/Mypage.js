@@ -64,6 +64,7 @@ const Mypage = () => {
 										}}
 									>
 										<img
+											alt="Image"
 											src={chartData.image}
 											style={{
 												width: '100px',
@@ -71,7 +72,7 @@ const Mypage = () => {
 												borderRadius: '50%'
 											}}
 										/>
-										<h3 style={{ color: '#ffffff' }}>{chartData.name}</h3>
+										<h3 style={{ color: '#ffffff', marginTop: 5, marginLeft: 15 }}>{chartData.name}</h3>
 									</Box>
 								</Hidden>
 								<Hidden lgUp>

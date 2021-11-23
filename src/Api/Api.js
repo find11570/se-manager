@@ -387,8 +387,11 @@ const Api = {
     return await deleteJsonReqest(`/recruitment/${Teamid}`);
   },
   getSearch: async (pageNum, pageCount, keyword, subject) => {
-	const response = await getRequest(`/recruitment/search`, {pageNum, pageCount, keyword, subject});
+	const response = await getRequest(`/recruitment/search?pageNum=${pageNum}&pageCount=${pageCount}&keyword=${keyword}&subject=${subject}`);
 	return response.data;
+  },
+  getTeamcancelApplication: async (Teamid) => {
+    return await deleteJsonReqest(`/recruitment/${Teamid}/application`);
   },
   // Notification———————————————————————————————————————
 };

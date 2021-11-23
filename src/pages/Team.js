@@ -64,13 +64,18 @@ const Team = () => {
 		var quary = decodeURI(link_quary, 'UTF-8');
 		if (quary.includes(',')) {
 			var quary_array = quary.split('&');
+			quary_array[1] = quary_array[1].slice(0, -1);
 			var stack_string = quary_array[1].split('=');
 			var stack_string2 = quary_array[2].split('=');
-			setsubject(stack_string[1]);
-			setPostBody({
-				name: stack_string2[1]
-			});
-        }
+			if (stack_string[1] != 'null') {
+				setsubject(stack_string[1]);
+			} 
+			if (stack_string2[1] != 'null') {
+				setPostBody({
+					name: stack_string2[1]
+				});
+			}
+		}
 	}, []);
 
 	function search_url(subject, keyword) {
@@ -141,7 +146,6 @@ const Team = () => {
 						<Select
 							labelId="과목명"
 							id="과목명"
-							multiple
 							value={subject}
 							onChange={handlesubjectChange}
 							input={<OutlinedInput label="과목명" />}

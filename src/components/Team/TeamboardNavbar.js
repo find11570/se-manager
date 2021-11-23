@@ -13,24 +13,17 @@ import MenuIcon from '@material-ui/icons/Menu';
 import { Link } from 'react-router-dom';
 import Logo from 'src/components/Logo';
 import axios from 'axios';
+import Api from '../../Api/Api';
 
-const api = 'https://se-disk.herokuapp.com/api';
-
-const logout = () => {
-	const url = '/auth/logout';
+const logout = async () => {
 	const target = '/app/dashboard';
-	const token = sessionStorage.getItem('user_token');
-	axios
-		.get(api + url, {
-			headers: {
-				Authorization: `Bearer ${token}`
-			}
-		})
-		.then((response) => {
-			sessionStorage.clear();
-			window.location.href = target;
-		})
+	let logout_response = await Api.getLogout();
+	if (logout_response.data.sucess) {
+		sessionStorage.clear();
+		window.location.href = target;
+	}
 };
+
 const TeamboardNavbar = ({ onMobileNavOpen, ...rest }) => {
 	const [notifications] = useState([]);
 	const isLogin = () => {

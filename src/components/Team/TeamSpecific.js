@@ -21,6 +21,7 @@ const TeamSpecific = () => {
 	const [state, setstate] = useState(false);
 	const user = JSON.parse(sessionStorage.getItem('user_data'));
 	const [date, setdate] = useState();
+	const [appstate, setappstate] = useState(false);
 	useEffect(async () => {
 		function dateCul(date) {
 			var year = date.slice(0, 4);
@@ -56,6 +57,18 @@ const TeamSpecific = () => {
 		}
 	}
 
+	const teamcancelApplication = async () => {
+		let response = await Api.getTeamcancelApplication(data.recruitment_id);
+		console.log(response);
+		if (response.sucess) {
+			alert('신청취소되었습니다');
+			const target = '/se/team';
+			window.location.href = target;
+		} else {
+			alert('신청취소실패');
+		}
+	}
+
 	const teamEnd = async () => {
 		let response = await Api.getTeamEnd(data.recruitment_id);
 		if (response.data.sucess) {
@@ -64,6 +77,54 @@ const TeamSpecific = () => {
 			window.location.href = target;
 		} else {
 			alert('마감실패');
+		}
+	}
+
+	function application() {
+		if (appstate) {
+			return (
+				<Button
+					variant="contained"
+					size="medium"
+					color="success"
+					sx={{
+						float: 'right',
+						marginRight: 2,
+						marginTop: 0.5,
+						marginLeft: 2
+					}}
+					onClick={teamcancelApplication}
+				>
+					<h3 style={{
+						color: '#ffffff',
+					}}
+					>
+						신청취소
+					</h3>
+				</Button>
+			)
+		} else {
+			return (
+				<Button
+					variant="contained"
+					size="medium"
+					color="success"
+					sx={{
+						float: 'right',
+						marginRight: 2,
+						marginTop: 0.5,
+						marginLeft: 2
+					}}
+					onClick={teamApplication}
+				>
+					<h3 style={{
+						color: '#ffffff',
+					}}
+					>
+						신청하기
+					</h3>
+				</Button>
+			)
 		}
 	}
 
@@ -170,14 +231,16 @@ const TeamSpecific = () => {
 										>
 											{data.user_name}
 										</h2>
-										<Avatar
-											sx={{
-												cursor: 'pointer',
+										<img
+											alt="Image"
+											src={data.user_image}
+											style={{
+												float: 'right',
+												marginRight: 5,
+												marginTop: 10,
 												width: 40,
 												height: 40,
-												float: 'right',
-												marginRight: 2,
-												marginTop: 1.5,
+												borderRadius: '50%'
 											}}
 										/>
 									</Hidden>
@@ -225,25 +288,7 @@ const TeamSpecific = () => {
 							{state ? (
 								temp
 							) : (
-								<Button
-									variant="contained"
-									size="medium"
-									color="success"
-									sx={{
-										float: 'right',
-										marginRight: 2,
-										marginTop: 0.5,
-										marginLeft: 2
-									}}
-									onClick={teamApplication}
-								>
-									<h3 style={{
-										color: '#ffffff',
-									}}
-									>
-										신청하기
-									</h3>
-								</Button>
+								application()
 							)}
 							<Box
 								sx={{

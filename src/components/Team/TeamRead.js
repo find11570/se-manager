@@ -16,21 +16,21 @@ const TeamRead = (props) => {
 	const [array, setarray] = useState([]);
 	const handlePageChange = (event, value) => {
 		setPage(value);
-		const front = async() => {
+		const front = async () => {
 			return await Api.getAllTeam(value, 6);
 		}
-		const getdata = async() => {
-            const data = await front();
-            setarray(data.recruitments);
-        };
-        getdata();
+		const getdata = async () => {
+			const data = await front();
+			setarray(data.recruitments);
+		};
+		getdata();
 	}
 
 	function dateCul(date) {
 		var year = date.slice(0, 4);
 		var month = date.slice(5, 7);
 		var day = date.slice(8, 10);
-		var Dday = new Date(year, month-1, day);
+		var Dday = new Date(year, month - 1, day);
 		var now = new Date();
 
 		var gap = now.getTime() - Dday.getTime();
@@ -38,42 +38,43 @@ const TeamRead = (props) => {
 		return result;
 	}
 	var link = document.location.href;
-    var link_quary = link.replace('http://localhost:3000/se/team/', '');
-    var quary = decodeURI(link_quary, 'UTF-8');
-	
-	const back = async() => {
-        if (quary.includes(',')) {
+	var link_quary = link.replace('http://localhost:3000/se/team/', '');
+	var quary = decodeURI(link_quary, 'UTF-8');
+
+	const back = async () => {
+		if (quary.includes(',')) {
 			var quary_array = quary.split('&');
 			quary_array[1] = quary_array[1].slice(0, -1);
 			var stack_string = quary_array[1].split('=');
 			var stack_string2 = quary_array[2].split('=');
-            if ((stack_string[1] == 'null') && (stack_string2[1] == 'null')) {
-                return await Api.getAllTeam(1, 6);
-            } else {
+			if ((stack_string[1] == 'null') && (stack_string2[1] == 'null')) {
+				return await Api.getAllTeam(1, 6);
+			} else {
 				var keyword = stack_string2[1];
 				var subject = stack_string[1];
-				if(stack_string2[1] == 'null'){
-					keyword = 'null'
+				if (stack_string2[1] == 'null') {
+					keyword = ''
 				}
-				if(stack_string[1] == 'null'){
-					subject = 'null'
+				if (stack_string[1] == 'null') {
+					subject = ''
 				}
-                return await Api.getSearch(1,6,keyword,subject);
-            }
-        } else {
-            return await Api.getAllTeam(1, 6);
-        }
-    }
+				return await Api.getSearch(1, 6, keyword, subject);
+			}
+		} else {
+			return await Api.getAllTeam(1, 6);
+		}
+	}
 
 	useEffect(async () => {
 		const getdata = async () => {
 			const data = await back();
-			setarray(data.recruitments);
-			setcount(Math.ceil(data.count / 6));
+			if(data.sucess == true){
+				setarray(data.recruitments);
+				setcount(Math.ceil(data.count / 6));
+			}
 		};
 		getdata();
 	}, [state]);
-
 
 	return (
 		<>
