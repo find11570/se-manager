@@ -72,6 +72,12 @@ const TeamSpecific = () => {
 							}}
 						>
 							<OKTable />
+							<Box
+								sx={{
+									minHeight: '100%',
+									py: 1,
+								}}
+							/>
 							<WaitTable />
 							<Box
 								sx={{

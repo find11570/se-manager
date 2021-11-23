@@ -393,6 +393,18 @@ const Api = {
   getTeamcancelApplication: async (Teamid) => {
     return await deleteJsonReqest(`/recruitment/${Teamid}/application`);
   },
+  getTeamList: async (Teamid) => {
+    return await getRequest(`/recruitment/${Teamid}/application-list`);
+  },
+  getisApplication: async (Teamid) => {
+    return await getRequest(`/recruitment/${Teamid}/isApplication`);
+  },
+  getOK: async (Teamid, array) => {
+    return await getRequest(`/recruitment/${Teamid}/accept?userId=${array}`);
+  },
+  getRefuse: async (Teamid, array) => {
+    return await getRequest(`/recruitment/${Teamid}/refuse?userId=${array}`);
+  },
   // Notification———————————————————————————————————————
 };
 

@@ -42,7 +42,7 @@ const routes = [
 			{ path: 'teamRegister', element: <TeamRegister /> },
 			{ path: 'teamSpecific/:id', element: <TeamSpecific /> },
 			{ path: 'teamupdate/:id', element: <TeamUpdate /> },
-			{ path: 'teamList', element: <TeamList /> }
+			{ path: 'teamList/:id', element: <TeamList /> }
 		]
 	},
 	{

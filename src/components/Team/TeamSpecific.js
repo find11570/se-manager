@@ -13,7 +13,7 @@ import { Link } from 'react-router-dom';
 import Api from '../../Api/Api';
 
 const TeamSpecific = () => {
-	const project_id = location.href
+	const team_id = location.href
 		.split('/')
 	[location.href.split('/').length - 1].split('.')[0];
 	const [data, setData] = useState([]);
@@ -22,6 +22,14 @@ const TeamSpecific = () => {
 	const user = JSON.parse(sessionStorage.getItem('user_data'));
 	const [date, setdate] = useState();
 	const [appstate, setappstate] = useState(false);
+	const [max, setmax] = useState(false);
+	const isLogin = () => {
+		if (sessionStorage.getItem('user_token')) {
+			return true;
+		} else {
+			return false;
+		}
+	};
 	useEffect(async () => {
 		function dateCul(date) {
 			var year = date.slice(0, 4);
@@ -34,13 +42,25 @@ const TeamSpecific = () => {
 			var result = Math.floor(gap / (1000 * 60 * 60 * 24)) * -1;
 			return result;
 		};
-		let response = await Api.getTeam(project_id);
+		let response = await Api.getTeam(team_id);
 		setData(response.data.recruitment);
 		setdate(dateCul(response.data.recruitment.recruitment_deadline_date));
 		if (sessionStorage.getItem('user_token')) {
 			if (response.data.recruitment.length != 0) {
 				if (response.data.recruitment.user_id === user.user_id) {
 					setstate(true);
+				}
+			}
+		}
+		if (response.data.recruitment.recruitment_recruited_cnt == response.data.recruitment.recruitment_recruited_limit) {
+			setmax(true);
+		} else {
+			if (!isLogin()) {
+				setmax(true);
+			} else{
+				let response2 = await Api.getisApplication(team_id);
+				if (response2.data.isApplication == true) {
+					setappstate(true);
 				}
 			}
 		}
@@ -79,7 +99,16 @@ const TeamSpecific = () => {
 			alert('마감실패');
 		}
 	}
-
+	function app() {
+		if (!max) {
+			return (
+				application()
+			)
+		}
+		else {
+			temp
+		}
+	}
 	function application() {
 		if (appstate) {
 			return (
@@ -288,7 +317,7 @@ const TeamSpecific = () => {
 							{state ? (
 								temp
 							) : (
-								application()
+								app()
 							)}
 							<Box
 								sx={{
@@ -305,7 +334,12 @@ const TeamSpecific = () => {
 						}}
 					/>
 					{state ? (
-						<Link to="/se/teamList">
+						<Link
+							to={{
+								pathname: `/se/teamList/${data.recruitment_id}`,
+								state: { index: data.recruitment_id }
+							}}
+						>
 							<Button
 								variant="contained"
 								size="medium"
