@@ -19,13 +19,14 @@ import {
 import Api from '../../Api/Api';
 
 const server_path = 'http://202.31.202.28:443/file/';
+const empty_profile = 'http://202.31.202.28:443/file/file__1637754138261.png';
 
 const SignUpRegister = () => {
 	const [postBody, setPostBody] = useState({
 		id: '',
 		pw: '',
 		checkpw: '',
-		image: '',
+		image: empty_profile,
 		name: '',
 		number: '',
 		checkemail: '',
@@ -115,12 +116,12 @@ const SignUpRegister = () => {
 	};
 
 	const deleteImage = () => {
-		setFileUrl(null);
+		setFileUrl(empty_profile);
 		setPostBody({
 			id: postBody.id,
 			pw: postBody.pw,
 			checkpw: postBody.checkpw,
-			image: '',
+			image: empty_profile,
 			name: postBody.name,
 			number: postBody.number,
 			checkemail: postBody.checkemail,
@@ -195,6 +196,24 @@ const SignUpRegister = () => {
 		if (isDuplicateId === true) {
 			alert('중복된 아이디 입니다');
 			return false;
+		}
+		if(postBody.image == null) {
+			setPostBody({
+				id: postBody.id,
+				pw: postBody.pw,
+				checkpw: postBody.checkpw,
+				image: empty_profile,
+				name: postBody.name,
+				number: postBody.number,
+				checkemail: postBody.checkemail,
+				email: postBody.email,
+				type: postBody.type,
+				checked: postBody.checked,
+				github: postBody.github,
+				blog: postBody.blog,
+				content: postBody.content,
+				position: postBody.position
+			});
 		}
 		let user_data = {
 			user_login_id: postBody.id,

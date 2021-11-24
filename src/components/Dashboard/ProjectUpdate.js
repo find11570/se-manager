@@ -22,6 +22,7 @@ import { Link } from 'react-router-dom';
 import Api from '../../Api/Api';
 
 const server_path = 'http://202.31.202.28:443/file/';
+const empty_path = 'http://202.31.202.28:443/file/file__1637753431355.jpg';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -296,7 +297,7 @@ const ProjectUpdate = () => {
 		setFileUrl(null);
 		setPostBody({
 			title: postBody.title,
-			image: '',
+			image: empty_path,
 			content: postBody.content
 		});
 	};

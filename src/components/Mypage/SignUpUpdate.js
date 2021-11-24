@@ -16,6 +16,7 @@ import Api from '../../Api/Api';
 
 const data = JSON.parse(sessionStorage.getItem('user_data'));
 const server_path = 'http://202.31.202.28:443/file/';
+const empty_profile = 'http://202.31.202.28:443/file/file__1637754138261.png';
 
 const SignUpUpdate = () => {
 	const [postBody, setpostBody] = useState({
@@ -37,6 +38,21 @@ const SignUpUpdate = () => {
 
 	// 유저 정보 없데이트, 수정하기 버튼 OnClick 함수
 	const update_user = async () => {
+		if(postBody.image == null) {
+			setpostBody({
+				id: postBody.id,
+				login_id: postBody.login_id,
+				email: postBody.email,
+				name: postBody.name,
+				number: postBody.number,
+				image: empty_profile,
+				type: postBody.type,
+				github: postBody.github,
+				blog: postBody.blog,
+				content: postBody.content,
+				position: postBody.position
+			});
+		}
 		let response = await Api.postUpdateUser(
 			postBody.id,
 			postBody.image,
@@ -97,14 +113,14 @@ const SignUpUpdate = () => {
 	};
 
 	const deleteImage = () => {
-		setFileUrl(null);
+		setFileUrl(empty_profile);
 		setpostBody({
 			id: postBody.id,
 			login_id: postBody.login_id,
 			email: postBody.email,
 			name: postBody.name,
 			number: postBody.number,
-			image: '',
+			image: empty_profile,
 			type: postBody.type,
 			github: postBody.github,
 			blog: postBody.blog,

@@ -33,12 +33,13 @@ const MenuProps = {
 
 const data = JSON.parse(sessionStorage.getItem('user_data'));
 const server_path = 'http://202.31.202.28:443/file/';
+const empty_path = 'http://202.31.202.28:443/file/file__1637753431355.jpg';
 
 const ProjectRegister = () => {
 	const [postBody, setPostBody] = useState({
 		title: '',
 		content: '',
-		image: ''
+		image: empty_path
 	});
 
 	const [subject, setsubject] = useState([]);
@@ -146,6 +147,14 @@ const ProjectRegister = () => {
 			});
 		}
 
+		if(postBody.image == null) {
+			setPostBody({
+				title: postBody.title,
+				image: empty_path,
+				content: postBody.content
+			});
+		}
+
 		const reqObject = {
 			project_title: postBody.title,
 			project_introduction: postBody.content,
@@ -243,10 +252,10 @@ const ProjectRegister = () => {
 	};
 
 	const deleteImage = (event) => {
-		setFileUrl(null);
+		setFileUrl(empty_path);
 		setPostBody({
 			title: postBody.title,
-			image: '',
+			image: empty_path,
 			content: postBody.content
 		});
 	};
