@@ -244,7 +244,7 @@ const Api = {
   },
   // 프로젝트 태그 검색
   getProjectTags: async (tagId) => {
-    return await getRequest('/project/search/tag', { tagId });
+    return await getRequest(`/project/search/tag?tagId=${tagId}`);
   },
   // 카테고리별 프로젝트 조회
   getProjectInCategory: async (categoryId, pageNum, pageCount) => {

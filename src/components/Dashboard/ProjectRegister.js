@@ -19,6 +19,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Select from '@mui/material/Select';
 import Checkbox from '@mui/material/Checkbox';
 import Api from '../../Api/Api';
+import TagsInput from "./TagsInput";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -52,7 +53,6 @@ const ProjectRegister = () => {
 	const [professors, setprofessors] = useState([]);
 	const [years, setyears] = useState([]);
 	const [categorys, setcategorys] = useState([]);
-	const [stacks, setstacks] = useState([]);
 
 	const [members, setmembers] = useState([]);
 	const [p_list, setp_list] = useState([]);
@@ -64,7 +64,6 @@ const ProjectRegister = () => {
 		await getSubjects();
 		await getProfessors();
 		await getCategorys();
-		await getStacks();
 	}, []);
 
 	// 드롭다운 메뉴 로딩
@@ -98,17 +97,9 @@ const ProjectRegister = () => {
 		const category_list = await response.data.categorys;
 		setcategorys(category_list);
 	};
-	const getStacks = async () => {
-		let response = await Api.getStacks();
-		if (response.data.tags == null) {
-			const stack_list = [];
-			setstacks(stack_list);
-		}
-		else {
-			const stack_list = await response.data.tags;
-			setstacks(stack_list);
-		}
-	};
+	const getstack = (selectedItem) => {
+		setstack(selectedItem);
+	}
 
 	// 빈 값 체크
 	const emptyCheck = () => {
@@ -147,7 +138,7 @@ const ProjectRegister = () => {
 			});
 		}
 
-		if(postBody.image == null) {
+		if (postBody.image == null) {
 			setPostBody({
 				title: postBody.title,
 				image: empty_path,
@@ -202,12 +193,6 @@ const ProjectRegister = () => {
 			target: { value }
 		} = event;
 		setyear(typeof value === 'string' ? value.split(',') : value);
-	};
-	const handlestackChange = (event) => {
-		const {
-			target: { value }
-		} = event;
-		setstack(typeof value === 'string' ? value.split(',') : value);
 	};
 	const handletitleChange = (event) => {
 		setPostBody({
@@ -525,38 +510,13 @@ const ProjectRegister = () => {
 										py: 0.5
 									}}
 								/>
-								<FormControl
-									sx={{
-										width: 200
-									}}
-								>
-									<InputLabel id="기술스택">&nbsp; 기술스택</InputLabel>
-									<Select
-										labelId="기술스택"
-										id="기술스택"
-										multiple
-										value={stack}
-										onChange={handlestackChange}
-										input={<OutlinedInput label="기술스택" />}
-										renderValue={(selected) => selected.join(', ')}
-										MenuProps={MenuProps}
-									>
-										{stacks.map((s) => (
-											<MenuItem key={s} value={s}>
-												<Checkbox
-													sx={{
-														color: 'primary.darkgreen',
-														'&.Mui-checked': {
-															color: 'primary.darkgreen'
-														}
-													}}
-													checked={stack.indexOf(s) > -1}
-												/>
-												<ListItemText primary={s} />
-											</MenuItem>
-										))}
-									</Select>
-								</FormControl>
+								<TagsInput
+									variant="outlined"
+									id="기술스택"
+									name="기술스택"
+									label="기술스택"
+									propfunction={getstack}
+								/>
 								<Box
 									sx={{
 										minHeight: '100%',
