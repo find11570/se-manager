@@ -516,6 +516,7 @@ const ProjectRegister = () => {
 									name="기술스택"
 									label="기술스택"
 									propfunction={getstack}
+									stack={stack}
 								/>
 								<Box
 									sx={{

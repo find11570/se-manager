@@ -17,6 +17,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import SimpleTabs from 'src/components/Dashboard/SimpleTabs';
 import { Link } from 'react-router-dom';
 import Api from '../../Api/Api';
+import NestedCommentInput from './NestedCommentInput';
 
 const people = JSON.parse(sessionStorage.getItem('user_data'));
 
@@ -246,6 +247,12 @@ const ProjectDetail = (props) => {
 			nestedComment_input.style.fontSize = '15px';
 			nestedComment_input.style.fontWeight = 'bolder';
 			nestedComment_input.style.width = '50%';
+			nestedComment_input.style.border = '1px solid #f1f1f1';
+			nestedComment_input.style.boxShadow =
+				'0 0 1px 0 rgb(0 0 0 / 31%), 0 2px 2px -2px rgb(0 0 0 / 25%)';
+			nestedComment_input.style.outline = 'none';
+			nestedComment_input.style.cursor = 'text';
+			nestedComment_input.style.backgroundColor = '#f0f7ec';
 
 			nestedComment_Container.appendChild(nestedComment_input);
 			nestedComment_Container.appendChild(btn);
@@ -661,22 +668,38 @@ const ProjectDetail = (props) => {
 											marginRight: 2
 										}}
 									>
-										<Avatar
-											sx={{
-												cursor: 'pointer',
-												width: 30,
-												height: 30
-											}}
-										/>
+										{comments.user_image ? (
+											<img
+												src={comments.user_image}
+												style={{
+													width: '40px',
+													height: '40px',
+													borderRadius: '50%',
+													verticalAlign: 'middle'
+												}}
+											/>
+										) : (
+											<Avatar
+												sx={{
+													width: 35,
+													height: 35
+												}}
+											/>
+										)}
 									</Box>
-									<h4 style={{ display: 'inline-block' }}>
+									<h4
+										style={{
+											display: 'inline-block',
+											verticalAlign: 'middle'
+										}}
+									>
 										{comments.user_name}
 										&nbsp;:&nbsp;
 									</h4>
 									<h4
 										id={comments.comment_id}
 										className="comment"
-										style={{ display: 'inline-block' }}
+										style={{ display: 'inline-block', verticalAlign: 'middle' }}
 									>
 										{comments.comment_content}
 									</h4>

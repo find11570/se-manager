@@ -95,10 +95,24 @@ export default function TagsInput(props) {
 			setstate(true);
 		}
 	}
+	const project_id = location.href
+		.split('/')
+	[location.href.split('/').length - 1].split('.')[0];
+
 
 	useEffect(() => {
 		props.propfunction(selectedItem);
 	}, [selectedItem]);
+	useEffect(async () => {
+		if (project_id != 'ProjectRegister') {
+			let response = await Api.getProject(project_id);
+			if (response.data.project.project_tags != null) {
+				const tag = [];
+				tag.push(response.data.project.project_tags);
+				setSelectedItem(tag[0]);
+			}
+		}
+	}, []);
 
 	function makeChip(s) {
 		const newSelectedItem = [...selectedItem];
