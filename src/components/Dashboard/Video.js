@@ -1,4 +1,3 @@
-
 import { Card, CardContent, Box, Button } from '@material-ui/core';
 import { useState } from 'react';
 import ReactPlayer from 'react-player';
