@@ -503,7 +503,7 @@ const ProjectRegister = () => {
 										py: 2
 									}}
 								/>
-								<h3>기술 스택</h3>
+								<h3>기술 스택 (입력 후 Enter or 클릭)</h3>
 								<Box
 									sx={{
 										minHeight: '100%',

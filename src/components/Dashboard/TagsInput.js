@@ -158,6 +158,7 @@ export default function TagsInput(props) {
 									backgroundColor: 'primary.smoothgreen'
 								}}
 								placeholder="기술스택을 입력해주세요"
+								variant="outlined"
 								InputProps={{
 									startAdornment: selectedItem.map((item) => (
 										<Chip
