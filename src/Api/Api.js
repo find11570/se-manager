@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+const a = '';
 const api = 'http://202.31.202.28:443/api';
 
 const getRequest = async (path, params = {}) => {
@@ -223,7 +224,7 @@ const Api = {
   },
   // 프로젝트 전체 기술스택 리스트 조회
   getStacks: async () => {
-	  const stack = await getRequest('/project/tags');
+    const stack = await getRequest('/project/tags');
     return await getRequest('/project/tags');
   },
   // 프로젝트 카테고리 리스트 조회
@@ -253,11 +254,14 @@ const Api = {
       pageNum,
       pageCount
     });
-	return response.data;
+    return response.data;
   },
   // 프로젝트 검색
   postProjectSearch: async (pageNum, pageCount, project) => {
-    return await postJsonReqest(`/project/search/?pageNum=${pageNum}&pageCount=${pageCount}`, project);
+    return await postJsonReqest(
+      `/project/search/?pageNum=${pageNum}&pageCount=${pageCount}`,
+      project
+    );
   },
   // 프로젝트 삭제 -> 아직 구현 X
   deleteProject: async (projectId) => {
@@ -366,8 +370,8 @@ const Api = {
     return await postJsonReqest('/recruitment', Team);
   },
   getAllTeam: async (pageNum, pageCount) => {
-	const response = await getRequest('/recruitment', { pageNum, pageCount })
-	return response.data;
+    const response = await getRequest('/recruitment', { pageNum, pageCount });
+    return response.data;
   },
   getTeam: async (Teamid) => {
     return await getRequest(`/recruitment/${Teamid}`);
@@ -387,8 +391,10 @@ const Api = {
     return await deleteJsonReqest(`/recruitment/${Teamid}`);
   },
   getSearch: async (pageNum, pageCount, keyword, subject) => {
-	const response = await getRequest(`/recruitment/search?pageNum=${pageNum}&pageCount=${pageCount}&keyword=${keyword}&subject=${subject}`);
-	return response.data;
+    const response = await getRequest(
+      `/recruitment/search?pageNum=${pageNum}&pageCount=${pageCount}&keyword=${keyword}&subject=${subject}`
+    );
+    return response.data;
   },
   getTeamcancelApplication: async (Teamid) => {
     return await deleteJsonReqest(`/recruitment/${Teamid}/application`);
@@ -404,7 +410,7 @@ const Api = {
   },
   getRefuse: async (Teamid, array) => {
     return await getRequest(`/recruitment/${Teamid}/refuse?userId=${array}`);
-  },
+  }
   // Notification———————————————————————————————————————
 };
 
