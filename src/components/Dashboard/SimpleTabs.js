@@ -63,8 +63,9 @@ export default function SimpleTabs(props) {
 		type: 0,
 		content: '',
 	});
+	const temp = '';
 	const {
-		contents, members
+		contents, members, postList
 	} = props;
 
 	const handleChange = (event, newValue) => {
@@ -74,62 +75,75 @@ export default function SimpleTabs(props) {
 		});
 	};
 
+	function list(postList) {
+		if (postList.length != 0) {
+			return (
+				<div className={classes.root}>
+					<AppBar position="static">
+						<Tabs
+							textColor="inherit"
+							value={value.type}
+							onChange={handleChange}
+							aria-label="simple tabs example"
+							variant="scrollable"
+							scrollButtons
+							allowScrollButtonsMobile
+						>
+							{postList.map((p, index) => (
+								<Tab key={p.post_id} label={p.post_title} {...a11yProps(index)} />
+							))}
+						</Tabs>
+					</AppBar>
+					{postList.map((p, index) => (
+						mapList(p, index)
+					))}
+				</div>
+			)
+		}
+		else {
+			return temp;
+		}
+	}
+
+	function mapList(p, index) {
+		if (index == 0) {
+			return (
+				<TabPanel key={p.post_id} value={value.type} index={index}>
+					<Card
+						sx={{
+							borderBottomRightRadius: 10,
+							borderBottomLeftRadius: 10,
+							borderTopRightRadius: 10,
+							borderTopLeftRadius: 10,
+							boxShadow: 5
+						}}
+					>
+						<CardContent>
+							<h3>
+								{contents}
+							</h3>
+						</CardContent>
+					</Card>
+				</TabPanel>
+			);
+		}
+		else if (index == 1) {
+			return (
+				<TabPanel key={p.post_id} value={value.type} index={index}>
+					<TeamProfile members={members} />
+				</TabPanel>
+			);
+		}
+		else {
+			return (
+				<TabPanel key={p.post_id} value={value.type} index={index}>
+
+				</TabPanel>
+			);
+		}
+	}
+
 	return (
-		<div className={classes.root}>
-			<AppBar position="static">
-				<Tabs
-					textColor="inherit"
-					value={value.type}
-					onChange={handleChange}
-					aria-label="simple tabs example"
-					variant="scrollable"
-					scrollButtons
-					allowScrollButtonsMobile
-				>
-					<Tab label="프로젝트소개" {...a11yProps(0)} />
-					<Tab label="주제제안서" {...a11yProps(1)} />
-					<Tab label="요구사항명세서" {...a11yProps(2)} />
-					<Tab label="설계명세서" {...a11yProps(3)} />
-					<Tab label="중간발표" {...a11yProps(4)} />
-					<Tab label="최종발표" {...a11yProps(5)} />
-					<Tab label="팀원소개" {...a11yProps(6)} />
-				</Tabs>
-			</AppBar>
-			<TabPanel value={value.type} index={0}>
-				<Card
-					sx={{
-						borderBottomRightRadius: 10,
-						borderBottomLeftRadius: 10,
-						borderTopRightRadius: 10,
-						borderTopLeftRadius: 10,
-						boxShadow: 5
-					}}
-				>
-					<CardContent>
-						<h3>
-							{contents}
-						</h3>
-					</CardContent>
-				</Card>
-			</TabPanel>
-			<TabPanel value={value.type} index={1}>
-				<FileViewer />
-			</TabPanel>
-			<TabPanel value={value.type} index={2}>
-				<FileViewer />
-			</TabPanel>
-			<TabPanel value={value.type} index={3}>
-				<FileViewer />
-			</TabPanel>
-			<TabPanel value={value.type} index={4}>
-				<FileViewer />
-			</TabPanel>
-			<TabPanel value={value.type} index={5}>
-				<Video />
-			</TabPanel>
-			<TabPanel value={value.type} index={6}>
-				<TeamProfile members={members}/>
-			</TabPanel>
-		</div>
+		list(postList)
 	);
 }

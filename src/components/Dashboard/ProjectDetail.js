@@ -35,7 +35,7 @@ const ProjectDetail = (props) => {
 	});
 	const mem = data.project_members;
 	const memResult = mem?.map((member) => member.user_name + ' ');
-
+	const [postList, setpostList] = useState([]);
 	useEffect(async () => {
 		const list = [];
 		let response = await Api.getProject(project_id);
@@ -65,6 +65,8 @@ const ProjectDetail = (props) => {
 
 		let comment_response = await Api.getReadComment(project_id);
 		divideComment(comment_response.data.comments);
+		let response2 = await Api.getPostingList(project_id);
+		setpostList(response2.data.posts);
 	}, []);
 
 	// 댓글과 대댓글 분리
@@ -526,6 +528,7 @@ const ProjectDetail = (props) => {
 							<SimpleTabs
 								contents={data.project_introduction}
 								members={data.project_members}
+								postList={postList}
 							/>
 							<Box
 								sx={{

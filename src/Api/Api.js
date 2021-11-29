@@ -314,6 +314,7 @@ const Api = {
       post_content
     });
   },
+  
   // 게시글 수정
   postUpdatePosting: async (projectId, postId, post_title, post_content) => {
     return await postJsonReqest(`/project/${projectId}/post/${postId}`, {
