@@ -25,22 +25,6 @@ export default function UserInput(props) {
   const temp = '';
 
   function handleKeyDown(event) {
-    if (event.key === 'Enter') {
-      const newSelectedItem = [...selectedItem];
-      const duplicatedValues = newSelectedItem.indexOf(
-        event.target.value.trim()
-      );
-
-      if (duplicatedValues !== -1) {
-        setInputValue('');
-        return;
-      }
-      if (!event.target.value.replace(/\s/g, '').length) return;
-
-      newSelectedItem.push(event.target.value.trim());
-      setSelectedItem(newSelectedItem);
-      setInputValue('');
-    }
     if (
       selectedItem.length &&
       !inputValue.length &&
@@ -105,11 +89,35 @@ export default function UserInput(props) {
       setstate(true);
     }
   }
+  const project_id = location.href
+    .split('/')
+    [location.href.split('/').length - 1].split('.')[0];
 
   useEffect(() => {
     props.propfunction(selectedItem);
   }, [selectedItem]);
 
+  useEffect(async () => {
+    if (project_id != 'ProjectRegister') {
+      let response = await Api.getProject(project_id);
+      const leader_id = response.data.project.project_leader;
+      if (response.data.project.project_members != null) {
+        let members = await Promise.all(
+          response.data.project.project_members.map((member) => {
+            if (leader_id !== member.user_id) {
+              return member.user_login_id;
+            }
+          })
+        );
+        members = members.filter((member) => {
+          if (member) {
+            return member;
+          }
+        });
+        setSelectedItem(members);
+      }
+    }
+  }, []);
   function makeChip(s) {
     const newSelectedItem = [...selectedItem];
     const duplicatedValues = newSelectedItem.indexOf(s.trim());
