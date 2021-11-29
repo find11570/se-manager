@@ -191,7 +191,8 @@ const ProjectRegister = () => {
 			project_subject_year: year[0],
 			project_professor: p_id[0],
 			project_members: intM,
-			project_tags: stack
+			project_tags: stack,
+			project_posts: PostArrays
 		};
 		let response = await Api.postProject(reqObject);
 		if (response.sucess) {

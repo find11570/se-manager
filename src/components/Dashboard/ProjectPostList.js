@@ -16,10 +16,17 @@ const ProjectPostList = (props) => {
 [location.href.split('/').length - 1].split('.')[0];
 	const { PostArrays } =  props;
 	const [postArrays, setpostArrays] = useState(PostArrays);
+	const [post, setpost] = useState([]);
+
 	function handlechange(value) {
 		if(value == '프로젝트소개' || value == '팀원소개'){
 			alert('지울수 없는 기본값 입니다');
 		} else {
+			post.map(async(idx) => {
+				if(value == idx.post_title){
+					let response2 = await Api.deletePosting(project_id, idx.post_id);
+				}
+			});
 			setpostArrays(postArrays.filter(post => post !== value));
 		}
 	}
@@ -29,13 +36,16 @@ const ProjectPostList = (props) => {
 	}, [postArrays]);
 
 	useEffect(async () => {
-		let response2 = await Api.getPostingList(project_id);
-		let postlist = [];
-		if(response2.data.sucess == true){
-			response2.data.posts.map((idx) => {
-				postlist.push(idx.post_title);
-			});
-			setpostArrays(postlist);
+		if(project_id != 'ProjectRegister'){
+			let response2 = await Api.getPostingList(project_id);
+			let postlist = [];
+			if(response2.data.sucess == true){
+				response2.data.posts.map((idx) => {
+					postlist.push(idx.post_title);
+				});
+				setpostArrays(postlist);
+				setpost(response2.data.posts);
+			}
 		}
 	}, []);
 

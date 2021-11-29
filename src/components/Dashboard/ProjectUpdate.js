@@ -298,7 +298,7 @@ const ProjectUpdate = () => {
 		});
 	};
 
-	const handleListChange = (event) => {
+	const handleListChange = async(event) => {
 		if (event.key === "Enter") {
 			const {
 				target: { value }
@@ -316,6 +316,7 @@ const ProjectUpdate = () => {
 					post_title: ''
 				});
 				setPostArrays(postArrays);
+				let response2 = await Api.getCreatePosting(project_id, value);
 			}
 		}
 	};
