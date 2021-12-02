@@ -251,6 +251,17 @@ const ProjectUpdate = () => {
       alert('수정 실패');
     }
   };
+  // 프로젝트 삭제 버튼 onClick 함수
+  const projectDelete = async () => {
+    let response = await Api.deleteProject(project_id);
+    if (response.sucess) {
+      alert('프로젝트가 삭제되었습니다');
+      const target = '/app/dashboard';
+      window.location.href = target;
+    } else {
+      alert('프로젝트 삭제 실패');
+    }
+  };
 
   // React Handle Function
   const handlecategoryChange = (event) => {
@@ -846,26 +857,22 @@ const ProjectUpdate = () => {
                     수정하기
                   </h3>
                 </Button>
-                <Link to="/app/dashboard">
-                  <Button
-                    variant="contained"
-                    color="success"
-                    sx={{
-                      float: 'right'
-                    }}
-                    onClick={() => {
-                      alert('삭제되었습니다.');
+                <Button
+                  variant="contained"
+                  color="success"
+                  sx={{
+                    float: 'right'
+                  }}
+                  onClick={projectDelete}
+                >
+                  <h3
+                    style={{
+                      color: '#ffffff'
                     }}
                   >
-                    <h3
-                      style={{
-                        color: '#ffffff'
-                      }}
-                    >
-                      삭제하기
-                    </h3>
-                  </Button>
-                </Link>
+                    삭제하기
+                  </h3>
+                </Button>
               </Box>
             </CardContent>
           </Card>

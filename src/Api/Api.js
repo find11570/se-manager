@@ -1,6 +1,5 @@
 import axios from 'axios';
 
-const a = '';
 const api = 'http://202.31.202.28:443/api';
 
 const getRequest = async (path, params = {}) => {
@@ -263,7 +262,7 @@ const Api = {
       project
     );
   },
-  // 프로젝트 삭제 -> 아직 구현 X
+  // 프로젝트 삭제
   deleteProject: async (projectId) => {
     return await deleteJsonReqest(`/project/${projectId}`);
   },
@@ -314,7 +313,7 @@ const Api = {
       post_content
     });
   },
-  
+
   // 게시글 수정
   postUpdatePosting: async (projectId, postId, post_title, post_content) => {
     return await postJsonReqest(`/project/${projectId}/post/${postId}`, {
