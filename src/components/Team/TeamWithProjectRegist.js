@@ -19,8 +19,8 @@ import ListItemText from '@mui/material/ListItemText';
 import Select from '@mui/material/Select';
 import Checkbox from '@mui/material/Checkbox';
 import Api from '../../Api/Api';
-import TagsInput from './TagsInput';
-import UserInput from './UserInput';
+import TagsInput from '../Dashboard/TagsInput';
+import TeamWithUserInput from './TeamWithUserInput';
 import ProjectPostList from 'src/components/Dashboard/ProjectPostList';
 
 const ITEM_HEIGHT = 48;
@@ -38,7 +38,8 @@ const data = JSON.parse(sessionStorage.getItem('user_data'));
 const server_path = 'http://202.31.202.28:443/file/';
 const empty_path = 'http://202.31.202.28:443/file/file__1637753431355.jpg';
 
-const ProjectRegister = () => {
+const TeamWithProjectRegist = () => {
+  const team_id = location.href.split('/')[location.href.split('/').length - 2];
   const [postBody, setPostBody] = useState({
     title: '',
     content: '',
@@ -139,7 +140,6 @@ const ProjectRegister = () => {
     }
     // post 요청
     const intM = [];
-    console.log(members);
     var errFlag = { err: false, msg: null };
     intM.push(data.user_id);
     if (members !== '') {
@@ -198,9 +198,14 @@ const ProjectRegister = () => {
     let response = await Api.postProject(reqObject);
     if (response.sucess) {
       setprofessor(p_id);
-      alert('생성되었습니다.');
-      const target = '/app/dashboard';
-      window.location.href = target;
+      let end_response = await Api.getTeamEnd(team_id);
+      if (end_response.data.sucess) {
+        alert('생성되었습니다.');
+        const target = '/app/dashboard';
+        window.location.href = target;
+      } else {
+        alert('마감 실패');
+      }
     } else {
       alert('생성 실패');
     }
@@ -530,7 +535,7 @@ const ProjectRegister = () => {
                     py: 0.5
                   }}
                 />
-                <UserInput
+                <TeamWithUserInput
                   variant="outlined"
                   id="프로젝트 팀원"
                   name="프로젝트 팀원"
@@ -815,4 +820,4 @@ const ProjectRegister = () => {
   );
 };
 
-export default ProjectRegister;
+export default TeamWithProjectRegist;

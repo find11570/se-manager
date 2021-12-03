@@ -15,31 +15,16 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function TagsInput(props) {
+export default function UserInput(props) {
   const classes = useStyles();
-  const { placeholder, tags, other } = props;
+  const { placeholder, users, other } = props;
   const [inputValue, setInputValue] = React.useState('');
   const [selectedItem, setSelectedItem] = React.useState([]);
-  const [stacks, setstacks] = useState([]);
+  const [members, setMembers] = useState([]);
   const [state, setstate] = useState(false);
   const temp = '';
+
   function handleKeyDown(event) {
-    if (event.key === 'Enter') {
-      const newSelectedItem = [...selectedItem];
-      const duplicatedValues = newSelectedItem.indexOf(
-        event.target.value.trim()
-      );
-
-      if (duplicatedValues !== -1) {
-        setInputValue('');
-        return;
-      }
-      if (!event.target.value.replace(/\s/g, '').length) return;
-
-      newSelectedItem.push(event.target.value.trim());
-      setSelectedItem(newSelectedItem);
-      setInputValue('');
-    }
     if (
       selectedItem.length &&
       !inputValue.length &&
@@ -57,25 +42,33 @@ export default function TagsInput(props) {
     setSelectedItem(newSelectedItem);
   }
 
-  const getStacks = async (value) => {
+  const getMembers = async (value) => {
     if (value == '') {
       value = null;
     }
     if (value == ' ') {
       value = null;
     }
-    let response = await Api.getProjectTags(value);
+    let response = await Api.getUserLoginId(value);
     if (response.length != 0) {
-      if (response.data.tags == null) {
-        const stack_list = [];
-        setstacks(stack_list);
+      if (response.data.users == null) {
+        const member_list = await Promise.all(
+          response.data.users.slice(0, 9).map((member) => {
+            return member.user_login_id;
+          })
+        );
+        setMembers(member_list);
       } else {
-        const stack_list = await response.data.tags;
-        setstacks(stack_list);
+        const member_list = await Promise.all(
+          response.data.users.slice(0, 9).map((member) => {
+            return member.user_login_id;
+          })
+        );
+        setMembers(member_list);
       }
     } else {
-      const stack_list = [];
-      setstacks(stack_list);
+      const member_list = [];
+      setMembers(member_list);
     }
   };
 
@@ -87,7 +80,9 @@ export default function TagsInput(props) {
 
   function handleInputChange(event) {
     setInputValue(event.target.value);
-    getStacks(event.target.value);
+    if (event.target.value) {
+      getMembers(event.target.value);
+    }
     if (!event.target.value) {
       setstate(false);
     } else {
@@ -97,21 +92,30 @@ export default function TagsInput(props) {
   const project_id = location.href
     .split('/')
     [location.href.split('/').length - 1].split('.')[0];
+  const team_id = location.href.split('/')[location.href.split('/').length - 2];
 
   useEffect(() => {
     props.propfunction(selectedItem);
   }, [selectedItem]);
+
   useEffect(async () => {
-    if (project_id != 'ProjectRegister') {
-      let response = await Api.getProject(project_id);
-      if (response.data.project.project_tags != null) {
-        const tag = [];
-        tag.push(response.data.project.project_tags);
-        setSelectedItem(tag[0]);
-      }
+    let response = await Api.getTeamList(team_id);
+    if (response.data.applicants.length !== 0) {
+      let members = await Promise.all(
+        response.data.applicants.map((member) => {
+          if (member.application_stat === '수락') {
+            return member.user_login_id;
+          }
+        })
+      );
+      members = members.filter((member) => {
+        if (member) {
+          return member;
+        }
+      });
+      setSelectedItem(members);
     }
   }, []);
-
   function makeChip(s) {
     const newSelectedItem = [...selectedItem];
     const duplicatedValues = newSelectedItem.indexOf(s.trim());
@@ -150,10 +154,10 @@ export default function TagsInput(props) {
                   borderBottomRightRadius: 5,
                   borderBottomLeftRadius: 5,
                   borderTopRightRadius: 5,
-                  borderTopLeftRadius: 5
+                  borderTopLeftRadius: 5,
+                  backgroundColor: 'primary.smoothgreen'
                 }}
-                placeholder="기술스택을 입력해주세요"
-                variant="outlined"
+                placeholder="팀원의 아이디를 입력해주세요"
                 InputProps={{
                   startAdornment: selectedItem.map((item) => (
                     <Chip
@@ -177,12 +181,12 @@ export default function TagsInput(props) {
               {state ? (
                 <Paper sx={{ maxWidth: '100%', boxShadow: 5 }}>
                   <MenuList>
-                    {stacks?.map((s) => {
+                    {members?.map((s) => {
                       return (
                         <MenuItem
                           onClick={() => {
                             makeChip(s);
-                            setstacks([]);
+                            setMembers([]);
                           }}
                           key={s}
                           value={s}
@@ -203,9 +207,9 @@ export default function TagsInput(props) {
     </React.Fragment>
   );
 }
-TagsInput.defaultProps = {
+UserInput.defaultProps = {
   tags: []
 };
-TagsInput.propTypes = {
+UserInput.propTypes = {
   tags: PropTypes.arrayOf(PropTypes.string)
 };

@@ -196,7 +196,7 @@ const ProjectUpdate = () => {
 
     const intM = [];
     var errFlag = { err: false, msg: null };
-    if (members == '') {
+    if (members.length === 1) {
       intM.push(leader);
     } else {
       await Promise.all(

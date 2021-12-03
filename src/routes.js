@@ -20,61 +20,62 @@ import Mypage from 'src/components/Mypage/Mypage';
 import ProjectRegister from 'src/components/Dashboard/ProjectRegister';
 import ProjectUpdate from 'src/components/Dashboard/ProjectUpdate';
 import TeamList from 'src/components/Team/TeamList';
+import TeamWithProjectRegist from 'src/components/Team/TeamWithProjectRegist';
 
 const routes = [
-	{
-		path: 'app',
-		element: <DashboardLayout />,
-		children: [
-			{ path: 'dashboard', element: <Dashboard /> },
-			{ path: 'project/:category', element: <Project /> },
-			{ path: 'projectDetail/:id', element: <ProjectDetail /> },
-			{ path: 'ProjectRegister', element: <ProjectRegister /> },
-			{ path: 'ProjectUpdate/:id', element: <ProjectUpdate /> }
-		]
-	},
-	{
-		path: 'se',
-		element: <TeamboardLayout />,
-		children: [
-			{ path: 'team/', element: <Team /> },
-			{ path: 'team/:subject', element: <Team />},
-			{ path: 'teamRegister', element: <TeamRegister /> },
-			{ path: 'teamSpecific/:id', element: <TeamSpecific /> },
-			{ path: 'teamupdate/:id', element: <TeamUpdate /> },
-			{ path: 'teamList/:id', element: <TeamList /> }
-		]
-	},
-	{
-		path: '/',
-		element: <MainLayout />,
-		children: [
-			{ path: '/', element: <Navigate to="/app/dashboard" /> },
-		]
-	},
-	{
-		path: 'login',
-		element: <LoginLayout />,
-		children: [
-			{ path: 'login', element: <Login /> },
-			{ path: 'password', element: <Password /> }
-		]
-	},
-	{
-		path: 'sign',
-		element: <SignUpLayout />,
-		children: [
-			{ path: 'up', element: <SignUp /> },
-		]
-	},
-	{
-		path: 'mypage',
-		element: <MypageLayout />,
-		children: [
-			{ path: 'update', element: <SignUpUpdate /> },
-			{ path: 'page', element: <Mypage /> }
-		]
-	},
+  {
+    path: 'app',
+    element: <DashboardLayout />,
+    children: [
+      { path: 'dashboard', element: <Dashboard /> },
+      { path: 'project/:category', element: <Project /> },
+      { path: 'projectDetail/:id', element: <ProjectDetail /> },
+      { path: 'ProjectRegister', element: <ProjectRegister /> },
+      { path: 'ProjectUpdate/:id', element: <ProjectUpdate /> }
+    ]
+  },
+  {
+    path: 'se',
+    element: <TeamboardLayout />,
+    children: [
+      { path: 'team/', element: <Team /> },
+      { path: 'team/:subject', element: <Team /> },
+      { path: 'teamRegister', element: <TeamRegister /> },
+      { path: 'teamSpecific/:id', element: <TeamSpecific /> },
+      {
+        path: 'teamSpecific/:id/ProjectRegister/',
+        element: <TeamWithProjectRegist />
+      },
+      { path: 'teamupdate/:id', element: <TeamUpdate /> },
+      { path: 'teamList/:id', element: <TeamList /> }
+    ]
+  },
+  {
+    path: '/',
+    element: <MainLayout />,
+    children: [{ path: '/', element: <Navigate to="/app/dashboard" /> }]
+  },
+  {
+    path: 'login',
+    element: <LoginLayout />,
+    children: [
+      { path: 'login', element: <Login /> },
+      { path: 'password', element: <Password /> }
+    ]
+  },
+  {
+    path: 'sign',
+    element: <SignUpLayout />,
+    children: [{ path: 'up', element: <SignUp /> }]
+  },
+  {
+    path: 'mypage',
+    element: <MypageLayout />,
+    children: [
+      { path: 'update', element: <SignUpUpdate /> },
+      { path: 'page', element: <Mypage /> }
+    ]
+  }
 ];
 
 export default routes;

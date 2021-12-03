@@ -185,7 +185,14 @@ export default function UserInput(props) {
                   <MenuList>
                     {members?.map((s) => {
                       return (
-                        <MenuItem onClick={() => makeChip(s)} key={s} value={s}>
+                        <MenuItem
+                          onClick={() => {
+                            makeChip(s);
+                            setMembers([]);
+                          }}
+                          key={s}
+                          value={s}
+                        >
                           {s ?? s}
                         </MenuItem>
                       );
