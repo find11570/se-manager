@@ -139,7 +139,6 @@ const ProjectRegister = () => {
     }
     // post 요청
     const intM = [];
-    console.log(members);
     var errFlag = { err: false, msg: null };
     intM.push(data.user_id);
     if (members !== '') {

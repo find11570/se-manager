@@ -500,7 +500,7 @@ const ProjectDetail = (props) => {
                     />
                     <h4 style={{ display: 'inline-block' }}>
                       &nbsp;
-                      {data.project_hit}
+                      {data.project_hit + 1}
                     </h4>
                     <FavoriteIcon
                       sx={{

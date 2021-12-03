@@ -82,7 +82,6 @@ const TeamSpecific = () => {
 
   const teamcancelApplication = async () => {
     let response = await Api.getTeamcancelApplication(data.recruitment_id);
-    console.log(response);
     if (response.sucess) {
       alert('신청취소되었습니다');
       const target = '/se/team';
