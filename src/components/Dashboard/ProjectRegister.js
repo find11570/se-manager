@@ -36,7 +36,7 @@ const MenuProps = {
 
 const data = JSON.parse(sessionStorage.getItem('user_data'));
 const server_path = 'http://202.31.202.28:443/file/';
-const empty_path = 'http://202.31.202.28:443/file/file__1637753431355.jpg';
+const empty_path = 'http://202.31.202.28:443/image\\file__1638711656843.png';
 
 const ProjectRegister = () => {
   const [postBody, setPostBody] = useState({

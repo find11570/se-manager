@@ -25,7 +25,7 @@ import UserInput from './UserInput';
 import ProjectPostList from 'src/components/Dashboard/ProjectPostList';
 
 const server_path = 'http://202.31.202.28:443/file/';
-const empty_path = 'http://202.31.202.28:443/file/file__1637753431355.jpg';
+const empty_path = 'http://202.31.202.28:443/image\\file__1638711656843.png';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
