@@ -635,7 +635,7 @@ const Dashboard = () => {
 							<Grid item lg={2} md={3} sm={5} xs={12}>
 								<Link to=
 									{{
-										pathname: `/app/project/${"VR/AR"}`
+										pathname: `/app/project/${"VR&AR"}`
 									}}
 								>
 									<Card
