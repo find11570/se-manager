@@ -83,20 +83,15 @@ const PostView = (props) => {
     }
   }, []);
 
-  function downloadFile() {
-    for (var i = 0; i < fileList.length - 1; i++) {
-      var in1 = fileList[i].file_filename.replace("file__", "").split(".")[0];
-      var in2 = fileList[i + 1].file_filename
-        .replace("file__", "")
-        .split(".")[0];
-      if (in1 == in2) {
-        let document_path = fileList[i].file_path.replace("file\\", "");
+  const downloadFileList = fileList.map((file, index) => {
+    if(fileList.length-1 > index) {
+      if (!(file.file_originname.includes('file__'))) {
+        let document_path = file.file_path.replace('file\\', '');
         let document = server_path + document_path;
-        i += 1;
         return (
           <div>
-            <p style={{ float: "left" }}>
-              {i} : {fileList[i].file_originname} ({fileList[i].file_filename})
+            <p style={{ float: 'left' }}>
+              {index + 1} : {file.file_originname} ({file.file_filename})
             </p>
             <button type="button">
               <a type="file" href={document} download>
@@ -106,23 +101,12 @@ const PostView = (props) => {
           </div>
         );
       } else {
-        let document_path = fileList[i].file_path.replace("file\\", "");
-        let document = server_path + document_path;
-        return (
-          <div>
-            <p style={{ float: "left" }}>
-              {i} : {fileList[i].file_originname} ({fileList[i].file_filename})
-            </p>
-            <button type="button">
-              <a type="file" href={document} download>
-                download
-              </a>
-            </button>
-          </div>
-        );
+        return;
       }
     }
-  }
+    
+      
+  })
 
   function Picture() {
     if (imageUrl != null)
@@ -180,18 +164,18 @@ const PostView = (props) => {
         <div>
           <Box
             sx={{
-              minHeight: "100%",
-              py: 3,
+              minHeight: '100%',
+              py: 3
             }}
           />
           <h4>Pdf File View : {fileTitle}</h4>
           <Box
             sx={{
-              minHeight: "100%",
-              py: 0.5,
+              minHeight: '100%',
+              py: 0.5
             }}
           />
-          <div>{downloadFile()}</div>
+          <div>{downloadFileList}</div>
           <FileView fileUrl={pdfUrl} />
         </div>
       );

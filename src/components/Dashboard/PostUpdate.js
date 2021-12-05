@@ -127,7 +127,9 @@ const PostUpdate = () => {
       post_content: content,
       post_files: p_list,
     };
+    console.log(reqObject);
     let response2 = await Api.postUpdatePosting(project_id, post_id, reqObject);
+    console.log(response2);
     if (response2.sucess) {
       alert("수정되었습니다.");
       var target = "/app/projectDetail/" + project_id;
