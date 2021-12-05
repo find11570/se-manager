@@ -1,10 +1,10 @@
-import { Card, CardContent, Box, Button } from "@material-ui/core";
-import { useEffect, useState } from "react";
-import { Document, Page, pdfjs } from "react-pdf";
+import { Card, CardContent, Box, Button } from '@material-ui/core';
+import { useEffect, useState } from 'react';
+import { Document, Page, pdfjs } from 'react-pdf';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
-import Api from "../../Api/Api";
+import Api from '../../Api/Api';
 
-const server_path = "http://202.31.202.28:443/file/";
+const server_path = 'http://202.31.202.28:443/file/';
 
 const FileViewer = (props) => {
   const [numPages, setNumPages] = useState(null);
@@ -38,12 +38,12 @@ const FileViewer = (props) => {
     const formData = new FormData();
     for (let i = 0; i < documentFile.length; i++) {
       const fileForm = documentFile[i];
-      formData.append("attachments", fileForm);
+      formData.append('attachments', fileForm);
     }
     let response = await Api.getReadFile(formData);
     if (response.sucess) {
       for (var i = 0; i < documentFile.length; i++) {
-        let document_path = response.files[i].file_path.replace("file\\", "");
+        let document_path = response.files[i].file_path.replace('file\\', '');
         let document = server_path + document_path;
         urlList.push(document);
 
@@ -51,14 +51,14 @@ const FileViewer = (props) => {
 
         file.push(response.files[i].file_id);
 
-        if (response.files[i].file_extension == "pdf") {
+        if (response.files[i].file_extension == 'pdf') {
           setFileUrl(document);
         }
       }
       setLocalFileUrl(urlList);
       setf_id(file);
     } else {
-      console.log("파일 업로드 실패");
+      console.log('파일 업로드 실패');
     }
   };
 
@@ -80,7 +80,7 @@ const FileViewer = (props) => {
               borderBottomLeftRadius: 10,
               borderTopRightRadius: 10,
               borderTopLeftRadius: 10,
-              boxShadow: 5,
+              boxShadow: 5
             }}
           >
             <CardContent>
@@ -88,24 +88,24 @@ const FileViewer = (props) => {
                 <h4>Upload File List</h4>
                 <Box
                   sx={{
-                    minHeight: "100%",
-                    py: 0.2,
+                    minHeight: '100%',
+                    py: 0.2
                   }}
                 />
                 <h5
                   style={{
-                    color: "gray",
+                    color: 'gray'
                   }}
                 >
                   파일을 업로드 해주세요
                 </h5>
                 <Box
                   sx={{
-                    minHeight: "100%",
-                    py: 1.5,
+                    minHeight: '100%',
+                    py: 1.5
                   }}
                 />
-                <h5>{titleList.join(", ")}</h5>
+                <h5>{titleList.join(', ')}</h5>
               </div>
             </CardContent>
           </Card>
@@ -120,15 +120,15 @@ const FileViewer = (props) => {
         <div>
           <Box
             sx={{
-              minHeight: "100%",
-              py: 1.5,
+              minHeight: '100%',
+              py: 1.5
             }}
           />
           <h4>PreView</h4>
           <Box
             sx={{
-              minHeight: "100%",
-              py: 1.5,
+              minHeight: '100%',
+              py: 1.5
             }}
           />
           <Document
@@ -142,7 +142,7 @@ const FileViewer = (props) => {
           </Document>
           <div>
             <p>
-              Page {pageNumber || (numPages ? 1 : "--")} of {numPages || "--"}
+              Page {pageNumber || (numPages ? 1 : '--')} of {numPages || '--'}
             </p>
             <button
               type="button"
@@ -171,7 +171,7 @@ const FileViewer = (props) => {
         borderBottomLeftRadius: 10,
         borderTopRightRadius: 10,
         borderTopLeftRadius: 10,
-        boxShadow: 5,
+        boxShadow: 5
       }}
     >
       <CardContent>
@@ -180,8 +180,8 @@ const FileViewer = (props) => {
           {FileView()}
           <Box
             sx={{
-              minHeight: "100%",
-              py: 1.5,
+              minHeight: '100%',
+              py: 1.5
             }}
           />
           <Button
@@ -190,18 +190,18 @@ const FileViewer = (props) => {
             color="info"
             sx={{
               marginTop: 2,
-              width: 180,
+              width: 180
             }}
           >
             <label
               htmlFor="localfile"
               style={{
-                width: 100,
+                width: 100
               }}
             >
               <h3
                 style={{
-                  color: "#ffffff",
+                  color: '#ffffff'
                 }}
               >
                 파일 업로드
@@ -211,8 +211,8 @@ const FileViewer = (props) => {
               type="file"
               id="localfile"
               style={{
-                color: "#ffffff",
-                display: "none",
+                color: '#ffffff',
+                display: 'none'
               }}
               onChange={processFile}
               multiple
@@ -220,8 +220,8 @@ const FileViewer = (props) => {
           </Button>
           <Box
             sx={{
-              minHeight: "100%",
-              py: 0.5,
+              minHeight: '100%',
+              py: 0.5
             }}
           />
           <Button
@@ -230,13 +230,13 @@ const FileViewer = (props) => {
             color="success"
             sx={{
               marginTop: 2,
-              width: 180,
+              width: 180
             }}
             onClick={deleteFile}
           >
             <h3
               style={{
-                color: "#ffffff",
+                color: '#ffffff'
               }}
             >
               파일 삭제
