@@ -48,7 +48,7 @@ const ProjectRegister = () => {
   const [postArray, setpostArray] = useState({
     post_title: ''
   });
-  const [PostArrays, setPostArrays] = useState(['프로젝트소개', '팀원소개']);
+  const [PostArrays, setPostArrays] = useState([]);
 
   const [subject, setsubject] = useState([]);
   const [professor, setprofessor] = useState([]);

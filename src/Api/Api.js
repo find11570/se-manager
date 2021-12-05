@@ -1,16 +1,16 @@
-import axios from 'axios';
+import axios from "axios";
 
-const api = 'http://202.31.202.28:443/api';
+const api = "http://202.31.202.28:443/api";
 
 const getRequest = async (path, params = {}) => {
   try {
-    const token = sessionStorage.getItem('user_token');
+    const token = sessionStorage.getItem("user_token");
     const response = await axios.get(api + path, {
       headers: {
         authorization: `Bearer ${token}`,
-        Accept: '*/*'
+        Accept: "*/*",
       },
-      params
+      params,
     });
     return response;
   } catch (e) {
@@ -21,13 +21,13 @@ const getRequest = async (path, params = {}) => {
 
 const postFormReqest = async (path, body) => {
   try {
-    const token = sessionStorage.getItem('user_token');
+    const token = sessionStorage.getItem("user_token");
     const { data } = await axios.post(api + path, body, {
       headers: {
         authorization: `Bearer ${token}`,
-        Accept: 'application/json',
-        'Content-Type': 'multipart/form-data'
-      }
+        Accept: "application/json",
+        "Content-Type": "multipart/form-data",
+      },
     });
     return data;
   } catch (e) {
@@ -37,20 +37,20 @@ const postFormReqest = async (path, body) => {
 
 const postJsonReqest = async (path, body) => {
   try {
-    const token = sessionStorage.getItem('user_token');
+    const token = sessionStorage.getItem("user_token");
     if (token) {
       const { data } = await axios.post(api + path, body, {
         headers: {
           authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
+          "Content-Type": "application/json",
+        },
       });
       return data;
     } else {
       const { data } = await axios.post(api + path, body, {
         headers: {
-          'Content-Type': 'application/json'
-        }
+          "Content-Type": "application/json",
+        },
       });
       return data;
     }
@@ -61,20 +61,20 @@ const postJsonReqest = async (path, body) => {
 
 const putJsonReqest = async (path, body) => {
   try {
-    const token = sessionStorage.getItem('token');
+    const token = sessionStorage.getItem("token");
     if (token) {
       const { data } = await axios.put(api + path, body, {
         headers: {
           authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
+          "Content-Type": "application/json",
+        },
       });
       return data;
     } else {
       const { data } = await axios.put(api + path, body, {
         headers: {
-          'Content-Type': 'application/json'
-        }
+          "Content-Type": "application/json",
+        },
       });
       return data;
     }
@@ -85,20 +85,20 @@ const putJsonReqest = async (path, body) => {
 
 const deleteJsonReqest = async (path) => {
   try {
-    const token = sessionStorage.getItem('user_token');
+    const token = sessionStorage.getItem("user_token");
     if (token) {
       const { data } = await axios.delete(api + path, {
         headers: {
           authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
+          "Content-Type": "application/json",
+        },
       });
       return data;
     } else {
       const { data } = await axios.delete(api + path, {
         headers: {
-          'Content-Type': 'application/json'
-        }
+          "Content-Type": "application/json",
+        },
       });
       return data;
     }
@@ -116,40 +116,40 @@ const Api = {
   //Auth---------------------------------------------------------------------------
   // 로그인
   postLogin: async (user_login_id, user_password) => {
-    return await postJsonReqest('/auth/login', {
+    return await postJsonReqest("/auth/login", {
       user_login_id,
-      user_password
+      user_password,
     });
   },
   // 로그아웃
   getLogout: async () => {
-    return await getRequest('/auth/logout');
+    return await getRequest("/auth/logout");
   },
   // 아이디 중복 확인
   getDoubleCheckId: async (loginId) => {
-    return await getRequest('/auth/doubleId', { loginId });
+    return await getRequest("/auth/doubleId", { loginId });
   },
   // 이메일 인증 번호 전송
   getEmail: async (email) => {
-    return await getRequest('/auth/email', { email });
+    return await getRequest("/auth/email", { email });
   },
   // 비밀번호 재설정 이메일 인증 전송
   getResetPasswordEmail: async (email) => {
-    return await getRequest('/auth/email/password', { email });
+    return await getRequest("/auth/email/password", { email });
   },
   // 이메일 인증 번호 확인
   postEmail: async (emailId, authStr) => {
-    return await postJsonReqest('/auth/email', { emailId, authStr });
+    return await postJsonReqest("/auth/email", { emailId, authStr });
   },
   // 비밀번호 재설정
   postPassword: async (loginId, changePassword) => {
-    return await postJsonReqest('/auth/password', { loginId, changePassword });
+    return await postJsonReqest("/auth/password", { loginId, changePassword });
   },
 
   // User--------------------------------------------------------------------------
   // 회원가입
   postUser: async (user_data) => {
-    return await postJsonReqest('/user', user_data);
+    return await postJsonReqest("/user", user_data);
   },
   // 회원정보 수정
   postUpdateUser: async (
@@ -165,7 +165,7 @@ const Api = {
       user_introduction,
       user_github,
       user_blog,
-      user_position
+      user_position,
     });
   },
   // 회원정보 조회
@@ -174,11 +174,11 @@ const Api = {
   },
   // 사용자 LoginId검색
   getUserLoginId: async (loginId) => {
-    return await getRequest('/user/search/loginId', { loginId });
+    return await getRequest("/user/search/loginId", { loginId });
   },
   // 교수님 리스트 조회
   getProfessors: async () => {
-    return await getRequest('/user/professors');
+    return await getRequest("/user/professors");
   },
   // 사용자 참가 프로젝트 리스트 조회
   getProjectInUser: async (userId, pageNum, pageCount) => {
@@ -188,7 +188,7 @@ const Api = {
   getUserRecruitment: async (userId, pageNum, pageCount) => {
     return await getRequest(`/user/${userId}/recruitment`, {
       pageNum,
-      pageCount
+      pageCount,
     });
   },
   // 회원 탈퇴
@@ -199,7 +199,7 @@ const Api = {
   // Projects--------------------------------------------------------------------------------
   // 프로젝트 생성
   postProject: async (project) => {
-    return await postJsonReqest('/project', project);
+    return await postJsonReqest("/project", project);
   },
   // 프로젝트 수정
   postUpdateProject: async (projectId, project) => {
@@ -211,11 +211,11 @@ const Api = {
   },
   // 프로젝트 전체조회
   getAllProject: async (pageNum, pageCount) => {
-    return await getRequest('/project', { pageNum, pageCount });
+    return await getRequest("/project", { pageNum, pageCount });
   },
   // 전체 프로젝트 개수 조회
   getAllProjectCount: async () => {
-    return await getRequest('/project-count');
+    return await getRequest("/project-count");
   },
   // 프로젝트 조회수 증가
   getHit: async (projectId) => {
@@ -223,24 +223,24 @@ const Api = {
   },
   // 프로젝트 전체 기술스택 리스트 조회
   getStacks: async () => {
-    const stack = await getRequest('/project/tags');
-    return await getRequest('/project/tags');
+    const stack = await getRequest("/project/tags");
+    return await getRequest("/project/tags");
   },
   // 프로젝트 카테고리 리스트 조회
   getCategorys: async () => {
-    return await getRequest('/project/categorys');
+    return await getRequest("/project/categorys");
   },
   // 프로젝트 과목년도 리스트 조회
   getYears: async () => {
-    return await getRequest('/project/subject-years');
+    return await getRequest("/project/subject-years");
   },
   // 프로젝트 과목리스트 조회
   getSubjects: async () => {
-    return await getRequest('/project/subjects');
+    return await getRequest("/project/subjects");
   },
   // 프로젝트 정렬 메뉴 조회
   getMenus: () => {
-    return ['최신순', '좋아요순', '조회순'];
+    return ["최신순", "좋아요순", "조회순"];
   },
   // 프로젝트 태그 검색
   getProjectTags: async (tagId) => {
@@ -248,10 +248,10 @@ const Api = {
   },
   // 카테고리별 프로젝트 조회
   getProjectInCategory: async (categoryId, pageNum, pageCount) => {
-    const response = await getRequest('/project/search/category', {
+    const response = await getRequest("/project/search/category", {
       categoryId,
       pageNum,
-      pageCount
+      pageCount,
     });
     return response.data;
   },
@@ -270,11 +270,11 @@ const Api = {
   // Follow------------------------------------------------------------------------------------
   // 팔로우
   getFollow: async (targetId) => {
-    return await getRequest('/user/follow', { targetId });
+    return await getRequest("/user/follow", { targetId });
   },
   // 팔로우 취소
   getUnfollow: async (targetId) => {
-    return await getRequest('/user/unfollow', { targetId });
+    return await getRequest("/user/unfollow", { targetId });
   },
   // 팔로워 리스트 조회
   getFollowerList: async (userId) => {
@@ -288,21 +288,21 @@ const Api = {
   // likes------------------------------------------------------------------------------------
   // 프로젝트 좋아요 여부 확인
   getProjectIsLike: async (projectId) => {
-    return await getRequest('/project/isLike', { projectId });
+    return await getRequest("/project/isLike", { projectId });
   },
   // 프로젝트 좋아요
   getProjectLike: async (projectId) => {
-    return await getRequest('/project/like', { projectId });
+    return await getRequest("/project/like", { projectId });
   },
   // 프로젝트 좋아요 취소
   getProjectUnlike: async (projectId) => {
-    return await getRequest('/project/unlike', { projectId });
+    return await getRequest("/project/unlike", { projectId });
   },
   // 사용자의 좋아요한 프로젝트 리스트 조회
   getLikedProject: async (userId, pageNum, pageCount) => {
     return await getRequest(`/user/${userId}/like-projects`, {
       pageNum,
-      pageCount
+      pageCount,
     });
   },
   // Posts------------------------------------------------------------------------------------
@@ -310,7 +310,7 @@ const Api = {
   getCreatePosting: async (projectId, post_title, post_content) => {
     return await postJsonReqest(`/project/${projectId}/post`, {
       post_title,
-      post_content
+      post_content,
     });
   },
 
@@ -318,7 +318,7 @@ const Api = {
   postUpdatePosting: async (projectId, postId, post_title, post_content) => {
     return await postJsonReqest(`/project/${projectId}/post/${postId}`, {
       post_title,
-      post_content
+      post_content,
     });
   },
   // 게시글 삭제 -> 아직 구현 X
@@ -344,13 +344,13 @@ const Api = {
     return await postJsonReqest(`/project/${projectId}/comment`, {
       comment_content,
       comment_depth,
-      comment_parent
+      comment_parent,
     });
   },
   // 프로젝트에 댓글 / 대댓글 수정
   postUpdateComment: async (projectId, commentId, comment_content) => {
     return await postJsonReqest(`/project/${projectId}/comment/${commentId}`, {
-      comment_content
+      comment_content,
     });
   },
   // 프로젝트에 댓글 / 대댓글 삭제
@@ -365,12 +365,15 @@ const Api = {
   getReadFile: async (fileData) => {
     return await postFormReqest(`/file/upload`, fileData);
   },
+  getReadFilePDF: async (fileData) => {
+    return await postFormReqest(`/file/uploadPDF`, fileData);
+  },
   // Recruitment--------------------------------------------------------------------------------
   postTeam: async (Team) => {
-    return await postJsonReqest('/recruitment', Team);
+    return await postJsonReqest("/recruitment", Team);
   },
   getAllTeam: async (pageNum, pageCount) => {
-    const response = await getRequest('/recruitment', { pageNum, pageCount });
+    const response = await getRequest("/recruitment", { pageNum, pageCount });
     return response.data;
   },
   getTeam: async (Teamid) => {
@@ -410,7 +413,7 @@ const Api = {
   },
   getRefuse: async (Teamid, array) => {
     return await getRequest(`/recruitment/${Teamid}/refuse?userId=${array}`);
-  }
+  },
   // Notification———————————————————————————————————————
 };
 
