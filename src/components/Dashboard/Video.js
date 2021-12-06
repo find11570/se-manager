@@ -1,9 +1,9 @@
-import { Card, CardContent, Box, Button } from "@material-ui/core";
-import { useState, useEffect } from "react";
-import ReactPlayer from "react-player";
-import Api from "../../Api/Api";
+import { Card, CardContent, Box, Button } from '@material-ui/core';
+import { useState, useEffect } from 'react';
+import ReactPlayer from 'react-player';
+import Api from 'src/Api/Api';
 
-const server_path = "http://202.31.202.28:443/file/";
+const server_path = 'http://202.31.202.28:443/file/';
 
 const Video = () => {
   const [videoUrl, setvideoUrl] = useState();
@@ -18,18 +18,18 @@ const Video = () => {
     const videoFile = event.target.files[0];
     props.setvideo(videoFile);
     const formData = new FormData();
-    formData.append("attachments", videoFile);
+    formData.append('attachments', videoFile);
     let response = await Api.getReadFile(formData);
     if (response.sucess) {
       console.log(response);
-      let video_path = response.files[0].file_path.replace("file\\", "");
+      let video_path = response.files[0].file_path.replace('file\\', '');
       let video = server_path + video_path;
       props.setVideovideoUrl(video);
       setvideoUrl(video);
       setvideoTitle(response.files[0].file_originname);
       props.setv_id(response.files[0].file_id);
     } else {
-      console.log("비디오 업로드 실패");
+      console.log('비디오 업로드 실패');
     }
   };
 
@@ -50,7 +50,7 @@ const Video = () => {
               borderBottomLeftRadius: 10,
               borderTopRightRadius: 10,
               borderTopLeftRadius: 10,
-              boxShadow: 5,
+              boxShadow: 5
             }}
           >
             <CardContent>
@@ -58,21 +58,21 @@ const Video = () => {
                 <h4>Upload Video</h4>
                 <Box
                   sx={{
-                    minHeight: "100%",
-                    py: 0.2,
+                    minHeight: '100%',
+                    py: 0.2
                   }}
                 />
                 <h5
                   style={{
-                    color: "gray",
+                    color: 'gray'
                   }}
                 >
                   동영상을 업로드 해주세요
                 </h5>
                 <Box
                   sx={{
-                    minHeight: "100%",
-                    py: 1.5,
+                    minHeight: '100%',
+                    py: 1.5
                   }}
                 />
                 <h5>{videoTitle}</h5>
@@ -90,15 +90,15 @@ const Video = () => {
         <div>
           <Box
             sx={{
-              minHeight: "100%",
-              py: 1.5,
+              minHeight: '100%',
+              py: 1.5
             }}
           />
           <h4>PreView</h4>
           <Box
             sx={{
-              minHeight: "100%",
-              py: 1.5,
+              minHeight: '100%',
+              py: 1.5
             }}
           />
           <div className="player-wrapper">
@@ -122,7 +122,7 @@ const Video = () => {
         borderBottomLeftRadius: 10,
         borderTopRightRadius: 10,
         borderTopLeftRadius: 10,
-        boxShadow: 5,
+        boxShadow: 5
       }}
     >
       <CardContent>
@@ -131,8 +131,8 @@ const Video = () => {
           {Screen()}
           <Box
             sx={{
-              minHeight: "100%",
-              py: 1.5,
+              minHeight: '100%',
+              py: 1.5
             }}
           />
           <Button
@@ -141,18 +141,18 @@ const Video = () => {
             color="info"
             sx={{
               marginTop: 2,
-              width: 180,
+              width: 180
             }}
           >
             <label
               htmlFor="videofile"
               style={{
-                width: 100,
+                width: 100
               }}
             >
               <h3
                 style={{
-                  color: "#ffffff",
+                  color: '#ffffff'
                 }}
               >
                 비디오 업로드
@@ -163,16 +163,16 @@ const Video = () => {
               id="videofile"
               accept="video/*"
               style={{
-                color: "#ffffff",
-                display: "none",
+                color: '#ffffff',
+                display: 'none'
               }}
               onChange={processVideo}
             ></input>
           </Button>
           <Box
             sx={{
-              minHeight: "100%",
-              py: 0.5,
+              minHeight: '100%',
+              py: 0.5
             }}
           />
           <Button
@@ -181,13 +181,13 @@ const Video = () => {
             color="success"
             sx={{
               marginTop: 2,
-              width: 180,
+              width: 180
             }}
             onClick={deleteVideo}
           >
             <h3
               style={{
-                color: "#ffffff",
+                color: '#ffffff'
               }}
             >
               비디오 삭제
@@ -196,8 +196,8 @@ const Video = () => {
         </div>
         <Box
           sx={{
-            minHeight: "100%",
-            py: 0.5,
+            minHeight: '100%',
+            py: 0.5
           }}
         />
       </CardContent>

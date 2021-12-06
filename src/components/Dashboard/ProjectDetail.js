@@ -1,5 +1,5 @@
-import { Helmet } from "react-helmet";
-import { useState, useEffect } from "react";
+import { Helmet } from 'react-helmet';
+import { useState, useEffect } from 'react';
 import {
   Box,
   Card,
@@ -10,31 +10,30 @@ import {
   InputAdornment,
   SvgIcon,
   Avatar,
-  Button,
-} from "@material-ui/core";
-import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import SimpleTabs from "src/components/Dashboard/SimpleTabs";
-import { Link } from "react-router-dom";
-import Api from "../../Api/Api";
-import NestedCommentInput from "./NestedCommentInput";
+  Button
+} from '@material-ui/core';
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import SimpleTabs from 'src/components/Dashboard/SimpleTabs';
+import { Link } from 'react-router-dom';
+import Api from 'src/Api/Api';
 
-const people = JSON.parse(sessionStorage.getItem("user_data"));
+const people = JSON.parse(sessionStorage.getItem('user_data'));
 
 const ProjectDetail = (props) => {
   const project_id = location.href
-    .split("/")
-    [location.href.split("/").length - 1].split(".")[0];
+    .split('/')
+    [location.href.split('/').length - 1].split('.')[0];
   const [data, setData] = useState([]);
   const [state, setstate] = useState(false);
   const [tag, settag] = useState([]);
   const [comment, setcomment] = useState([]);
   const [nestedComment, setNestedComment] = useState([]);
   const [postBody, setPostBody] = useState({
-    comment: "",
+    comment: ''
   });
   const mem = data.project_members;
-  const memResult = mem?.map((member) => member.user_name + " ");
+  const memResult = mem?.map((member) => member.user_name + ' ');
   const [postList, setpostList] = useState([]);
   useEffect(async () => {
     const list = [];
@@ -53,7 +52,7 @@ const ProjectDetail = (props) => {
       });
     }
     settag(list);
-    if (sessionStorage.getItem("user_token")) {
+    if (sessionStorage.getItem('user_token')) {
       if (response.data.project.length != 0) {
         response.data.project.project_members.map((m) => {
           if (m.user_id === people.user_id) {
@@ -87,8 +86,8 @@ const ProjectDetail = (props) => {
 
   // 댓글 등록 onClick 함수
   const createComment = async () => {
-    if (!sessionStorage.getItem("user_token")) {
-      return alert("로그인 후 댓글 작성가능합니다.");
+    if (!sessionStorage.getItem('user_token')) {
+      return alert('로그인 후 댓글 작성가능합니다.');
     } else {
       if (postBody.comment) {
         let response = await Api.postComment(
@@ -97,7 +96,7 @@ const ProjectDetail = (props) => {
           0,
           null
         );
-        document.getElementById("comment_field").value = "";
+        document.getElementById('comment_field').value = '';
         location.replace(location.href);
       }
     }
@@ -114,7 +113,7 @@ const ProjectDetail = (props) => {
             size="small"
             onClick={updateComment}
             sx={{
-              float: "right",
+              float: 'right'
             }}
           >
             수정
@@ -135,7 +134,7 @@ const ProjectDetail = (props) => {
             size="small"
             onClick={updateNestedComment}
             sx={{
-              float: "right",
+              float: 'right'
             }}
           >
             수정
@@ -154,7 +153,7 @@ const ProjectDetail = (props) => {
           size="small"
           onClick={createNestedComment}
           sx={{
-            float: "right",
+            float: 'right'
           }}
         >
           대댓글
@@ -174,7 +173,7 @@ const ProjectDetail = (props) => {
             size="small"
             onClick={deleteComment}
             sx={{
-              float: "right",
+              float: 'right'
             }}
           >
             삭제
@@ -195,7 +194,7 @@ const ProjectDetail = (props) => {
             size="small"
             onClick={deleteNestedComment}
             sx={{
-              float: "right",
+              float: 'right'
             }}
           >
             삭제
@@ -224,37 +223,37 @@ const ProjectDetail = (props) => {
     if (
       !(
         card.childNodes[card.childNodes.length - 1].id ===
-        "nestedComment_input_" + card.childNodes[2].id
+        'nestedComment_input_' + card.childNodes[2].id
       )
     ) {
-      var nestedComment_Container = document.createElement("Card");
-      var nestedComment_input = document.createElement("input");
+      var nestedComment_Container = document.createElement('Card');
+      var nestedComment_input = document.createElement('input');
 
-      var btn = document.createElement("Button");
-      btn.innerHTML = "대댓글 등록";
-      btn.style.color = "white";
-      btn.style.padding = "4px 10px";
-      btn.style.borderRadius = "4px";
-      btn.style.backgroundColor = "#2e7d32";
+      var btn = document.createElement('Button');
+      btn.innerHTML = '대댓글 등록';
+      btn.style.color = 'white';
+      btn.style.padding = '4px 10px';
+      btn.style.borderRadius = '4px';
+      btn.style.backgroundColor = '#2e7d32';
       btn.style.boxShadow =
-        "0 0 1px 0 rgb(0 0 0 / 31%), 0 2px 2px -2px rgb(0 0 0 / 25%)";
-      btn.style.float = "right";
-      btn.style.border = "0";
-      btn.style.cursor = "pointer";
+        '0 0 1px 0 rgb(0 0 0 / 31%), 0 2px 2px -2px rgb(0 0 0 / 25%)';
+      btn.style.float = 'right';
+      btn.style.border = '0';
+      btn.style.cursor = 'pointer';
       btn.onclick = postNestedComment;
 
       nestedComment_Container.id =
-        "nestedComment_input_" + card.childNodes[2].id;
-      nestedComment_input.style.marginLeft = "50px";
-      nestedComment_input.style.fontSize = "15px";
-      nestedComment_input.style.fontWeight = "bolder";
-      nestedComment_input.style.width = "50%";
-      nestedComment_input.style.border = "1px solid #f1f1f1";
+        'nestedComment_input_' + card.childNodes[2].id;
+      nestedComment_input.style.marginLeft = '50px';
+      nestedComment_input.style.fontSize = '15px';
+      nestedComment_input.style.fontWeight = 'bolder';
+      nestedComment_input.style.width = '50%';
+      nestedComment_input.style.border = '1px solid #f1f1f1';
       nestedComment_input.style.boxShadow =
-        "0 0 1px 0 rgb(0 0 0 / 31%), 0 2px 2px -2px rgb(0 0 0 / 25%)";
-      nestedComment_input.style.outline = "none";
-      nestedComment_input.style.cursor = "text";
-      nestedComment_input.style.backgroundColor = "#f0f7ec";
+        '0 0 1px 0 rgb(0 0 0 / 31%), 0 2px 2px -2px rgb(0 0 0 / 25%)';
+      nestedComment_input.style.outline = 'none';
+      nestedComment_input.style.cursor = 'text';
+      nestedComment_input.style.backgroundColor = '#f0f7ec';
 
       nestedComment_Container.appendChild(nestedComment_input);
       nestedComment_Container.appendChild(btn);
@@ -288,7 +287,7 @@ const ProjectDetail = (props) => {
         nestedComments.push({
           id: nestedComment[i].comment_id,
           content: nestedComment[i].comment_content,
-          user_name: nestedComment[i].user_name,
+          user_name: nestedComment[i].user_name
         });
       }
     }
@@ -304,8 +303,8 @@ const ProjectDetail = (props) => {
                 paddingLeft: 7,
                 paddingTop: 1,
                 paddingBottom: 1,
-                fontWeight: "bold",
-                fontSize: "medium",
+                fontWeight: 'bold',
+                fontSize: 'medium'
               }}
             >
               {comment.user_name} : {comment.content}
@@ -322,7 +321,7 @@ const ProjectDetail = (props) => {
   // 댓글 수정 onClick 함수
   const updateComment = async (e) => {
     var card = e.target.parentNode;
-    if (card.childNodes[2].nodeName === "INPUT") {
+    if (card.childNodes[2].nodeName === 'INPUT') {
       var comment_id = card.childNodes[2].id;
       var comment_content = card.childNodes[2].value;
       let response = await Api.postUpdateComment(
@@ -334,11 +333,11 @@ const ProjectDetail = (props) => {
     } else {
       var comment_container = card.childNodes[2];
       var comment = comment_container.innerText;
-      var comment_id = comment_container.getAttribute("id");
+      var comment_id = comment_container.getAttribute('id');
       card.removeChild(comment_container);
-      var update_container = document.createElement("input");
+      var update_container = document.createElement('input');
       update_container.value = comment;
-      update_container.id = "update_input_" + comment_id;
+      update_container.id = 'update_input_' + comment_id;
       card.insertBefore(update_container, card.childNodes[2]);
     }
   };
@@ -346,7 +345,7 @@ const ProjectDetail = (props) => {
   // 대댓글 수정 onClick 함수
   const updateNestedComment = async (e) => {
     var card = e.target.parentNode;
-    if (card.childNodes[2].nodeName === "INPUT") {
+    if (card.childNodes[2].nodeName === 'INPUT') {
       var comment_id = card.childNodes[2].id;
       var comment_content = card.childNodes[2].value;
       let response = await Api.postUpdateComment(
@@ -358,9 +357,9 @@ const ProjectDetail = (props) => {
     }
     var comment_id = card.id;
     var comment = card.childNodes[2];
-    var update_container = document.createElement("input");
+    var update_container = document.createElement('input');
     update_container.value = comment.data;
-    update_container.id = "update_input_" + comment_id;
+    update_container.id = 'update_input_' + comment_id;
     card.removeChild(comment);
     card.insertBefore(update_container, card.childNodes[2]);
   };
@@ -368,7 +367,7 @@ const ProjectDetail = (props) => {
   // React Handle Function
   const handleTextChange = (event) => {
     setPostBody({
-      comment: event.currentTarget.value,
+      comment: event.currentTarget.value
     });
   };
 
@@ -377,18 +376,18 @@ const ProjectDetail = (props) => {
       key={t}
       value={t}
       sx={{
-        backgroundColor: "primary.smoothgreen",
-        display: "inline-block",
-        textAlign: "center",
+        backgroundColor: 'primary.smoothgreen',
+        display: 'inline-block',
+        textAlign: 'center',
         marginRight: 2,
         borderBottomRightRadius: 5,
         borderBottomLeftRadius: 5,
         borderTopRightRadius: 5,
         borderTopLeftRadius: 5,
-        borderColor: "primary.main",
+        borderColor: 'primary.main',
         paddingLeft: 2,
         paddingRight: 2,
-        boxShadow: 1,
+        boxShadow: 1
       }}
     >
       {t}
@@ -402,8 +401,8 @@ const ProjectDetail = (props) => {
       </Helmet>
       <Box
         sx={{
-          minHeight: "100%",
-          py: 3,
+          minHeight: '100%',
+          py: 3
         }}
       >
         <Grid item lg={10} md={10} sm={12} xs={12}>
@@ -413,26 +412,26 @@ const ProjectDetail = (props) => {
               borderBottomLeftRadius: 10,
               borderTopRightRadius: 10,
               borderTopLeftRadius: 10,
-              boxShadow: 5,
+              boxShadow: 5
             }}
           >
             <CardContent
               sx={{
-                backgroundColor: "#81C147",
+                backgroundColor: '#81C147'
               }}
             >
               <Box
                 sx={{
-                  minHeight: "100%",
-                  py: 3,
+                  minHeight: '100%',
+                  py: 3
                 }}
               >
                 <Hidden lgDown>
                   <Box
                     sx={{
-                      float: "left",
-                      display: "inline-block",
-                      marginRight: 2,
+                      float: 'left',
+                      display: 'inline-block',
+                      marginRight: 2
                     }}
                   >
                     <img
@@ -445,7 +444,7 @@ const ProjectDetail = (props) => {
                         borderBottomLeftRadius: 10,
                         borderTopRightRadius: 10,
                         borderTopLeftRadius: 10,
-                        display: "inline-block",
+                        display: 'inline-block'
                       }}
                     />
                   </Box>
@@ -453,68 +452,68 @@ const ProjectDetail = (props) => {
                 <Hidden lgDown>
                   <Box
                     sx={{
-                      display: "inline-block",
+                      display: 'inline-block'
                     }}
                   >
                     <h1
                       style={{
-                        color: "#ffffff",
-                        marginTop: 10,
+                        color: '#ffffff',
+                        marginTop: 10
                       }}
                     >
                       {data.project_title}
                     </h1>
                     <Box
                       sx={{
-                        minHeight: "100%",
-                        py: 1,
+                        minHeight: '100%',
+                        py: 1
                       }}
                     />
                     <h3
                       style={{
-                        color: "#ffffff",
+                        color: '#ffffff'
                       }}
                     >
                       {memResult}
                     </h3>
                     <Box
                       sx={{
-                        minHeight: "100%",
-                        py: 1,
+                        minHeight: '100%',
+                        py: 1
                       }}
                     />
-                    <h4 style={{ color: "#006400" }}>
+                    <h4 style={{ color: '#006400' }}>
                       #&nbsp;
                       {List}
                     </h4>
                     <Box
                       sx={{
-                        minHeight: "100%",
-                        py: 1,
+                        minHeight: '100%',
+                        py: 1
                       }}
                     />
                     <RemoveRedEyeIcon
                       sx={{
-                        display: "inline-block",
+                        display: 'inline-block'
                       }}
                     />
-                    <h4 style={{ display: "inline-block" }}>
+                    <h4 style={{ display: 'inline-block' }}>
                       &nbsp;
                       {data.project_hit + 1}
                     </h4>
                     <FavoriteIcon
                       sx={{
-                        display: "inline-block",
+                        display: 'inline-block'
                       }}
                     />
-                    <h4 style={{ display: "inline-block" }}>
+                    <h4 style={{ display: 'inline-block' }}>
                       &nbsp;
                       {data.project_like}
                     </h4>
                   </Box>
                 </Hidden>
                 <Hidden lgUp>
-                  <h3 style={{ color: "#ffffff", marginLeft: 20 }}>
+                  <h3 style={{ color: '#ffffff', marginLeft: 20 }}>
                     {data.project_title}
                   </h3>
                 </Hidden>
@@ -522,7 +521,7 @@ const ProjectDetail = (props) => {
             </CardContent>
             <CardContent
               sx={{
-                backgroundColor: "#ffffff",
+                backgroundColor: '#ffffff'
               }}
             >
               <SimpleTabs
@@ -533,35 +532,35 @@ const ProjectDetail = (props) => {
               />
               <Box
                 sx={{
-                  minHeight: "100%",
-                  py: 3,
+                  minHeight: '100%',
+                  py: 3
                 }}
               />
             </CardContent>
           </Card>
           <Box
             sx={{
-              minHeight: "100%",
-              py: 2,
+              minHeight: '100%',
+              py: 2
             }}
           />
           {state ? (
             <Link
               to={{
                 pathname: `/app/projectUpdate/${project_id}`,
-                state: { index: project_id },
+                state: { index: project_id }
               }}
             >
               <Button
                 variant="contained"
                 color="success"
                 sx={{
-                  float: "right",
+                  float: 'right'
                 }}
               >
                 <h3
                   style={{
-                    color: "#ffffff",
+                    color: '#ffffff'
                   }}
                 >
                   수정하기
@@ -571,34 +570,34 @@ const ProjectDetail = (props) => {
           ) : (
             <Box
               sx={{
-                minHeight: "100%",
+                minHeight: '100%'
               }}
             />
           )}
           <Box
             sx={{
-              minHeight: "100%",
-              py: 4,
+              minHeight: '100%',
+              py: 4
             }}
           />
           <Box
             sx={{
-              bgcolor: "primary.darkgreen",
-              width: "100%",
-              height: 2,
+              bgcolor: 'primary.darkgreen',
+              width: '100%',
+              height: 2
             }}
           />
           <Box
             sx={{
-              minHeight: "100%",
-              py: 2,
+              minHeight: '100%',
+              py: 2
             }}
           />
           <h3>댓글/피드백</h3>
           <Box
             sx={{
-              minHeight: "100%",
-              py: 1,
+              minHeight: '100%',
+              py: 1
             }}
           />
           <Grid container spacing={2}>
@@ -607,21 +606,21 @@ const ProjectDetail = (props) => {
                 id="comment_field"
                 fullWidth
                 sx={{
-                  flex: "1",
-                  flexDirection: "row",
+                  flex: '1',
+                  flexDirection: 'row',
                   boxShadow: 5,
                   borderBottomRightRadius: 5,
                   borderBottomLeftRadius: 5,
                   borderTopRightRadius: 5,
                   borderTopLeftRadius: 5,
-                  backgroundColor: "primary.smoothgreen",
+                  backgroundColor: 'primary.smoothgreen'
                 }}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
                       <SvgIcon fontSize="small" color="action" />
                     </InputAdornment>
-                  ),
+                  )
                 }}
                 placeholder="댓글을 입력하세요!"
                 variant="outlined"
@@ -637,7 +636,7 @@ const ProjectDetail = (props) => {
               >
                 <h4
                   style={{
-                    color: "#ffffff",
+                    color: '#ffffff'
                   }}
                 >
                   등록
@@ -647,8 +646,8 @@ const ProjectDetail = (props) => {
           </Grid>
           <Box
             sx={{
-              minHeight: "100%",
-              py: 3,
+              minHeight: '100%',
+              py: 3
             }}
           />
           <Grid item lg={12} md={12} sm={12} xs={12}>
@@ -662,39 +661,39 @@ const ProjectDetail = (props) => {
                   borderTopRightRadius: 10,
                   borderTopLeftRadius: 10,
                   boxShadow: 5,
-                  marginBottom: 3,
+                  marginBottom: 3
                 }}
               >
                 <CardContent>
                   <Box
                     sx={{
-                      display: "inline-block",
-                      marginRight: 2,
+                      display: 'inline-block',
+                      marginRight: 2
                     }}
                   >
                     {comments.user_image ? (
                       <img
                         src={comments.user_image}
                         style={{
-                          width: "40px",
-                          height: "40px",
-                          borderRadius: "50%",
-                          verticalAlign: "middle",
+                          width: '40px',
+                          height: '40px',
+                          borderRadius: '50%',
+                          verticalAlign: 'middle'
                         }}
                       />
                     ) : (
                       <Avatar
                         sx={{
                           width: 35,
-                          height: 35,
+                          height: 35
                         }}
                       />
                     )}
                   </Box>
                   <h4
                     style={{
-                      display: "inline-block",
-                      verticalAlign: "middle",
+                      display: 'inline-block',
+                      verticalAlign: 'middle'
                     }}
                   >
                     {comments.user_name}
@@ -703,7 +702,7 @@ const ProjectDetail = (props) => {
                   <h4
                     id={comments.comment_id}
                     className="comment"
-                    style={{ display: "inline-block", verticalAlign: "middle" }}
+                    style={{ display: 'inline-block', verticalAlign: 'middle' }}
                   >
                     {comments.comment_content}
                   </h4>

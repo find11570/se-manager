@@ -1,8 +1,8 @@
 import { Card, CardContent, Box, Button } from '@material-ui/core';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
-import Api from '../../Api/Api';
+import Api from 'src/Api/Api';
 
 const server_path = 'http://202.31.202.28:443/file/';
 

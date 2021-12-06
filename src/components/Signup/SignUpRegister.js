@@ -16,7 +16,7 @@ import {
   Checkbox,
   Hidden
 } from '@material-ui/core';
-import Api from '../../Api/Api';
+import Api from 'src/Api/Api';
 
 const server_path = 'http://202.31.202.28:443/file/';
 const empty_profile = 'http://202.31.202.28:443/file/file__1637754138261.png';

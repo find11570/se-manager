@@ -11,22 +11,13 @@ import {
   SvgIcon,
   Button
 } from '@material-ui/core';
-import { Link } from 'react-router-dom';
-import Api from '../../Api/Api';
+import Api from 'src/Api/Api';
 import { Document, Page, pdfjs } from 'react-pdf';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 const server_path = 'http://202.31.202.28:443/file/';
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250
-    }
-  }
-};
 
 const PostUpdate = () => {
   const postUrl = location.href

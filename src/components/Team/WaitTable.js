@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { DataGrid } from '@material-ui/data-grid';
-import Api from '../../Api/Api';
+import Api from 'src/Api/Api';
 import { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';

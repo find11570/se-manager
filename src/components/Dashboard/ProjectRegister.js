@@ -18,9 +18,9 @@ import FormControl from '@mui/material/FormControl';
 import ListItemText from '@mui/material/ListItemText';
 import Select from '@mui/material/Select';
 import Checkbox from '@mui/material/Checkbox';
-import Api from '../../Api/Api';
-import TagsInput from './TagsInput';
-import UserInput from './UserInput';
+import Api from 'src/Api/Api';
+import TagsInput from 'src/components/Dashboard/TagsInput';
+import UserInput from 'src/components/Dashboard/UserInput';
 import ProjectPostList from 'src/components/Dashboard/ProjectPostList';
 
 const ITEM_HEIGHT = 48;

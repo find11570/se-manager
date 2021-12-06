@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import Api from '../../Api/Api';
+import Api from 'src/Api/Api';
 
 const token = sessionStorage.getItem('user_token');
 

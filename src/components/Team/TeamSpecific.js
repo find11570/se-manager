@@ -10,7 +10,7 @@ import {
   Button
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
-import Api from '../../Api/Api';
+import Api from 'src/Api/Api';
 
 const TeamSpecific = () => {
   const team_id = location.href
