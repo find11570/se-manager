@@ -759,7 +759,6 @@ const PostUpdate = () => {
                     <CardContent>
                       <div className="file__box">
                         {FileTitleList(titleList)}
-                        {FileView()}
                         <Box
                           sx={{
                             minHeight: '100%',

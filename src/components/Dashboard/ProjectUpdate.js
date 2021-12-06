@@ -25,7 +25,7 @@ import UserInput from './UserInput';
 import ProjectPostList from 'src/components/Dashboard/ProjectPostList';
 
 const server_path = 'http://202.31.202.28:443/file/';
-const empty_path = 'http://202.31.202.28:443/image\\file__1638711656843.png';
+const empty_path = 'http://202.31.202.28:443/file/file__1637753431355.jpg';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -76,12 +76,17 @@ const ProjectUpdate = () => {
     let response = await Api.getProject(project_id);
 
     const mem = response.data.project.project_members;
-    const memberList = [];
+    let memberList = [];
 
     mem.map((v) => {
-      memberList.push(v.user_id);
+      memberList.push(v.user_login_id);
     });
+    memberList = memberList.sort();
     setmembers(memberList);
+    let leader_response = await Api.getReaduser(
+      response.data.project.project_leader
+    );
+    setleader(leader_response.data.user.user_login_id);
     if (response.data.project.project_introduction == null) {
       setPostBody({
         title: response.data.project.project_title,
@@ -131,7 +136,6 @@ const ProjectUpdate = () => {
       category.push(response.data.project.project_categorys);
       setcategory(category[0]);
     }
-    setleader(response.data.project.project_leader);
   }, []);
 
   // 드롭다운 메뉴 로딩
@@ -206,11 +210,6 @@ const ProjectUpdate = () => {
             errFlag = {
               err: true,
               msg: '프로젝트 팀원 아이디를 다시 확인해주세요'
-            };
-          } else if (response.data.users[0].user_id === leader) {
-            errFlag = {
-              err: true,
-              msg: '리더의 아이디는 제외시켜주십시오'
             };
           } else {
             return intM.push(parseInt(response.data.users[0].user_id, 10));

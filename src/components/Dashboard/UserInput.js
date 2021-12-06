@@ -52,14 +52,10 @@ export default function UserInput(props) {
     let response = await Api.getUserLoginId(value);
     if (response.length != 0) {
       if (response.data.users == null) {
-        const member_list = await Promise.all(
-          response.data.users.slice(0, 9).map((member) => {
-            return member.user_login_id;
-          })
-        );
+        const member_list = [];
         setMembers(member_list);
       } else {
-        const member_list = await Promise.all(
+        let member_list = await Promise.all(
           response.data.users.slice(0, 9).map((member) => {
             return member.user_login_id;
           })
@@ -114,6 +110,7 @@ export default function UserInput(props) {
             return member;
           }
         });
+        members = members.sort();
         setSelectedItem(members);
       }
     }

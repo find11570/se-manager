@@ -198,14 +198,9 @@ const TeamWithProjectRegist = () => {
     let response = await Api.postProject(reqObject);
     if (response.sucess) {
       setprofessor(p_id);
-      let end_response = await Api.getTeamEnd(team_id);
-      if (end_response.data.sucess) {
-        alert('생성되었습니다.');
-        const target = '/app/dashboard';
-        window.location.href = target;
-      } else {
-        alert('마감 실패');
-      }
+      alert('생성되었습니다');
+      const target = '/app/dashboard';
+      window.location.href = target;
     } else {
       alert('생성 실패');
     }

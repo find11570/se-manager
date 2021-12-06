@@ -95,8 +95,8 @@ const TeamSpecific = () => {
     let response = await Api.getTeamEnd(data.recruitment_id);
     if (response.data.sucess) {
       alert('마감되었습니다');
-      const target = '/se/team';
-      window.location.href = target;
+      const target = '/ProjectRegister';
+      window.location.href = window.location.href + target;
     } else {
       alert('마감실패');
     }
@@ -288,32 +288,6 @@ const TeamSpecific = () => {
               </Box>
               {state ? (
                 <Box>
-                  <Link
-                    to={{
-                      pathname: 'ProjectRegister',
-                      state: { teamId: team_id }
-                    }}
-                  >
-                    <Button
-                      variant="contained"
-                      size="medium"
-                      color="success"
-                      sx={{
-                        float: 'right',
-                        marginRight: 2,
-                        marginTop: 0.5,
-                        marginLeft: 2
-                      }}
-                    >
-                      <h3
-                        style={{
-                          color: '#ffffff'
-                        }}
-                      >
-                        프로젝트 생성하기
-                      </h3>
-                    </Button>
-                  </Link>
                   <Button
                     variant="contained"
                     size="medium"
